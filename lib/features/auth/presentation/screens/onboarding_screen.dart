@@ -49,10 +49,7 @@ class OnboardingScreen extends HookConsumerWidget {
                   onPressed: finishOnboarding,
                   child: Text(
                     context.loc.skip,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyMedium,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
               ],
@@ -107,11 +104,10 @@ class OnboardingScreen extends HookConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
                       list.length,
-                          (index) =>
-                          SliderIndicator(
-                            selected: currentIndex.value == index,
-                            currentPage: index,
-                          ).padSymmetric(4),
+                      (index) => SliderIndicator(
+                        selected: currentIndex.value == index,
+                        currentPage: index,
+                      ).padSymmetric(4),
                     ),
                   ),
                   context.addVerticalSpace(32),

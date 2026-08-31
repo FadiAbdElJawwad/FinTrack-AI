@@ -14,7 +14,6 @@ extension AppSizes on BuildContext {
 
   S get loc => S.of(this);
 
-
   bool get isSmallScreen => MediaQuery.sizeOf(this).height < 690;
 
   SizedBox addHorizontalSpace(double value) {

@@ -1,0 +1,247 @@
+import 'package:fin_track_ai/core/routing/app_routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
+import '../../../../core/constant/color_manager.dart';
+import '../../../../core/constant/images_manager.dart';
+import '../../../../core/extension/app_sizes.dart';
+import '../../../../core/extension/text_style_extension.dart';
+import '../../../../features/transactions/presentation/utils/transaction_ui_extension.dart';
+import '../widgets/home_action_card.dart';
+import '../controllers/dashboard_controller.dart';
+import '../widgets/home_skeleton.dart';
+import '../../../../features/transactions/presentation/widgets/add_transaction_bottom_sheet.dart';
+
+class HomeScreen extends HookConsumerWidget {
+  const HomeScreen({super.key});
+
+  String getGreeting(BuildContext context) {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return context.loc.goodMorning;
+    if (hour < 18) return context.loc.goodAfternoon;
+    return context.loc.goodEvening;
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dashboardState = ref.watch(dashboardControllerProvider);
+    final currencyFormat = NumberFormat.currency(symbol: '\$');
+    final user = FirebaseAuth.instance.currentUser;
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: CircleAvatar(
+          child: Image.asset(ImagesManager.userAvatar),
+        ).padStart(20),
+        centerTitle: false,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(getGreeting(context), style: context.labelSmall),
+            Text(
+              user?.displayName ?? "User",
+              style: context.labelLarge.copyWith(
+                color: ColorManager.secondaryColor,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.notifications_none),
+          ),
+        ],
+      ),
+      body: dashboardState.when(
+        loading: () => const HomeSkeleton(),
+        error: (error, stack) =>
+            Center(child: Text('Error: ${error.toString()}')),
+        data: (state) => SingleChildScrollView(
+          child: Column(
+            children: [
+              context.addVerticalSpace(16),
+              Card(
+                color: ColorManager.primaryBlue,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          context.loc.totalBalance,
+                          style: context.bodyMedium.copyWith(
+                            color: ColorManager.white.withValues(alpha: 0.8),
+                          ),
+                        ),
+                        const Icon(Icons.more_horiz, color: ColorManager.white),
+                      ],
+                    ),
+                    context.addVerticalSpace(8),
+                    Text(
+                      currencyFormat.format(state.currentBalance),
+                      style: context.displayLarge.copyWith(
+                        color: ColorManager.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    context.addVerticalSpace(16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.trending_up,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '+2.5% this month',
+                            style: context.labelSmall.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ).pad(24),
+              ),
+              context.addVerticalSpace(24),
+              Row(
+                children: [
+                  HomeActionCard(
+                    icon: Icons.camera_alt,
+                    label: context.loc.scan,
+                    onTap: () {},
+                  ),
+                  context.addHorizontalSpace(12),
+                  HomeActionCard(
+                    icon: Icons.mic,
+                    label: context.loc.voice,
+                    onTap: () {},
+                  ),
+                  context.addHorizontalSpace(12),
+                  HomeActionCard(
+                    icon: Icons.add,
+                    label: context.loc.manual,
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) => const AddTransactionBottomSheet(),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              context.addVerticalSpace(24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    context.loc.recentTransactions,
+                    style: context.labelLarge,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      context.pushNamed(AppRoutes.transactionsScreenName);
+                    },
+                    child: Text(context.loc.seeAll, style: context.bodyMedium),
+                  ),
+                ],
+              ),
+              context.addVerticalSpace(16),
+              if (state.groupedTransactions.isEmpty)
+                Center(child: Text(context.loc.emptyTransactions))
+              else
+                Column(
+                  children: state.groupedTransactions.entries.map((group) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          group.key,
+                          style: context.labelSmall.copyWith(
+                            color: ColorManager.secondaryColor,
+                          ),
+                        ),
+                        context.addVerticalSpace(8),
+                        ListView.separated(
+                          itemCount: group.value.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          separatorBuilder: (context, index) =>
+                              context.addVerticalSpace(8),
+                          itemBuilder: (context, index) {
+                            final tx = group.value[index];
+                            return GestureDetector(
+                              onTap: () {
+                                context.pushNamed(
+                                  AppRoutes.transactionDetailsName,
+                                  pathParameters: {'id': tx.id!},
+                                );
+                              },
+                              child: Card(
+                                child: ListTile(
+                                  leading: Card(
+                                    color: ColorManager.primaryBlue.withValues(
+                                      alpha: 0.1,
+                                    ),
+                                    shape: const StadiumBorder(),
+                                    elevation: 0,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Icon(tx.categoryIcon),
+                                    ),
+                                  ),
+                                  title: Text(
+                                    tx.title,
+                                    style: context.labelMedium,
+                                  ),
+                                  subtitle: Text(
+                                    tx.formattedDate,
+                                    style: context.labelSmall.copyWith(
+                                      color: ColorManager.secondaryColor,
+                                    ),
+                                  ),
+                                  trailing: Text(
+                                    tx.formattedAmount,
+                                    style: context.labelMedium.copyWith(
+                                      color: tx.amountColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        context.addVerticalSpace(16),
+                      ],
+                    );
+                  }).toList(),
+                ),
+            ],
+          ).padSymmetric(20).padVerticalSymmetric(15),
+        ),
+      ),
+    );
+  }
+}

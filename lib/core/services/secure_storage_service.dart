@@ -19,7 +19,7 @@ class SecureStorageService {
   Future<Map<String, String>?> getCredentials() async {
     final email = await _storage.read(key: _emailKey);
     final password = await _storage.read(key: _passwordKey);
-    
+
     if (email != null && password != null) {
       return {'email': email, 'password': password};
     }

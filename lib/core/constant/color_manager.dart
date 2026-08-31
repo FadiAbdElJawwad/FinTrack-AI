@@ -5,6 +5,7 @@ class ColorManager {
   static const Color primaryBlue = Color(0xFF0A56F1);
   static const Color secondaryColor = Color(0xFF94A3B8);
   static const Color errorColor = Color(0xFFEF4444);
+  static const Color successColor = Color(0xFF10B981);
   static const Color secondaryButtonTextColor = Color(0xFFB6C4FF);
 
   // Dark Theme Colors

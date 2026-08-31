@@ -29,12 +29,14 @@ class SignUpScreen extends HookConsumerWidget {
     ref.listen<AsyncValue<void>>(authControllerProvider, (previous, next) {
       next.whenOrNull(
         error: (error, stack) {
-          final errorMessage = error is AppAuthException ? error.getLocalizedMessage(context) : error.toString();
+          final errorMessage = error is AppAuthException
+              ? error.getLocalizedMessage(context)
+              : error.toString();
           context.showErrorSnackBar(errorMessage);
         },
         data: (_) {
           if (previous is AsyncLoading && context.mounted) {
-            context.goNamed('home');
+            context.goNamed('homeScreen');
           }
         },
       );
@@ -50,15 +52,23 @@ class SignUpScreen extends HookConsumerWidget {
                 child: Column(
                   children: [
                     context.addVerticalSpace(32),
-                    Image.asset(ImagesManager.finTrackAILogo, width: context.wp(40)),
-                    Text(context.loc.signupTitle, style: context.headlineMedium),
+                    Image.asset(
+                      ImagesManager.finTrackAILogo,
+                      width: context.wp(40),
+                    ),
+                    Text(
+                      context.loc.signupTitle,
+                      style: context.headlineMedium,
+                    ),
                     context.addVerticalSpace(8),
                     Text(context.loc.signupBody, style: context.bodyMedium),
                     context.addVerticalSpace(32),
                     TextFormField(
                       controller: fullNameController,
                       keyboardType: TextInputType.name,
-                      decoration: InputDecoration(labelText: context.loc.fullName),
+                      decoration: InputDecoration(
+                        labelText: context.loc.fullName,
+                      ),
                       validator: (value) => value?.validateName(context),
                     ),
                     context.addVerticalSpace(16),
@@ -77,10 +87,13 @@ class SignUpScreen extends HookConsumerWidget {
                         labelText: context.loc.password,
                         suffixIcon: IconButton(
                           icon: Icon(
-                            isPasswordVisible.value ? Icons.visibility : Icons.visibility_off,
+                            isPasswordVisible.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
                             color: ColorManager.secondaryColor,
                           ),
-                          onPressed: () => isPasswordVisible.value = !isPasswordVisible.value,
+                          onPressed: () => isPasswordVisible.value =
+                              !isPasswordVisible.value,
                         ),
                       ),
                       validator: (value) => value?.validatePassword(context),
@@ -102,11 +115,14 @@ class SignUpScreen extends HookConsumerWidget {
                             : () {
                                 if (formKey.currentState!.validate()) {
                                   FocusScope.of(context).unfocus();
-                                  ref.read(authControllerProvider.notifier).register(
+                                  ref
+                                      .read(authControllerProvider.notifier)
+                                      .register(
                                         fullNameController.text.trim(),
                                         emailController.text.trim(),
                                         passwordController.text,
-                                        isBiometricOptIn: isBiometricOptIn.value,
+                                        isBiometricOptIn:
+                                            isBiometricOptIn.value,
                                       );
                                 }
                               },
@@ -116,9 +132,19 @@ class SignUpScreen extends HookConsumerWidget {
                     context.addVerticalSpace(32),
                     Row(
                       children: [
-                        Expanded(child: Divider(color: ColorManager.secondaryColor, thickness: 1)),
+                        Expanded(
+                          child: Divider(
+                            color: ColorManager.secondaryColor,
+                            thickness: 1,
+                          ),
+                        ),
                         Text(context.loc.or).padSymmetric(16),
-                        Expanded(child: Divider(color: ColorManager.secondaryColor, thickness: 1)),
+                        Expanded(
+                          child: Divider(
+                            color: ColorManager.secondaryColor,
+                            thickness: 1,
+                          ),
+                        ),
                       ],
                     ),
                     context.addVerticalSpace(32),
@@ -131,28 +157,45 @@ class SignUpScreen extends HookConsumerWidget {
                       ),
                       onPressed: authState.isLoading
                           ? null
-                          : () => ref.read(authControllerProvider.notifier).loginWithGoogle(isGoogleAuthTriggered: true),
+                          : () => ref
+                                .read(authControllerProvider.notifier)
+                                .loginWithGoogle(isGoogleAuthTriggered: true),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(ImagesManager.googleLogo, height: 24),
+                          SvgPicture.asset(
+                            ImagesManager.googleLogo,
+                            height: 24,
+                          ),
                           context.addHorizontalSpace(8),
-                          Text(context.loc.continueWithGoogle, style: const TextStyle(color: ColorManager.primaryBlue)),
+                          Text(
+                            context.loc.continueWithGoogle,
+                            style: const TextStyle(
+                              color: ColorManager.primaryBlue,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     context.addVerticalSpace(32),
                     TextButton(
-                      onPressed: authState.isLoading ? null : () => context.goNamed('login'),
+                      onPressed: authState.isLoading
+                          ? null
+                          : () => context.goNamed('login'),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(context.loc.haveAccount, style: const TextStyle(color: ColorManager.secondaryColor)),
+                          Text(
+                            context.loc.haveAccount,
+                            style: const TextStyle(
+                              color: ColorManager.secondaryColor,
+                            ),
+                          ),
                           context.addHorizontalSpace(8),
                           Text(context.loc.login),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ).padSymmetric(20),
               ),

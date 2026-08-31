@@ -17,13 +17,13 @@ class SplashScreen extends HookConsumerWidget {
     );
 
     final slideAnimation = useMemoized(
-      () => Tween<Offset>(
-        begin: const Offset(0, 0.5),
-        end: Offset.zero,
-      ).animate(CurvedAnimation(
-        parent: animationController,
-        curve: const Interval(0.0, 0.6, curve: Curves.easeOutCubic),
-      )),
+      () =>
+          Tween<Offset>(begin: const Offset(0, 0.5), end: Offset.zero).animate(
+            CurvedAnimation(
+              parent: animationController,
+              curve: const Interval(0.0, 0.6, curve: Curves.easeOutCubic),
+            ),
+          ),
       [animationController],
     );
 
@@ -87,15 +87,9 @@ class SplashScreen extends HookConsumerWidget {
                 opacity: textFadeAnimation,
                 child: Column(
                   children: [
-                    Text(
-                      context.loc.appTitle,
-                      style: context.headlineMedium,
-                    ),
+                    Text(context.loc.appTitle, style: context.headlineMedium),
                     context.addVerticalSpace(8),
-                    Text(
-                      context.loc.splashBody,
-                      style: context.bodyMedium
-                    ),
+                    Text(context.loc.splashBody, style: context.bodyMedium),
                   ],
                 ),
               ),

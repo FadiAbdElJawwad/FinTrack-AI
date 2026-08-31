@@ -19,7 +19,9 @@ class SliderIndicator extends StatelessWidget {
       height: 9,
       width: selected ? 35 : 9,
       decoration: BoxDecoration(
-        color: selected ? ColorManager.primaryBlue : ColorManager.secondaryColor,
+        color: selected
+            ? ColorManager.primaryBlue
+            : ColorManager.secondaryColor,
         borderRadius: BorderRadius.circular(25),
       ),
     );

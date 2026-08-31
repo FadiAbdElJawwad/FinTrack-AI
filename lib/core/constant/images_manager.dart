@@ -8,5 +8,7 @@ class ImagesManager {
   static const String onboarding_2 = '$pngPath/onboarding_2.png';
   static const String onboarding_3 = '$pngPath/onboarding_3.png';
 
+  static const String userAvatar = '$pngPath/user_avatar.png';
+
   static const String googleLogo = '$svgPath/google_logo.svg';
 }

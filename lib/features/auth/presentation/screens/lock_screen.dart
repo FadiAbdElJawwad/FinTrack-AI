@@ -21,7 +21,7 @@ class LockScreen extends HookConsumerWidget {
     Future<void> handleUnlock() async {
       final success = await biometricService.authenticate();
       if (success && context.mounted) {
-        context.goNamed('home');
+        context.goNamed('homeScreen');
       }
     }
 
@@ -45,19 +45,13 @@ class LockScreen extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            Image.asset(
-              ImagesManager.finTrackAILogo,
-              width: context.wp(40),
-            ),
-            Text(
-              context.loc.loginTitle,
-              style: context.headlineMedium,
-            ),
+            Image.asset(ImagesManager.finTrackAILogo, width: context.wp(40)),
+            Text(context.loc.loginTitle, style: context.headlineMedium),
             context.addVerticalSpace(32),
-              ElevatedButton.icon(
-                onPressed: handleUnlock,
-                icon: const Icon(Icons.fingerprint),
-                label: Text(context.loc.fingerPrintLogin),
+            ElevatedButton.icon(
+              onPressed: handleUnlock,
+              icon: const Icon(Icons.fingerprint),
+              label: Text(context.loc.fingerPrintLogin),
             ),
             const Spacer(),
             TextButton(

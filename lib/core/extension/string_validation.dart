@@ -9,14 +9,12 @@ extension StringValidation on String {
     return null;
   }
 
-
   String? validateName(BuildContext context) {
     if (isEmpty) {
       return context.loc.emptyName;
     }
     return null;
   }
-
 
   String? validateEmail(BuildContext context) {
     final emailRegExp = RegExp(

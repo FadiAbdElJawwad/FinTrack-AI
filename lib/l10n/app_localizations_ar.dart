@@ -188,4 +188,160 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get googleSignInCanceled => 'تم إلغاء تسجيل الدخول باستخدام جوجل.';
+
+  @override
+  String get scan => 'مسح';
+
+  @override
+  String get voice => 'صوت';
+
+  @override
+  String get add => 'إضافة';
+
+  @override
+  String get manual => 'يدوي';
+
+  @override
+  String get totalBalance => 'إجمالي الرصيد';
+
+  @override
+  String get recentTransactions => 'المعاملات الأخيرة';
+
+  @override
+  String get transactions => 'المعاملات';
+
+  @override
+  String get seeAll => 'عرض الكل';
+
+  @override
+  String get emptyTransactions => 'لم يتم العثور على معاملات.';
+
+  @override
+  String get goodMorning => 'صباح الخير';
+
+  @override
+  String get goodAfternoon => 'مساء الخير';
+
+  @override
+  String get goodEvening => 'مساء الخير';
+
+  @override
+  String get totalIncome => 'إجمالي الدخل';
+
+  @override
+  String get totalExpense => 'إجمالي المصاريف';
+
+  @override
+  String get selectWallet => 'اختر المحفظة';
+
+  @override
+  String get category => 'الفئة';
+
+  @override
+  String get saveTransaction => 'حفظ المعاملة';
+
+  @override
+  String get date => 'التاريخ';
+
+  @override
+  String get notes => 'ملاحظات';
+
+  @override
+  String get addNote => 'أضف ملاحظة...';
+
+  @override
+  String get deleteTransaction => 'حذف المعاملة';
+
+  @override
+  String get deleteConfirm => 'هل أنت متأكد من رغبتك في حذف هذه المعاملة؟';
+
+  @override
+  String get cancel => 'إلغاء';
+
+  @override
+  String get editTransaction => 'تعديل المعاملة';
+
+  @override
+  String get delete => 'حذف';
+
+  @override
+  String get status => 'الحالة';
+
+  @override
+  String get completed => 'مكتمل';
+
+  @override
+  String get paymentMethod => 'طريقة الدفع';
+
+  @override
+  String get bankAccount => 'حساب بنكي';
+
+  @override
+  String get type => 'النوع';
+
+  @override
+  String get transactionDeleted => 'تم حذف المعاملة.';
+
+  @override
+  String get transactionDetails => 'تفاصيل المعاملة';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get income => 'دخل';
+
+  @override
+  String get expense => 'مصاريف';
+
+  @override
+  String get dateRange => 'الفترة الزمنية';
+
+  @override
+  String get selectDateRange => 'اختر الفترة الزمنية';
+
+  @override
+  String get quickPresets => 'اختصارات سريعة';
+
+  @override
+  String get thisWeek => 'هذا الأسبوع';
+
+  @override
+  String get thisMonth => 'هذا الشهر';
+
+  @override
+  String get lastMonth => 'الشهر الماضي';
+
+  @override
+  String get customRange => 'فترة مخصصة';
+
+  @override
+  String get startDate => 'تاريخ البدء';
+
+  @override
+  String get endDate => 'تاريخ الانتهاء';
+
+  @override
+  String get reset => 'إعادة ضبط';
+
+  @override
+  String get applyFilter => 'تطبيق الفلتر';
+
+  @override
+  String get rangeError => 'لا يمكن أن تتجاوز الفترة الزمنية شهرًا واحدًا';
+
+  @override
+  String get more => '+ المزيد';
+
+  @override
+  String get bank => 'حساب بنكي';
+
+  @override
+  String get cash => 'نقدي';
+
+  @override
+  String get paypal => 'بايبال';
+
+  @override
+  String get creditCard => 'بطاقة ائتمان';
 }

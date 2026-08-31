@@ -12,7 +12,6 @@ import '../../../../core/extension/snackbar_extension.dart';
 import '../../../../core/error/auth_exception.dart';
 import '../../../../core/error/auth_exception_extension.dart';
 import '../controllers/auth_controller.dart';
-import '../providers/biometric_status_provider.dart';
 
 class LoginScreen extends HookConsumerWidget {
   const LoginScreen({super.key});
@@ -29,12 +28,14 @@ class LoginScreen extends HookConsumerWidget {
     ref.listen<AsyncValue<void>>(authControllerProvider, (previous, next) {
       next.whenOrNull(
         error: (error, stack) {
-          final errorMessage = error is AppAuthException ? error.getLocalizedMessage(context) : error.toString();
+          final errorMessage = error is AppAuthException
+              ? error.getLocalizedMessage(context)
+              : error.toString();
           context.showErrorSnackBar(errorMessage);
         },
         data: (_) {
           if (previous is AsyncLoading && context.mounted) {
-            context.goNamed('home');
+            context.goNamed('homeScreen');
           }
         },
       );
@@ -50,7 +51,10 @@ class LoginScreen extends HookConsumerWidget {
                 child: Column(
                   children: [
                     context.addVerticalSpace(32),
-                    Image.asset(ImagesManager.finTrackAILogo, width: context.wp(40)),
+                    Image.asset(
+                      ImagesManager.finTrackAILogo,
+                      width: context.wp(40),
+                    ),
                     Text(context.loc.loginTitle, style: context.headlineMedium),
                     context.addVerticalSpace(8),
                     Text(context.loc.loginBody, style: context.bodyMedium),
@@ -70,10 +74,13 @@ class LoginScreen extends HookConsumerWidget {
                         labelText: context.loc.password,
                         suffixIcon: IconButton(
                           icon: Icon(
-                            obscurePassword.value ? Icons.visibility_off : Icons.visibility,
+                            obscurePassword.value
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                             color: ColorManager.secondaryColor,
                           ),
-                          onPressed: () => obscurePassword.value = !obscurePassword.value,
+                          onPressed: () =>
+                              obscurePassword.value = !obscurePassword.value,
                         ),
                       ),
                       validator: (value) => value?.validatePassword(context),
@@ -98,7 +105,9 @@ class LoginScreen extends HookConsumerWidget {
                                 : () {
                                     if (formKey.currentState!.validate()) {
                                       FocusScope.of(context).unfocus();
-                                      ref.read(authControllerProvider.notifier).login(
+                                      ref
+                                          .read(authControllerProvider.notifier)
+                                          .login(
                                             emailController.text.trim(),
                                             passwordController.text,
                                             isBiometricOptIn: false,
@@ -115,9 +124,14 @@ class LoginScreen extends HookConsumerWidget {
                                 ? null
                                 : () {
                                     FocusScope.of(context).unfocus();
-                                    ref.read(authControllerProvider.notifier).loginWithBiometrics();
+                                    ref
+                                        .read(authControllerProvider.notifier)
+                                        .loginWithBiometrics();
                                   },
-                            icon: const Icon(Icons.fingerprint, color: Colors.white),
+                            icon: const Icon(
+                              Icons.fingerprint,
+                              color: Colors.white,
+                            ),
                             style: IconButton.styleFrom(
                               backgroundColor: ColorManager.primaryBlue,
                               padding: const EdgeInsets.all(12),
@@ -129,9 +143,19 @@ class LoginScreen extends HookConsumerWidget {
                     context.addVerticalSpace(32),
                     Row(
                       children: [
-                        Expanded(child: Divider(color: ColorManager.secondaryColor, thickness: 1)),
+                        Expanded(
+                          child: Divider(
+                            color: ColorManager.secondaryColor,
+                            thickness: 1,
+                          ),
+                        ),
                         Text(context.loc.or).padSymmetric(16),
-                        Expanded(child: Divider(color: ColorManager.secondaryColor, thickness: 1)),
+                        Expanded(
+                          child: Divider(
+                            color: ColorManager.secondaryColor,
+                            thickness: 1,
+                          ),
+                        ),
                       ],
                     ),
                     context.addVerticalSpace(32),
@@ -143,28 +167,45 @@ class LoginScreen extends HookConsumerWidget {
                       ),
                       onPressed: authState.isLoading
                           ? null
-                          : () => ref.read(authControllerProvider.notifier).loginWithGoogle(isGoogleAuthTriggered: true),
+                          : () => ref
+                                .read(authControllerProvider.notifier)
+                                .loginWithGoogle(isGoogleAuthTriggered: true),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(ImagesManager.googleLogo, height: 24),
+                          SvgPicture.asset(
+                            ImagesManager.googleLogo,
+                            height: 24,
+                          ),
                           context.addHorizontalSpace(8),
-                          Text(context.loc.continueWithGoogle, style: const TextStyle(color: ColorManager.primaryBlue)),
+                          Text(
+                            context.loc.continueWithGoogle,
+                            style: const TextStyle(
+                              color: ColorManager.primaryBlue,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     context.addVerticalSpace(32),
                     TextButton(
-                      onPressed: authState.isLoading ? null : () => context.pushNamed('signup'),
+                      onPressed: authState.isLoading
+                          ? null
+                          : () => context.pushNamed('signup'),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(context.loc.dontHaveAccount, style: const TextStyle(color: ColorManager.secondaryColor)),
+                          Text(
+                            context.loc.dontHaveAccount,
+                            style: const TextStyle(
+                              color: ColorManager.secondaryColor,
+                            ),
+                          ),
                           context.addHorizontalSpace(8),
                           Text(context.loc.signup),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ).padSymmetric(20),
               ),

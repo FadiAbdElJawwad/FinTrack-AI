@@ -22,21 +22,43 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "add": MessageLookupByLibrary.simpleMessage("Add"),
+    "addNote": MessageLookupByLibrary.simpleMessage("Add note..."),
+    "all": MessageLookupByLibrary.simpleMessage("All"),
     "appTitle": MessageLookupByLibrary.simpleMessage("FinTrack AI"),
+    "applyFilter": MessageLookupByLibrary.simpleMessage("Apply Filter"),
     "backToLogin": MessageLookupByLibrary.simpleMessage("Back to Login"),
+    "bank": MessageLookupByLibrary.simpleMessage("Bank"),
+    "bankAccount": MessageLookupByLibrary.simpleMessage("Bank Account"),
     "biometricDenied": MessageLookupByLibrary.simpleMessage(
       "Biometric authentication denied or cancelled.",
     ),
+    "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "cash": MessageLookupByLibrary.simpleMessage("Cash"),
+    "category": MessageLookupByLibrary.simpleMessage("CATEGORY"),
+    "completed": MessageLookupByLibrary.simpleMessage("Completed"),
     "confirmPassword": MessageLookupByLibrary.simpleMessage("Confirm Password"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
       "Continue with Google",
     ),
+    "creditCard": MessageLookupByLibrary.simpleMessage("Credit Card"),
+    "customRange": MessageLookupByLibrary.simpleMessage("CUSTOM RANGE"),
     "databaseError": MessageLookupByLibrary.simpleMessage(
       "A database error occurred.",
+    ),
+    "date": MessageLookupByLibrary.simpleMessage("DATE"),
+    "dateRange": MessageLookupByLibrary.simpleMessage("Date Range"),
+    "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteConfirm": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this transaction?",
+    ),
+    "deleteTransaction": MessageLookupByLibrary.simpleMessage(
+      "Delete Transaction",
     ),
     "dontHaveAccount": MessageLookupByLibrary.simpleMessage(
       "Don\'t have an account?",
     ),
+    "editTransaction": MessageLookupByLibrary.simpleMessage("Edit Transaction"),
     "email": MessageLookupByLibrary.simpleMessage("Email Address"),
     "emailAlreadyInUse": MessageLookupByLibrary.simpleMessage(
       "Email is already registered.",
@@ -49,9 +71,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyPassword": MessageLookupByLibrary.simpleMessage(
       "Password cannot be empty",
     ),
+    "emptyTransactions": MessageLookupByLibrary.simpleMessage(
+      "No transactions found.",
+    ),
     "enableBiometricLogin": MessageLookupByLibrary.simpleMessage(
       "Enable Biometric Login",
     ),
+    "endDate": MessageLookupByLibrary.simpleMessage("End Date"),
+    "expense": MessageLookupByLibrary.simpleMessage("Expense"),
     "fieldCannotBeEmpty": MessageLookupByLibrary.simpleMessage(
       "This field cannot be empty",
     ),
@@ -61,12 +88,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "forgotPassword": MessageLookupByLibrary.simpleMessage("Forgot Password"),
     "fullName": MessageLookupByLibrary.simpleMessage("Full Name"),
     "getStarted": MessageLookupByLibrary.simpleMessage("Get Started"),
+    "goodAfternoon": MessageLookupByLibrary.simpleMessage("Good afternoon"),
+    "goodEvening": MessageLookupByLibrary.simpleMessage("Good evening"),
+    "goodMorning": MessageLookupByLibrary.simpleMessage("Good morning"),
     "googleSignInCanceled": MessageLookupByLibrary.simpleMessage(
       "Google Sign-In was canceled.",
     ),
     "haveAccount": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
+    "income": MessageLookupByLibrary.simpleMessage("Income"),
     "invalidCredential": MessageLookupByLibrary.simpleMessage(
       "Invalid email or password.",
     ),
@@ -79,11 +110,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidPassword": MessageLookupByLibrary.simpleMessage(
       "Password must be at least 6 characters long",
     ),
+    "lastMonth": MessageLookupByLibrary.simpleMessage("Last Month"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "loginBody": MessageLookupByLibrary.simpleMessage(
       "Log in to manage your portfolio",
     ),
     "loginTitle": MessageLookupByLibrary.simpleMessage("Welcome Back"),
+    "manual": MessageLookupByLibrary.simpleMessage("Manual"),
+    "more": MessageLookupByLibrary.simpleMessage("+ More"),
     "networkRequestFailed": MessageLookupByLibrary.simpleMessage(
       "Network error. Please check your connection.",
     ),
@@ -91,6 +125,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSavedCredentials": MessageLookupByLibrary.simpleMessage(
       "No saved credentials found. Please log in with your email first.",
     ),
+    "notes": MessageLookupByLibrary.simpleMessage("NOTES"),
     "onboardingBody1": MessageLookupByLibrary.simpleMessage(
       "Connect your accounts and let our AI categorize every transaction automatically.",
     ),
@@ -117,6 +152,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match",
     ),
+    "paymentMethod": MessageLookupByLibrary.simpleMessage("Payment Method"),
+    "paypal": MessageLookupByLibrary.simpleMessage("PayPal"),
+    "quickPresets": MessageLookupByLibrary.simpleMessage("QUICK PRESETS"),
+    "rangeError": MessageLookupByLibrary.simpleMessage(
+      "Date range cannot exceed one month",
+    ),
+    "recentTransactions": MessageLookupByLibrary.simpleMessage(
+      "Recent Transactions",
+    ),
+    "reset": MessageLookupByLibrary.simpleMessage("Reset"),
     "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
     "resetPasswordBody": MessageLookupByLibrary.simpleMessage(
       "Enter your email to receive a password reset link",
@@ -124,6 +169,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetPasswordSuccess": MessageLookupByLibrary.simpleMessage(
       "If this email is registered, a reset link has been sent.",
     ),
+    "saveTransaction": MessageLookupByLibrary.simpleMessage("Save Transaction"),
+    "scan": MessageLookupByLibrary.simpleMessage("Scan"),
+    "seeAll": MessageLookupByLibrary.simpleMessage("See All"),
+    "selectDateRange": MessageLookupByLibrary.simpleMessage(
+      "Select Date Range",
+    ),
+    "selectWallet": MessageLookupByLibrary.simpleMessage("SELECT WALLET"),
     "sendResetLink": MessageLookupByLibrary.simpleMessage("Send Reset Link"),
     "signInWithAnotherAccount": MessageLookupByLibrary.simpleMessage(
       "Sign in with another account",
@@ -137,9 +189,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "splashBody": MessageLookupByLibrary.simpleMessage(
       "Smart Financial Tracking",
     ),
+    "startDate": MessageLookupByLibrary.simpleMessage("Start Date"),
+    "status": MessageLookupByLibrary.simpleMessage("Status"),
+    "thisMonth": MessageLookupByLibrary.simpleMessage("This Month"),
+    "thisWeek": MessageLookupByLibrary.simpleMessage("This Week"),
     "tooManyRequests": MessageLookupByLibrary.simpleMessage(
       "Too many attempts. Please try again later.",
     ),
+    "totalBalance": MessageLookupByLibrary.simpleMessage("Total Balance"),
+    "totalExpense": MessageLookupByLibrary.simpleMessage("Total Expense"),
+    "totalIncome": MessageLookupByLibrary.simpleMessage("Total Income"),
+    "transactionDeleted": MessageLookupByLibrary.simpleMessage(
+      "Transaction deleted.",
+    ),
+    "transactionDetails": MessageLookupByLibrary.simpleMessage(
+      "Transaction Details",
+    ),
+    "transactions": MessageLookupByLibrary.simpleMessage("Transactions"),
+    "type": MessageLookupByLibrary.simpleMessage("Type"),
     "unknownError": MessageLookupByLibrary.simpleMessage(
       "An unexpected error occurred.",
     ),
@@ -150,6 +217,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "userNotFound": MessageLookupByLibrary.simpleMessage(
       "No user found with this email.",
     ),
+    "voice": MessageLookupByLibrary.simpleMessage("Voice"),
     "weakPasswordAuth": MessageLookupByLibrary.simpleMessage(
       "The password is too weak.",
     ),

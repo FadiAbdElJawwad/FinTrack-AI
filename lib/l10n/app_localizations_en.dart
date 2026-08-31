@@ -189,4 +189,161 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get googleSignInCanceled => 'Google Sign-In was canceled.';
+
+  @override
+  String get scan => 'Scan';
+
+  @override
+  String get voice => 'Voice';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get manual => 'Manual';
+
+  @override
+  String get totalBalance => 'Total Balance';
+
+  @override
+  String get recentTransactions => 'Recent Transactions';
+
+  @override
+  String get transactions => 'Transactions';
+
+  @override
+  String get seeAll => 'See All';
+
+  @override
+  String get emptyTransactions => 'No transactions found.';
+
+  @override
+  String get goodMorning => 'Good morning';
+
+  @override
+  String get goodAfternoon => 'Good afternoon';
+
+  @override
+  String get goodEvening => 'Good evening';
+
+  @override
+  String get totalIncome => 'Total Income';
+
+  @override
+  String get totalExpense => 'Total Expense';
+
+  @override
+  String get selectWallet => 'SELECT WALLET';
+
+  @override
+  String get category => 'CATEGORY';
+
+  @override
+  String get saveTransaction => 'Save Transaction';
+
+  @override
+  String get date => 'DATE';
+
+  @override
+  String get notes => 'NOTES';
+
+  @override
+  String get addNote => 'Add note...';
+
+  @override
+  String get deleteTransaction => 'Delete Transaction';
+
+  @override
+  String get deleteConfirm =>
+      'Are you sure you want to delete this transaction?';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get editTransaction => 'Edit Transaction';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get paymentMethod => 'Payment Method';
+
+  @override
+  String get bankAccount => 'Bank Account';
+
+  @override
+  String get type => 'Type';
+
+  @override
+  String get transactionDeleted => 'Transaction deleted.';
+
+  @override
+  String get transactionDetails => 'Transaction Details';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get income => 'Income';
+
+  @override
+  String get expense => 'Expense';
+
+  @override
+  String get dateRange => 'Date Range';
+
+  @override
+  String get selectDateRange => 'Select Date Range';
+
+  @override
+  String get quickPresets => 'QUICK PRESETS';
+
+  @override
+  String get thisWeek => 'This Week';
+
+  @override
+  String get thisMonth => 'This Month';
+
+  @override
+  String get lastMonth => 'Last Month';
+
+  @override
+  String get customRange => 'CUSTOM RANGE';
+
+  @override
+  String get startDate => 'Start Date';
+
+  @override
+  String get endDate => 'End Date';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get applyFilter => 'Apply Filter';
+
+  @override
+  String get rangeError => 'Date range cannot exceed one month';
+
+  @override
+  String get more => '+ More';
+
+  @override
+  String get bank => 'Bank';
+
+  @override
+  String get cash => 'Cash';
+
+  @override
+  String get paypal => 'PayPal';
+
+  @override
+  String get creditCard => 'Credit Card';
 }

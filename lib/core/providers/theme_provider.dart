@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'shared_prefs_provider.dart';
 
-final themeProvider = NotifierProvider<ThemeNotifier, ThemeMode>(ThemeNotifier.new);
+final themeProvider = NotifierProvider<ThemeNotifier, ThemeMode>(
+  ThemeNotifier.new,
+);
 
 class ThemeNotifier extends Notifier<ThemeMode> {
   static const _key = 'app_theme_mode';
@@ -11,7 +13,7 @@ class ThemeNotifier extends Notifier<ThemeMode> {
   ThemeMode build() {
     final prefs = ref.watch(sharedPrefsProvider);
     final savedTheme = prefs.getString(_key);
-    
+
     switch (savedTheme) {
       case 'light':
         return ThemeMode.light;

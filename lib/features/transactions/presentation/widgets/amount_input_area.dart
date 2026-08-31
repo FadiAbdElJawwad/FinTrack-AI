@@ -1,0 +1,77 @@
+import 'package:fin_track_ai/core/extension/app_sizes.dart';
+import 'package:fin_track_ai/core/extension/text_style_extension.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import '../../../../core/constant/color_manager.dart';
+import '../../domain/models/transaction_model.dart';
+
+class AmountInputArea extends StatelessWidget {
+  final TextEditingController controller;
+  final TransactionType type;
+
+  const AmountInputArea({
+    super.key,
+    required this.controller,
+    required this.type,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isExpense = type == TransactionType.expense;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          children: [
+            Text(
+              isExpense ? '- \$' : '+ \$',
+              style: context.headlineLarge.copyWith(
+                color: isExpense
+                    ? ColorManager.errorColor
+                    : ColorManager.successColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 32,
+              ),
+            ),
+            const Icon(
+              Icons.arrow_drop_down,
+              color: ColorManager.secondaryColor,
+              size: 18,
+            ),
+          ],
+        ),
+        context.addHorizontalSpace(8),
+        IntrinsicWidth(
+          child: TextField(
+            controller: controller,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+            ],
+            style: context.displayLarge.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 48,
+            ),
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              fillColor: Colors.transparent,
+              hintText: context.loc.all.contains('All')
+                  ? '0.00'
+                  : '0.00', // Small trick for placeholder
+              hintStyle: TextStyle(
+                color: ColorManager.secondaryColor,
+                fontSize: 48,
+                fontWeight: FontWeight.bold,
+                backgroundColor: Colors.transparent,
+              ),
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              contentPadding: EdgeInsets.zero,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

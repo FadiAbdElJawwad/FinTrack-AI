@@ -1,0 +1,11 @@
+# تجاهل مجلدات المنصات الأصلية في إحصائيات اللغات
+android/** linguist-vendored
+ios/** linguist-vendored
+linux/** linguist-vendored
+macos/** linguist-vendored
+windows/** linguist-vendored
+web/** linguist-vendored
+
+# (اختياري) تجاهل الملفات المولدة برمجياً لضمان دقة الإحصائيات
+*.g.dart linguist-generated
+*.freezed.dart linguist-generated

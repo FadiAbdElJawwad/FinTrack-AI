@@ -1,0 +1,128 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../../../../core/constant/color_manager.dart';
+import '../../../../core/extension/app_sizes.dart';
+import '../../../../core/extension/text_style_extension.dart';
+
+class TransactionMetadataRow extends StatelessWidget {
+  final DateTime selectedDate;
+  final TextEditingController notesController;
+  final VoidCallback onDateTap;
+
+  const TransactionMetadataRow({
+    super.key,
+    required this.selectedDate,
+    required this.notesController,
+    required this.onDateTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: _InputSelector(
+            label: context.loc.date,
+            value: DateFormat('dd MMM, yyyy').format(selectedDate),
+            icon: Icons.calendar_today_outlined,
+            onTap: onDateTap,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.loc.notes,
+                style: context.labelSmall.copyWith(
+                  color: ColorManager.secondaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: notesController,
+                style: context.labelMedium.copyWith(color: ColorManager.white),
+                maxLines: 1,
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                  hintText: context.loc.addNote,
+                  hintStyle: context.labelMedium.copyWith(
+                    color: ColorManager.white.withValues(alpha: 0.3),
+                  ),
+                  filled: true,
+                  fillColor: ColorManager.white.withValues(alpha: 0.05),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 14,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _InputSelector extends StatelessWidget {
+  final String label;
+  final String value;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _InputSelector({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: context.labelSmall.copyWith(
+            color: ColorManager.secondaryColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            decoration: BoxDecoration(
+              color: ColorManager.white.withValues(alpha: 0.05),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Icon(icon, color: ColorManager.secondaryColor, size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    value,
+                    style: context.labelMedium.copyWith(
+                      color: ColorManager.white,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

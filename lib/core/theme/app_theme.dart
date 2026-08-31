@@ -13,17 +13,51 @@ class AppTheme {
 
   static TextTheme _buildTextTheme(String fontFamily, Color textColor) {
     return TextTheme(
-      displayLarge: TextStyle(fontFamily: fontFamily, fontSize: 40, fontWeight: FontWeight.bold, color: textColor),
-      headlineMedium: TextStyle(fontFamily: fontFamily, fontSize: 28, fontWeight: FontWeight.bold, color: textColor),
-      bodyMedium: TextStyle(fontFamily: fontFamily, fontSize: 14, fontWeight: FontWeight.w400, color: ColorManager.secondaryColor),
-      labelLarge: TextStyle(fontFamily: fontFamily, fontSize: 16, fontWeight: FontWeight.w500, color: ColorManager.secondaryColor),
+      displayLarge: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: 40,
+        fontWeight: FontWeight.bold,
+        color: textColor,
+      ),
+      headlineMedium: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: 28,
+        fontWeight: FontWeight.bold,
+        color: textColor,
+      ),
+      bodyMedium: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: ColorManager.secondaryColor,
+      ),
+      labelLarge: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: textColor,
+      ),
+      labelMedium: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        color: textColor,
+      ),
+      labelSmall: TextStyle(
+        fontFamily: fontFamily,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: textColor,
+      ),
     );
   }
 
-
   // ------------------ Dark Theme ------------------
   static ThemeData darkTheme(String languageCode) {
-    final textTheme = _buildTextTheme(_getFontFamily(languageCode), ColorManager.white);
+    final textTheme = _buildTextTheme(
+      _getFontFamily(languageCode),
+      ColorManager.white,
+    );
 
     return ThemeData(
       useMaterial3: true,
@@ -58,10 +92,25 @@ class AppTheme {
         fillColor: ColorManager.darkSurface,
         labelStyle: textTheme.labelLarge,
         hintStyle: textTheme.bodyMedium?.copyWith(color: ColorManager.grey),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-        border: OutlineInputBorder(borderRadius: _inputRadius, borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(borderRadius: _inputRadius, borderSide: const BorderSide(color: ColorManager.primaryBlue, width: 1.5)),
-        errorBorder: OutlineInputBorder(borderRadius: _inputRadius, borderSide: const BorderSide(color: ColorManager.errorColor)),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 18,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: _inputRadius,
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: _inputRadius,
+          borderSide: const BorderSide(
+            color: ColorManager.primaryBlue,
+            width: 1.5,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: _inputRadius,
+          borderSide: const BorderSide(color: ColorManager.errorColor),
+        ),
       ),
       cardTheme: CardThemeData(
         color: ColorManager.darkSurface,
@@ -73,7 +122,9 @@ class AppTheme {
           backgroundColor: Colors.transparent,
           elevation: 0,
           foregroundColor: ColorManager.primaryBlue,
-          textStyle: textTheme.labelLarge?.copyWith(color: ColorManager.secondaryButtonTextColor),
+          textStyle: textTheme.labelLarge?.copyWith(
+            color: ColorManager.secondaryButtonTextColor,
+          ),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -84,13 +135,16 @@ class AppTheme {
           minimumSize: const Size(double.infinity, 54),
           textStyle: textTheme.labelLarge,
         ),
-      )
+      ),
     );
   }
 
   // ------------------ Light Theme ------------------
   static ThemeData lightTheme(String languageCode) {
-    final textTheme = _buildTextTheme(_getFontFamily(languageCode), ColorManager.lightText);
+    final textTheme = _buildTextTheme(
+      _getFontFamily(languageCode),
+      ColorManager.lightText,
+    );
 
     return ThemeData(
       useMaterial3: true,
@@ -128,12 +182,32 @@ class AppTheme {
         labelStyle: textTheme.labelLarge,
         suffixIconColor: ColorManager.secondaryColor,
         prefixIconColor: ColorManager.secondaryColor,
-        hintStyle: textTheme.bodyMedium?.copyWith(color: ColorManager.lightSecondary),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-        border: OutlineInputBorder(borderRadius: _inputRadius, borderSide: const BorderSide(color: ColorManager.lightBorder)),
-        enabledBorder: OutlineInputBorder(borderRadius: _inputRadius, borderSide: const BorderSide(color: ColorManager.lightBorder)),
-        focusedBorder: OutlineInputBorder(borderRadius: _inputRadius, borderSide: const BorderSide(color: ColorManager.primaryBlue, width: 1.5)),
-        errorBorder: OutlineInputBorder(borderRadius: _inputRadius, borderSide: const BorderSide(color: ColorManager.errorColor)),
+        hintStyle: textTheme.bodyMedium?.copyWith(
+          color: ColorManager.lightSecondary,
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 18,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: _inputRadius,
+          borderSide: const BorderSide(color: ColorManager.lightBorder),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: _inputRadius,
+          borderSide: const BorderSide(color: ColorManager.lightBorder),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: _inputRadius,
+          borderSide: const BorderSide(
+            color: ColorManager.primaryBlue,
+            width: 1.5,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: _inputRadius,
+          borderSide: const BorderSide(color: ColorManager.errorColor),
+        ),
       ),
       cardTheme: CardThemeData(
         color: ColorManager.lightSurface,
@@ -145,17 +219,20 @@ class AppTheme {
           backgroundColor: Colors.transparent,
           elevation: 0,
           foregroundColor: ColorManager.primaryBlue,
-          textStyle: textTheme.labelLarge?.copyWith(color: ColorManager.secondaryButtonTextColor),),
-      ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: ColorManager.primaryBlue,
-            foregroundColor: ColorManager.white,
-            shape: const StadiumBorder(),
-            minimumSize: const Size(double.infinity, 54),
-            textStyle: textTheme.labelLarge,
+          textStyle: textTheme.labelLarge?.copyWith(
+            color: ColorManager.secondaryButtonTextColor,
           ),
-        )
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: ColorManager.primaryBlue,
+          foregroundColor: ColorManager.white,
+          shape: const StadiumBorder(),
+          minimumSize: const Size(double.infinity, 54),
+          textStyle: textTheme.labelLarge,
+        ),
+      ),
     );
   }
 }

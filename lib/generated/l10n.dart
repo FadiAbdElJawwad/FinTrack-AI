@@ -574,6 +574,381 @@ class S {
       args: [],
     );
   }
+
+  /// `Scan`
+  String get scan {
+    return Intl.message('Scan', name: 'scan', desc: '', args: []);
+  }
+
+  /// `Voice`
+  String get voice {
+    return Intl.message('Voice', name: 'voice', desc: '', args: []);
+  }
+
+  /// `Add`
+  String get add {
+    return Intl.message('Add', name: 'add', desc: '', args: []);
+  }
+
+  /// `Manual`
+  String get manual {
+    return Intl.message('Manual', name: 'manual', desc: '', args: []);
+  }
+
+  /// `Total Balance`
+  String get totalBalance {
+    return Intl.message(
+      'Total Balance',
+      name: 'totalBalance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recent Transactions`
+  String get recentTransactions {
+    return Intl.message(
+      'Recent Transactions',
+      name: 'recentTransactions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transactions`
+  String get transactions {
+    return Intl.message(
+      'Transactions',
+      name: 'transactions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `See All`
+  String get seeAll {
+    return Intl.message('See All', name: 'seeAll', desc: '', args: []);
+  }
+
+  /// `No transactions found.`
+  String get emptyTransactions {
+    return Intl.message(
+      'No transactions found.',
+      name: 'emptyTransactions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Good morning`
+  String get goodMorning {
+    return Intl.message(
+      'Good morning',
+      name: 'goodMorning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Good afternoon`
+  String get goodAfternoon {
+    return Intl.message(
+      'Good afternoon',
+      name: 'goodAfternoon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Good evening`
+  String get goodEvening {
+    return Intl.message(
+      'Good evening',
+      name: 'goodEvening',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Income`
+  String get totalIncome {
+    return Intl.message(
+      'Total Income',
+      name: 'totalIncome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Expense`
+  String get totalExpense {
+    return Intl.message(
+      'Total Expense',
+      name: 'totalExpense',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SELECT WALLET`
+  String get selectWallet {
+    return Intl.message(
+      'SELECT WALLET',
+      name: 'selectWallet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `CATEGORY`
+  String get category {
+    return Intl.message('CATEGORY', name: 'category', desc: '', args: []);
+  }
+
+  /// `Save Transaction`
+  String get saveTransaction {
+    return Intl.message(
+      'Save Transaction',
+      name: 'saveTransaction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `DATE`
+  String get date {
+    return Intl.message('DATE', name: 'date', desc: '', args: []);
+  }
+
+  /// `NOTES`
+  String get notes {
+    return Intl.message('NOTES', name: 'notes', desc: '', args: []);
+  }
+
+  /// `Add note...`
+  String get addNote {
+    return Intl.message('Add note...', name: 'addNote', desc: '', args: []);
+  }
+
+  /// `Delete Transaction`
+  String get deleteTransaction {
+    return Intl.message(
+      'Delete Transaction',
+      name: 'deleteTransaction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this transaction?`
+  String get deleteConfirm {
+    return Intl.message(
+      'Are you sure you want to delete this transaction?',
+      name: 'deleteConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
+  }
+
+  /// `Edit Transaction`
+  String get editTransaction {
+    return Intl.message(
+      'Edit Transaction',
+      name: 'editTransaction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
+  }
+
+  /// `Status`
+  String get status {
+    return Intl.message('Status', name: 'status', desc: '', args: []);
+  }
+
+  /// `Completed`
+  String get completed {
+    return Intl.message('Completed', name: 'completed', desc: '', args: []);
+  }
+
+  /// `Payment Method`
+  String get paymentMethod {
+    return Intl.message(
+      'Payment Method',
+      name: 'paymentMethod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bank Account`
+  String get bankAccount {
+    return Intl.message(
+      'Bank Account',
+      name: 'bankAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type`
+  String get type {
+    return Intl.message('Type', name: 'type', desc: '', args: []);
+  }
+
+  /// `Transaction deleted.`
+  String get transactionDeleted {
+    return Intl.message(
+      'Transaction deleted.',
+      name: 'transactionDeleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction Details`
+  String get transactionDetails {
+    return Intl.message(
+      'Transaction Details',
+      name: 'transactionDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get all {
+    return Intl.message('All', name: 'all', desc: '', args: []);
+  }
+
+  /// `Income`
+  String get income {
+    return Intl.message('Income', name: 'income', desc: '', args: []);
+  }
+
+  /// `Expense`
+  String get expense {
+    return Intl.message('Expense', name: 'expense', desc: '', args: []);
+  }
+
+  /// `Date Range`
+  String get dateRange {
+    return Intl.message('Date Range', name: 'dateRange', desc: '', args: []);
+  }
+
+  /// `Select Date Range`
+  String get selectDateRange {
+    return Intl.message(
+      'Select Date Range',
+      name: 'selectDateRange',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `QUICK PRESETS`
+  String get quickPresets {
+    return Intl.message(
+      'QUICK PRESETS',
+      name: 'quickPresets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This Week`
+  String get thisWeek {
+    return Intl.message('This Week', name: 'thisWeek', desc: '', args: []);
+  }
+
+  /// `This Month`
+  String get thisMonth {
+    return Intl.message('This Month', name: 'thisMonth', desc: '', args: []);
+  }
+
+  /// `Last Month`
+  String get lastMonth {
+    return Intl.message('Last Month', name: 'lastMonth', desc: '', args: []);
+  }
+
+  /// `CUSTOM RANGE`
+  String get customRange {
+    return Intl.message(
+      'CUSTOM RANGE',
+      name: 'customRange',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Date`
+  String get startDate {
+    return Intl.message('Start Date', name: 'startDate', desc: '', args: []);
+  }
+
+  /// `End Date`
+  String get endDate {
+    return Intl.message('End Date', name: 'endDate', desc: '', args: []);
+  }
+
+  /// `Reset`
+  String get reset {
+    return Intl.message('Reset', name: 'reset', desc: '', args: []);
+  }
+
+  /// `Apply Filter`
+  String get applyFilter {
+    return Intl.message(
+      'Apply Filter',
+      name: 'applyFilter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date range cannot exceed one month`
+  String get rangeError {
+    return Intl.message(
+      'Date range cannot exceed one month',
+      name: 'rangeError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `+ More`
+  String get more {
+    return Intl.message('+ More', name: 'more', desc: '', args: []);
+  }
+
+  /// `Bank`
+  String get bank {
+    return Intl.message('Bank', name: 'bank', desc: '', args: []);
+  }
+
+  /// `Cash`
+  String get cash {
+    return Intl.message('Cash', name: 'cash', desc: '', args: []);
+  }
+
+  /// `PayPal`
+  String get paypal {
+    return Intl.message('PayPal', name: 'paypal', desc: '', args: []);
+  }
+
+  /// `Credit Card`
+  String get creditCard {
+    return Intl.message('Credit Card', name: 'creditCard', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

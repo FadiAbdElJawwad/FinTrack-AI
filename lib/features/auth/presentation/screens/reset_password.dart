@@ -21,10 +21,15 @@ class ResetPassword extends HookConsumerWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final authState = ref.watch(resetPasswordControllerProvider);
 
-    ref.listen<AsyncValue<void>>(resetPasswordControllerProvider, (previous, next) {
+    ref.listen<AsyncValue<void>>(resetPasswordControllerProvider, (
+      previous,
+      next,
+    ) {
       next.whenOrNull(
         error: (error, stack) {
-          final errorMessage = error is AppAuthException ? error.getLocalizedMessage(context) : error.toString();
+          final errorMessage = error is AppAuthException
+              ? error.getLocalizedMessage(context)
+              : error.toString();
           context.showErrorSnackBar(errorMessage);
         },
         data: (_) {
@@ -34,7 +39,7 @@ class ResetPassword extends HookConsumerWidget {
               if (context.canPop()) {
                 context.pop();
               } else {
-                context.goNamed('login');
+                context.goNamed('homeScreen');
               }
             }
           }
@@ -56,15 +61,25 @@ class ResetPassword extends HookConsumerWidget {
                     context.addVerticalSpace(64),
                     Image.asset(ImagesManager.finTrackAILogo),
                     context.addVerticalSpace(24),
-                    Text(context.loc.resetPassword, style: context.headlineMedium),
+                    Text(
+                      context.loc.resetPassword,
+                      style: context.headlineMedium,
+                    ),
                     context.addVerticalSpace(8),
-                    Text(context.loc.resetPasswordBody, style: context.bodyMedium, textAlign: TextAlign.center),
+                    Text(
+                      context.loc.resetPasswordBody,
+                      style: context.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
                     context.addVerticalSpace(32),
                     TextFormField(
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.email, color: ColorManager.secondaryColor),
+                        prefixIcon: const Icon(
+                          Icons.email,
+                          color: ColorManager.secondaryColor,
+                        ),
                         labelText: context.loc.email,
                       ),
                       validator: (value) => value?.validateEmail(context),
@@ -78,7 +93,12 @@ class ResetPassword extends HookConsumerWidget {
                             : () {
                                 if (formKey.currentState!.validate()) {
                                   FocusScope.of(context).unfocus();
-                                  ref.read(resetPasswordControllerProvider.notifier).resetPassword(
+                                  ref
+                                      .read(
+                                        resetPasswordControllerProvider
+                                            .notifier,
+                                      )
+                                      .resetPassword(
                                         emailController.text.trim(),
                                       );
                                 }
@@ -88,7 +108,9 @@ class ResetPassword extends HookConsumerWidget {
                     ),
                     context.addVerticalSpace(24),
                     TextButton(
-                      onPressed: authState.isLoading ? null : () => context.pop(),
+                      onPressed: authState.isLoading
+                          ? null
+                          : () => context.pop(),
                       child: Text(context.loc.backToLogin),
                     ),
                   ],

@@ -4,7 +4,8 @@ import '../../data/repositories/auth_repository.dart';
 
 final resetPasswordControllerProvider =
     AutoDisposeAsyncNotifierProvider<ResetPasswordController, void>(
-        ResetPasswordController.new);
+      ResetPasswordController.new,
+    );
 
 class ResetPasswordController extends AutoDisposeAsyncNotifier<void> {
   @override

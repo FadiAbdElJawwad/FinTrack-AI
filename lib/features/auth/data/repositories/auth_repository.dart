@@ -8,7 +8,7 @@ import '../../../../core/error/auth_exception.dart';
 import '../../../../core/services/biometric_service.dart';
 import '../../../../core/services/secure_storage_service.dart';
 
-  final authRepositoryProvider = Provider<AuthRepository>((ref) {
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepository(
     FirebaseAuth.instance,
     FirebaseFirestore.instance,
@@ -49,7 +49,8 @@ class AuthRepository {
     try {
       final googleSignIn = GoogleSignIn.instance;
       await googleSignIn.initialize(
-        serverClientId: '668771022671-ji2qg0jf204t0f5agoigh07b39cgm60d.apps.googleusercontent.com',
+        serverClientId:
+            '668771022671-ji2qg0jf204t0f5agoigh07b39cgm60d.apps.googleusercontent.com',
       );
 
       final GoogleSignInAccount googleUser = await googleSignIn.authenticate();
@@ -58,7 +59,9 @@ class AuthRepository {
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      final UserCredential userCredential = await _auth.signInWithCredential(
+        credential,
+      );
 
       if (userCredential.additionalUserInfo?.isNewUser ?? true) {
         await _firestore.collection('users').doc(userCredential.user!.uid).set({
@@ -73,17 +76,19 @@ class AuthRepository {
       }
 
       return userCredential;
-
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     } on PlatformException catch (e) {
       if (e.code == 'network_error') {
         throw AppAuthException(AuthErrorType.networkRequestFailed);
       }
-      throw AppAuthException(AuthErrorType.unknown, message: '${e.code}: ${e.message}');
+      throw AppAuthException(
+        AuthErrorType.unknown,
+        message: '${e.code}: ${e.message}',
+      );
     } catch (e) {
-
-      if (e.toString().contains('canceled') || e.toString().contains('Canceled')) {
+      if (e.toString().contains('canceled') ||
+          e.toString().contains('Canceled')) {
         throw AppAuthException(AuthErrorType.googleSignInCanceled);
       }
 
@@ -115,7 +120,11 @@ class AuthRepository {
     }
   }
 
-  Future<UserCredential> signUp(String fullName, String email, String password) async {
+  Future<UserCredential> signUp(
+    String fullName,
+    String email,
+    String password,
+  ) async {
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,

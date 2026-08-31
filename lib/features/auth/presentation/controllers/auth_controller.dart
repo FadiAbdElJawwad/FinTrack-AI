@@ -5,12 +5,17 @@ import '../../../../core/services/biometric_service.dart';
 import '../../../../core/services/secure_storage_service.dart';
 import '../../data/repositories/auth_repository.dart';
 
-final authControllerProvider = StateNotifierProvider.autoDispose<AuthController, AsyncValue<void>>((ref) {
-  return AuthController(
-    ref.watch(authRepositoryProvider),
-    ref,
-  );
+final hasCredentialsProvider = FutureProvider.autoDispose<bool>((ref) async {
+  final credentials = await ref
+      .watch(secureStorageServiceProvider)
+      .getCredentials();
+  return credentials != null;
 });
+
+final authControllerProvider =
+    StateNotifierProvider.autoDispose<AuthController, AsyncValue<void>>((ref) {
+      return AuthController(ref.watch(authRepositoryProvider), ref);
+    });
 
 class AuthController extends StateNotifier<AsyncValue<void>> {
   final AuthRepository _repository;
@@ -18,14 +23,24 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
 
   AuthController(this._repository, this._ref) : super(const AsyncData(null));
 
-  Future<void> login(String email, String password, {required bool isBiometricOptIn}) async {
+  Future<void> login(
+    String email,
+    String password, {
+    required bool isBiometricOptIn,
+  }) async {
     state = const AsyncLoading();
-    final result = await AsyncValue.guard(() => _repository.signIn(email, password));
-    
+    final result = await AsyncValue.guard(
+      () => _repository.signIn(email, password),
+    );
+
     if (!result.hasError) {
-      await _handlePostAuth(isBiometricOptIn: isBiometricOptIn, email: email, password: password);
+      await _handlePostAuth(
+        isBiometricOptIn: isBiometricOptIn,
+        email: email,
+        password: password,
+      );
     }
-    
+
     state = result;
   }
 
@@ -34,25 +49,39 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
     state = await AsyncValue.guard(() => _repository.biometricSignIn());
   }
 
-  Future<void> register(String fullName, String email, String password, {required bool isBiometricOptIn}) async {
+  Future<void> register(
+    String fullName,
+    String email,
+    String password, {
+    required bool isBiometricOptIn,
+  }) async {
     state = const AsyncLoading();
-    final result = await AsyncValue.guard(() => _repository.signUp(fullName, email, password));
-    
+    final result = await AsyncValue.guard(
+      () => _repository.signUp(fullName, email, password),
+    );
+
     if (!result.hasError) {
-      await _handlePostAuth(isBiometricOptIn: isBiometricOptIn, email: email, password: password);
+      await _handlePostAuth(
+        isBiometricOptIn: isBiometricOptIn,
+        email: email,
+        password: password,
+      );
     }
-    
+
     state = result;
   }
 
   Future<void> loginWithGoogle({required bool isGoogleAuthTriggered}) async {
     state = const AsyncLoading();
     final result = await AsyncValue.guard(() => _repository.signInWithGoogle());
-    
+
     if (!result.hasError) {
-      await _handlePostAuth(isBiometricOptIn: false, isGoogleAuthTriggered: isGoogleAuthTriggered);
+      await _handlePostAuth(
+        isBiometricOptIn: false,
+        isGoogleAuthTriggered: isGoogleAuthTriggered,
+      );
     }
-    
+
     state = result;
   }
 
@@ -69,8 +98,13 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
       final authenticated = await biometricService.authenticate();
       await prefs.setBool(SharedPrefsKeys.isBiometricEnabledKey, authenticated);
 
-      if (authenticated && isBiometricOptIn && email != null && password != null) {
-        await _ref.read(secureStorageServiceProvider).saveCredentials(email, password);
+      if (authenticated &&
+          isBiometricOptIn &&
+          email != null &&
+          password != null) {
+        await _ref
+            .read(secureStorageServiceProvider)
+            .saveCredentials(email, password);
       }
     } else {
       await prefs.setBool(SharedPrefsKeys.isBiometricEnabledKey, false);

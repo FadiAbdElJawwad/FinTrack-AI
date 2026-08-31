@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'shared_prefs_provider.dart';
 
-final localeProvider = NotifierProvider<LocaleNotifier, Locale>(LocaleNotifier.new);
+final localeProvider = NotifierProvider<LocaleNotifier, Locale>(
+  LocaleNotifier.new,
+);
 
 class LocaleNotifier extends Notifier<Locale> {
   static const _key = 'locale_code';

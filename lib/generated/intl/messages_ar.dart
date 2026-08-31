@@ -22,23 +22,43 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "add": MessageLookupByLibrary.simpleMessage("إضافة"),
+    "addNote": MessageLookupByLibrary.simpleMessage("أضف ملاحظة..."),
+    "all": MessageLookupByLibrary.simpleMessage("الكل"),
     "appTitle": MessageLookupByLibrary.simpleMessage("FinTrack AI"),
+    "applyFilter": MessageLookupByLibrary.simpleMessage("تطبيق الفلتر"),
     "backToLogin": MessageLookupByLibrary.simpleMessage(
       "العودة إلى تسجيل الدخول",
     ),
+    "bank": MessageLookupByLibrary.simpleMessage("حساب بنكي"),
+    "bankAccount": MessageLookupByLibrary.simpleMessage("حساب بنكي"),
     "biometricDenied": MessageLookupByLibrary.simpleMessage(
       "تم رفض المصادقة الحيوية أو تم إلغاؤها.",
     ),
+    "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+    "cash": MessageLookupByLibrary.simpleMessage("نقدي"),
+    "category": MessageLookupByLibrary.simpleMessage("الفئة"),
+    "completed": MessageLookupByLibrary.simpleMessage("مكتمل"),
     "confirmPassword": MessageLookupByLibrary.simpleMessage(
       "تأكيد كلمة المرور",
     ),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
       "المتابعة باستخدام جوجل",
     ),
+    "creditCard": MessageLookupByLibrary.simpleMessage("بطاقة ائتمان"),
+    "customRange": MessageLookupByLibrary.simpleMessage("فترة مخصصة"),
     "databaseError": MessageLookupByLibrary.simpleMessage(
       "حدث خطأ في قاعدة البيانات.",
     ),
+    "date": MessageLookupByLibrary.simpleMessage("التاريخ"),
+    "dateRange": MessageLookupByLibrary.simpleMessage("الفترة الزمنية"),
+    "delete": MessageLookupByLibrary.simpleMessage("حذف"),
+    "deleteConfirm": MessageLookupByLibrary.simpleMessage(
+      "هل أنت متأكد من رغبتك في حذف هذه المعاملة؟",
+    ),
+    "deleteTransaction": MessageLookupByLibrary.simpleMessage("حذف المعاملة"),
     "dontHaveAccount": MessageLookupByLibrary.simpleMessage("ليس لديك حساب؟"),
+    "editTransaction": MessageLookupByLibrary.simpleMessage("تعديل المعاملة"),
     "email": MessageLookupByLibrary.simpleMessage("عنوان البريد الإلكتروني"),
     "emailAlreadyInUse": MessageLookupByLibrary.simpleMessage(
       "البريد الإلكتروني مسجل بالفعل.",
@@ -55,9 +75,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyPassword": MessageLookupByLibrary.simpleMessage(
       "لا يمكن أن تكون كلمة المرور فارغة",
     ),
+    "emptyTransactions": MessageLookupByLibrary.simpleMessage(
+      "لم يتم العثور على معاملات.",
+    ),
     "enableBiometricLogin": MessageLookupByLibrary.simpleMessage(
       "تمكين تسجيل الدخول عبر البيانات الحيوية",
     ),
+    "endDate": MessageLookupByLibrary.simpleMessage("تاريخ الانتهاء"),
+    "expense": MessageLookupByLibrary.simpleMessage("مصاريف"),
     "fieldCannotBeEmpty": MessageLookupByLibrary.simpleMessage(
       "لا يمكن أن يكون هذا الحقل فارغًا",
     ),
@@ -67,10 +92,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "forgotPassword": MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور"),
     "fullName": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
     "getStarted": MessageLookupByLibrary.simpleMessage("ابدأ"),
+    "goodAfternoon": MessageLookupByLibrary.simpleMessage("مساء الخير"),
+    "goodEvening": MessageLookupByLibrary.simpleMessage("مساء الخير"),
+    "goodMorning": MessageLookupByLibrary.simpleMessage("صباح الخير"),
     "googleSignInCanceled": MessageLookupByLibrary.simpleMessage(
       "تم إلغاء تسجيل الدخول باستخدام جوجل.",
     ),
     "haveAccount": MessageLookupByLibrary.simpleMessage("هل لديك حساب بالفعل؟"),
+    "income": MessageLookupByLibrary.simpleMessage("دخل"),
     "invalidCredential": MessageLookupByLibrary.simpleMessage(
       "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
     ),
@@ -83,11 +112,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidPassword": MessageLookupByLibrary.simpleMessage(
       "يجب أن تكون كلمة المرور على الأقل 6 أحرف",
     ),
+    "lastMonth": MessageLookupByLibrary.simpleMessage("الشهر الماضي"),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "loginBody": MessageLookupByLibrary.simpleMessage(
       "سجل الدخول لإدارة محفظتك",
     ),
     "loginTitle": MessageLookupByLibrary.simpleMessage("مرحبًا بعودتك"),
+    "manual": MessageLookupByLibrary.simpleMessage("يدوي"),
+    "more": MessageLookupByLibrary.simpleMessage("+ المزيد"),
     "networkRequestFailed": MessageLookupByLibrary.simpleMessage(
       "خطأ في الشبكة. يرجى التحقق من اتصالك.",
     ),
@@ -95,6 +127,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noSavedCredentials": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على بيانات اعتماد محفوظة. يرجى تسجيل الدخول باستخدام بريدك الإلكتروني أولاً.",
     ),
+    "notes": MessageLookupByLibrary.simpleMessage("ملاحظات"),
     "onboardingBody1": MessageLookupByLibrary.simpleMessage(
       "قم بتوصيل حساباتك ودع AI الخاص بنا يصنف كل معاملة تلقائيًا.",
     ),
@@ -117,6 +150,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
       "كلمات المرور لا تتطابق",
     ),
+    "paymentMethod": MessageLookupByLibrary.simpleMessage("طريقة الدفع"),
+    "paypal": MessageLookupByLibrary.simpleMessage("بايبال"),
+    "quickPresets": MessageLookupByLibrary.simpleMessage("اختصارات سريعة"),
+    "rangeError": MessageLookupByLibrary.simpleMessage(
+      "لا يمكن أن تتجاوز الفترة الزمنية شهرًا واحدًا",
+    ),
+    "recentTransactions": MessageLookupByLibrary.simpleMessage(
+      "المعاملات الأخيرة",
+    ),
+    "reset": MessageLookupByLibrary.simpleMessage("إعادة ضبط"),
     "resetPassword": MessageLookupByLibrary.simpleMessage(
       "إعادة تعيين كلمة المرور",
     ),
@@ -126,6 +169,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetPasswordSuccess": MessageLookupByLibrary.simpleMessage(
       "إذا كان هذا البريد مسجلاً، فقد تم إرسال رابط إعادة التعيين.",
     ),
+    "saveTransaction": MessageLookupByLibrary.simpleMessage("حفظ المعاملة"),
+    "scan": MessageLookupByLibrary.simpleMessage("مسح"),
+    "seeAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
+    "selectDateRange": MessageLookupByLibrary.simpleMessage(
+      "اختر الفترة الزمنية",
+    ),
+    "selectWallet": MessageLookupByLibrary.simpleMessage("اختر المحفظة"),
     "sendResetLink": MessageLookupByLibrary.simpleMessage("إرسال رابط الإعادة"),
     "signInWithAnotherAccount": MessageLookupByLibrary.simpleMessage(
       "تسجيل الدخول باستخدام حساب آخر",
@@ -135,9 +185,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "signupTitle": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
     "skip": MessageLookupByLibrary.simpleMessage("تخطي"),
     "splashBody": MessageLookupByLibrary.simpleMessage("تتبع مالي ذكي"),
+    "startDate": MessageLookupByLibrary.simpleMessage("تاريخ البدء"),
+    "status": MessageLookupByLibrary.simpleMessage("الحالة"),
+    "thisMonth": MessageLookupByLibrary.simpleMessage("هذا الشهر"),
+    "thisWeek": MessageLookupByLibrary.simpleMessage("هذا الأسبوع"),
     "tooManyRequests": MessageLookupByLibrary.simpleMessage(
       "محاولات كثيرة جدًا. يرجى المحاولة لاحقًا.",
     ),
+    "totalBalance": MessageLookupByLibrary.simpleMessage("إجمالي الرصيد"),
+    "totalExpense": MessageLookupByLibrary.simpleMessage("إجمالي المصاريف"),
+    "totalIncome": MessageLookupByLibrary.simpleMessage("إجمالي الدخل"),
+    "transactionDeleted": MessageLookupByLibrary.simpleMessage(
+      "تم حذف المعاملة.",
+    ),
+    "transactionDetails": MessageLookupByLibrary.simpleMessage(
+      "تفاصيل المعاملة",
+    ),
+    "transactions": MessageLookupByLibrary.simpleMessage("المعاملات"),
+    "type": MessageLookupByLibrary.simpleMessage("النوع"),
     "unknownError": MessageLookupByLibrary.simpleMessage("حدث خطأ غير متوقع."),
     "unlock": MessageLookupByLibrary.simpleMessage("إلغاء القفل"),
     "userDisabled": MessageLookupByLibrary.simpleMessage(
@@ -146,6 +211,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "userNotFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على مستخدم بهذا البريد الإلكتروني.",
     ),
+    "voice": MessageLookupByLibrary.simpleMessage("صوت"),
     "weakPasswordAuth": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور ضعيفة جدًا.",
     ),

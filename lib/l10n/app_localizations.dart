@@ -445,6 +445,318 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Google Sign-In was canceled.'**
   String get googleSignInCanceled;
+
+  /// No description provided for @scan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan'**
+  String get scan;
+
+  /// No description provided for @voice.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice'**
+  String get voice;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @manual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual'**
+  String get manual;
+
+  /// No description provided for @totalBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Balance'**
+  String get totalBalance;
+
+  /// No description provided for @recentTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Transactions'**
+  String get recentTransactions;
+
+  /// No description provided for @transactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get transactions;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See All'**
+  String get seeAll;
+
+  /// No description provided for @emptyTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions found.'**
+  String get emptyTransactions;
+
+  /// No description provided for @goodMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get goodMorning;
+
+  /// No description provided for @goodAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get goodAfternoon;
+
+  /// No description provided for @goodEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get goodEvening;
+
+  /// No description provided for @totalIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Income'**
+  String get totalIncome;
+
+  /// No description provided for @totalExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Expense'**
+  String get totalExpense;
+
+  /// No description provided for @selectWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'SELECT WALLET'**
+  String get selectWallet;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'CATEGORY'**
+  String get category;
+
+  /// No description provided for @saveTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Transaction'**
+  String get saveTransaction;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'DATE'**
+  String get date;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'NOTES'**
+  String get notes;
+
+  /// No description provided for @addNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add note...'**
+  String get addNote;
+
+  /// No description provided for @deleteTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Transaction'**
+  String get deleteTransaction;
+
+  /// No description provided for @deleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this transaction?'**
+  String get deleteConfirm;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @editTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Transaction'**
+  String get editTransaction;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @paymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get paymentMethod;
+
+  /// No description provided for @bankAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Account'**
+  String get bankAccount;
+
+  /// No description provided for @type.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get type;
+
+  /// No description provided for @transactionDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction deleted.'**
+  String get transactionDeleted;
+
+  /// No description provided for @transactionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Details'**
+  String get transactionDetails;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @income.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get income;
+
+  /// No description provided for @expense.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense'**
+  String get expense;
+
+  /// No description provided for @dateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Date Range'**
+  String get dateRange;
+
+  /// No description provided for @selectDateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Date Range'**
+  String get selectDateRange;
+
+  /// No description provided for @quickPresets.
+  ///
+  /// In en, this message translates to:
+  /// **'QUICK PRESETS'**
+  String get quickPresets;
+
+  /// No description provided for @thisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get thisWeek;
+
+  /// No description provided for @thisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This Month'**
+  String get thisMonth;
+
+  /// No description provided for @lastMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Month'**
+  String get lastMonth;
+
+  /// No description provided for @customRange.
+  ///
+  /// In en, this message translates to:
+  /// **'CUSTOM RANGE'**
+  String get customRange;
+
+  /// No description provided for @startDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date'**
+  String get startDate;
+
+  /// No description provided for @endDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End Date'**
+  String get endDate;
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// No description provided for @applyFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filter'**
+  String get applyFilter;
+
+  /// No description provided for @rangeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Date range cannot exceed one month'**
+  String get rangeError;
+
+  /// No description provided for @more.
+  ///
+  /// In en, this message translates to:
+  /// **'+ More'**
+  String get more;
+
+  /// No description provided for @bank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get bank;
+
+  /// No description provided for @cash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get cash;
+
+  /// No description provided for @paypal.
+  ///
+  /// In en, this message translates to:
+  /// **'PayPal'**
+  String get paypal;
+
+  /// No description provided for @creditCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit Card'**
+  String get creditCard;
 }
 
 class _AppLocalizationsDelegate
