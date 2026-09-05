@@ -715,6 +715,16 @@ class S {
     );
   }
 
+  /// `Add Transaction`
+  String get addTransaction {
+    return Intl.message(
+      'Add Transaction',
+      name: 'addTransaction',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `DATE`
   String get date {
     return Intl.message('DATE', name: 'date', desc: '', args: []);

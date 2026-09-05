@@ -548,6 +548,12 @@ abstract class AppLocalizations {
   /// **'Save Transaction'**
   String get saveTransaction;
 
+  /// No description provided for @addTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Transaction'**
+  String get addTransaction;
+
   /// No description provided for @date.
   ///
   /// In en, this message translates to:

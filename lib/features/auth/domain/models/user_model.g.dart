@@ -6,18 +6,17 @@ part of 'user_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
-    _$UserModelImpl(
-      uid: json['uid'] as String,
-      email: json['email'] as String,
-      fullName: json['fullName'] as String,
-      photoUrl: json['photoUrl'] as String?,
-      totalBalance: (json['totalBalance'] as num?)?.toDouble() ?? 0.0,
-      baseCurrency: json['baseCurrency'] as String? ?? 'USD',
-      createdAt: const TimestampConverter().fromJson(json['createdAt']),
-    );
+_UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
+  uid: json['uid'] as String,
+  email: json['email'] as String,
+  fullName: json['fullName'] as String,
+  photoUrl: json['photoUrl'] as String?,
+  totalBalance: (json['totalBalance'] as num?)?.toDouble() ?? 0.0,
+  baseCurrency: json['baseCurrency'] as String? ?? 'USD',
+  createdAt: const TimestampConverter().fromJson(json['createdAt']),
+);
 
-Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
+Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'email': instance.email,

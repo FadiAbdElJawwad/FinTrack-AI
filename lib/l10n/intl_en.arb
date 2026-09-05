@@ -76,6 +76,7 @@
   "selectWallet": "SELECT WALLET",
   "category": "CATEGORY",
   "saveTransaction": "Save Transaction",
+  "addTransaction": "Add Transaction",
   "date": "DATE",
   "notes": "NOTES",
   "addNote": "Add note...",

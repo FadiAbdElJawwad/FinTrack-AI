@@ -6,27 +6,25 @@ part of 'transaction_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TransactionModelImpl _$$TransactionModelImplFromJson(
-  Map<String, dynamic> json,
-) => _$TransactionModelImpl(
-  id: json['id'] as String?,
-  amount: (json['amount'] as num).toDouble(),
-  type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
-  category: $enumDecode(_$TransactionCategoryEnumMap, json['category']),
-  title: json['title'] as String,
-  date: DateTime.parse(json['date'] as String),
-);
+_TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
+    _TransactionModel(
+      id: json['id'] as String?,
+      amount: (json['amount'] as num).toDouble(),
+      type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
+      category: $enumDecode(_$TransactionCategoryEnumMap, json['category']),
+      title: json['title'] as String,
+      date: DateTime.parse(json['date'] as String),
+    );
 
-Map<String, dynamic> _$$TransactionModelImplToJson(
-  _$TransactionModelImpl instance,
-) => <String, dynamic>{
-  'id': instance.id,
-  'amount': instance.amount,
-  'type': _$TransactionTypeEnumMap[instance.type]!,
-  'category': _$TransactionCategoryEnumMap[instance.category]!,
-  'title': instance.title,
-  'date': instance.date.toIso8601String(),
-};
+Map<String, dynamic> _$TransactionModelToJson(_TransactionModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'amount': instance.amount,
+      'type': _$TransactionTypeEnumMap[instance.type]!,
+      'category': _$TransactionCategoryEnumMap[instance.category]!,
+      'title': instance.title,
+      'date': instance.date.toIso8601String(),
+    };
 
 const _$TransactionTypeEnumMap = {
   TransactionType.income: 'income',

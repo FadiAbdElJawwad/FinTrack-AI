@@ -8,8 +8,8 @@ import '../repositories/transaction_repository.dart';
 
 final transactionRepositoryProvider = Provider<TransactionRepository>((ref) {
   return FirestoreTransactionRepository(
-    firestore: FirebaseFirestore.instance,
-    auth: FirebaseAuth.instance,
+    FirebaseFirestore.instance,
+    FirebaseAuth.instance,
   );
 });
 

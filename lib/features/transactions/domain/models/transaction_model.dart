@@ -16,7 +16,7 @@ enum TransactionCategory {
 }
 
 @freezed
-class TransactionModel with _$TransactionModel {
+abstract class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
     String? id,
     required double amount,
@@ -25,6 +25,8 @@ class TransactionModel with _$TransactionModel {
     required String title,
     @TimestampConverter() required DateTime date,
   }) = _TransactionModel;
+
+  const TransactionModel._();
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>
       _$TransactionModelFromJson(json);

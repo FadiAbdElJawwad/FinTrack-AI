@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.12.2
+  sdk: '>=3.13.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -24,19 +24,22 @@ dependencies:
   local_auth: ^3.0.2
   google_sign_in: ^7.2.0
   flutter_svg: ^2.3.0
-  freezed_annotation: ^2.4.4
-  json_annotation: ^4.9.0
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.12.0
   shimmer: ^4.0.0
   cloud_firestore: ^6.9.0
   firebase_auth: ^6.6.1
+  share_plus: ^13.3.0
+  path_provider: ^2.1.6
+  cross_file: ^0.3.5+5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  build_runner: ^2.4.13
-  freezed: ^2.5.8
-  json_serializable: ^6.9.5
+  build_runner: ^2.16.1
+  freezed: ^4.0.1
+  json_serializable: ^6.14.1
   flutter_launcher_icons: ^0.14.4
 
 flutter:
@@ -51,7 +54,6 @@ flutter_intl:
 
 flutter_native_splash:
   color: "#F8FAFC"
-
   color_dark: "#0F172A"
 
   android_12:

@@ -13,16 +13,28 @@ import 'transaction_type_toggle.dart';
 import 'wallet_selector.dart';
 
 class AddTransactionBottomSheet extends HookConsumerWidget {
-  const AddTransactionBottomSheet({super.key});
+  final TransactionModel? existingTransaction;
+
+  const AddTransactionBottomSheet({super.key, this.existingTransaction});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedType = useState(TransactionType.expense);
-    final selectedCategory = useState<TransactionCategory?>(null);
-    final selectedWallet = useState(context.loc.bank);
-    final selectedDate = useState(DateTime.now());
-    final amountController = useTextEditingController(text: '');
-    final notesController = useTextEditingController();
+    final selectedType = useState(
+      existingTransaction?.type ?? TransactionType.expense,
+    );
+    final selectedCategory = useState<TransactionCategory?>(
+      existingTransaction?.category,
+    );
+    final selectedWallet = useState(
+      existingTransaction == null ? context.loc.bank : context.loc.bank,
+    ); // Placeholder logic for wallet as it's not in model
+    final selectedDate = useState(existingTransaction?.date ?? DateTime.now());
+    final amountController = useTextEditingController(
+      text: existingTransaction?.amount.toString() ?? '',
+    );
+    final notesController = useTextEditingController(
+      text: existingTransaction?.title ?? '',
+    );
     final isLoading = useState(false);
 
     useValueListenable(amountController);
@@ -31,7 +43,7 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
       context.loc.bank,
       context.loc.cash,
       context.loc.paypal,
-      context.loc.creditCard
+      context.loc.creditCard,
     ];
     final categories = selectedType.value == TransactionType.expense
         ? [
@@ -53,6 +65,7 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
       isLoading.value = true;
       try {
         final transaction = TransactionModel(
+          id: existingTransaction?.id,
           amount: amount,
           type: selectedType.value,
           category: selectedCategory.value!,
@@ -62,9 +75,16 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
           date: selectedDate.value,
         );
 
-        await ref
-            .read(transactionRepositoryProvider)
-            .addTransaction(transaction);
+        if (existingTransaction == null) {
+          await ref
+              .read(transactionRepositoryProvider)
+              .addTransaction(transaction);
+        } else {
+          await ref
+              .read(transactionRepositoryProvider)
+              .updateTransaction(transaction);
+        }
+
         if (context.mounted) {
           Navigator.pop(context);
         }
@@ -180,7 +200,9 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
                             color: ColorManager.white,
                           )
                         : Text(
-                            context.loc.saveTransaction,
+                            existingTransaction == null
+                                ? context.loc.saveTransaction
+                                : context.loc.editTransaction,
                             style: context.labelLarge.copyWith(
                               color: isFormValid
                                   ? ColorManager.white

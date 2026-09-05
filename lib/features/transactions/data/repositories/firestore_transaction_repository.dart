@@ -7,11 +7,7 @@ class FirestoreTransactionRepository implements TransactionRepository {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
 
-  FirestoreTransactionRepository({
-    required FirebaseFirestore firestore,
-    required FirebaseAuth auth,
-  })  : _firestore = firestore,
-        _auth = auth;
+  FirestoreTransactionRepository(this._firestore, this._auth);
 
   String get _userId {
     final user = _auth.currentUser;
@@ -36,6 +32,22 @@ class FirestoreTransactionRepository implements TransactionRepository {
       throw Exception('Firestore error while adding transaction: ${e.message}');
     } catch (e) {
       throw Exception('Unexpected error while adding transaction: $e');
+    }
+  }
+
+  @override
+  Future<void> updateTransaction(TransactionModel transaction) async {
+    try {
+      if (transaction.id == null) {
+        throw Exception('Transaction ID is required for updates.');
+      }
+      await _transactionsDb.doc(transaction.id).update(transaction.toJson());
+    } on FirebaseException catch (e) {
+      throw Exception(
+        'Firestore error while updating transaction: ${e.message}',
+      );
+    } catch (e) {
+      throw Exception('Unexpected error while updating transaction: $e');
     }
   }
 
