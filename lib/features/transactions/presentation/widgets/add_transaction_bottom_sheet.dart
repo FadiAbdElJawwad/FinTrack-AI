@@ -4,8 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
-import '../../data/providers/transaction_providers.dart';
+import '../../../../core/widgets/loading_overlay.dart';
 import '../../domain/models/transaction_model.dart';
+import '../state/transaction_controller.dart';
+import '../utils/transaction_category_extension.dart';
 import 'amount_input_area.dart';
 import 'category_selector.dart';
 import 'transaction_metadata_row.dart';
@@ -14,26 +16,35 @@ import 'wallet_selector.dart';
 
 class AddTransactionBottomSheet extends HookConsumerWidget {
   final TransactionModel? existingTransaction;
+  final TransactionDraft? prefillDraft;
 
-  const AddTransactionBottomSheet({super.key, this.existingTransaction});
+  const AddTransactionBottomSheet({
+    super.key,
+    this.existingTransaction,
+    this.prefillDraft,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedType = useState(
-      existingTransaction?.type ?? TransactionType.expense,
+      existingTransaction?.type ?? prefillDraft?.type ?? TransactionType.expense,
     );
     final selectedCategory = useState<TransactionCategory?>(
-      existingTransaction?.category,
+      existingTransaction?.category ?? prefillDraft?.category,
     );
     final selectedWallet = useState(
-      existingTransaction == null ? context.loc.bank : context.loc.bank,
-    ); // Placeholder logic for wallet as it's not in model
-    final selectedDate = useState(existingTransaction?.date ?? DateTime.now());
+      context.loc.bank,
+    );
+    final selectedDate = useState(
+      existingTransaction?.date ?? prefillDraft?.date ?? DateTime.now(),
+    );
     final amountController = useTextEditingController(
-      text: existingTransaction?.amount.toString() ?? '',
+      text: existingTransaction != null
+          ? existingTransaction!.amount.toString()
+          : (prefillDraft != null ? prefillDraft!.amount.toString() : ''),
     );
     final notesController = useTextEditingController(
-      text: existingTransaction?.title ?? '',
+      text: existingTransaction?.title ?? prefillDraft?.title ?? '',
     );
     final isLoading = useState(false);
 
@@ -45,15 +56,7 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
       context.loc.paypal,
       context.loc.creditCard,
     ];
-    final categories = selectedType.value == TransactionType.expense
-        ? [
-            TransactionCategory.food,
-            TransactionCategory.transport,
-            TransactionCategory.shopping,
-            TransactionCategory.entertainment,
-            TransactionCategory.other,
-          ]
-        : [TransactionCategory.salary, TransactionCategory.other];
+    final categories = categoriesForType(selectedType.value);
 
     final double amount = double.tryParse(amountController.text) ?? 0.0;
     final bool isFormValid =
@@ -64,24 +67,23 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
 
       isLoading.value = true;
       try {
-        final transaction = TransactionModel(
-          id: existingTransaction?.id,
+        final transaction = _buildTransactionFromForm(
+          existingTransaction: existingTransaction,
           amount: amount,
           type: selectedType.value,
           category: selectedCategory.value!,
-          title: notesController.text.isEmpty
-              ? selectedCategory.value!.name.toUpperCase()
-              : notesController.text,
+          notesText: notesController.text,
           date: selectedDate.value,
+          context: context,
         );
 
         if (existingTransaction == null) {
           await ref
-              .read(transactionRepositoryProvider)
+              .read(transactionControllerProvider.notifier)
               .addTransaction(transaction);
         } else {
           await ref
-              .read(transactionRepositoryProvider)
+              .read(transactionControllerProvider.notifier)
               .updateTransaction(transaction);
         }
 
@@ -100,9 +102,9 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
     }
 
     return Container(
-      decoration: const BoxDecoration(
-        color: ColorManager.darkBackground,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
       ),
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -119,7 +121,7 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
                     width: 40,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: ColorManager.white.withValues(alpha: 0.1),
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -187,7 +189,7 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
                     onPressed: isFormValid ? handleSave : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorManager.primaryBlue,
-                      disabledBackgroundColor: ColorManager.white.withValues(
+                      disabledBackgroundColor: Theme.of(context).colorScheme.onSurface.withValues(
                         alpha: 0.05,
                       ),
                       shape: RoundedRectangleBorder(
@@ -197,7 +199,7 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
                     ),
                     child: isLoading.value
                         ? const CircularProgressIndicator(
-                            color: ColorManager.white,
+                            color: Colors.white,
                           )
                         : Text(
                             existingTransaction == null
@@ -205,7 +207,7 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
                                 : context.loc.editTransaction,
                             style: context.labelLarge.copyWith(
                               color: isFormValid
-                                  ? ColorManager.white
+                                  ? Colors.white
                                   : ColorManager.secondaryColor,
                               fontWeight: FontWeight.bold,
                             ),
@@ -216,15 +218,28 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
               ],
             ).padSymmetric(20).padTop(16),
           ),
-          if (isLoading.value)
-            Positioned.fill(
-              child: Container(
-                color: Colors.black.withValues(alpha: 0.1),
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-            ),
+          if (isLoading.value) const LoadingOverlay(),
         ],
       ),
     );
   }
+}
+
+TransactionModel _buildTransactionFromForm({
+  required TransactionModel? existingTransaction,
+  required double amount,
+  required TransactionType type,
+  required TransactionCategory category,
+  required String notesText,
+  required DateTime date,
+  required BuildContext context,
+}) {
+  return TransactionModel(
+    id: existingTransaction?.id,
+    amount: amount,
+    type: type,
+    category: category,
+    title: notesText.isEmpty ? category.getLocalizedName(context) : notesText,
+    date: date,
+  );
 }

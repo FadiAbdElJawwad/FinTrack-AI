@@ -31,6 +31,8 @@ extension AuthExceptionExtension on AppAuthException {
         return context.loc.noSavedCredentials;
       case AuthErrorType.googleSignInCanceled:
         return context.loc.googleSignInCanceled;
+      case AuthErrorType.sessionExpired:
+        return context.loc.sessionExpired;
       case AuthErrorType.unknown:
         return context.loc.unknownError;
     }

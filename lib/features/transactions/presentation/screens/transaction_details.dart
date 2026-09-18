@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/text_style_extension.dart';
-import '../../data/providers/transaction_providers.dart';
+import '../state/transaction_controller.dart';
 import '../utils/transaction_ui_extension.dart';
 import '../widgets/add_transaction_bottom_sheet.dart';
 
@@ -68,7 +68,7 @@ class _TransactionDetailsState extends ConsumerState<TransactionDetails> {
       setState(() => _isLoading = true);
       try {
         await ref
-            .read(transactionRepositoryProvider)
+            .read(transactionControllerProvider.notifier)
             .deleteTransaction(widget.transactionId);
         if (mounted) {
           Navigator.pop(context);
@@ -87,7 +87,7 @@ class _TransactionDetailsState extends ConsumerState<TransactionDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final transactionsAsyncValue = ref.watch(transactionsStreamProvider);
+    final transactionsAsyncValue = ref.watch(transactionControllerProvider);
 
     return transactionsAsyncValue.when(
       data: (transactions) {

@@ -1,7 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../domain/models/transaction_model.dart';
-import 'transaction_repository.dart';
+import '../../domain/repositories/transaction_repository.dart';
+
+final transactionRepositoryProvider = Provider<TransactionRepository>((ref) {
+  return FirestoreTransactionRepository(
+    FirebaseFirestore.instance,
+    FirebaseAuth.instance,
+  );
+});
 
 class FirestoreTransactionRepository implements TransactionRepository {
   final FirebaseFirestore _firestore;

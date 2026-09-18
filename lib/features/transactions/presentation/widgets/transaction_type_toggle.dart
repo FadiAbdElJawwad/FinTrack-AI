@@ -21,7 +21,7 @@ class TransactionTypeToggle extends StatelessWidget {
       height: 48,
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: ColorManager.white.withValues(alpha: 0.05),
+        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -60,7 +60,7 @@ class _ToggleItem extends StatelessWidget {
         onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
-            color: isSelected ? ColorManager.darkSurface : Colors.transparent,
+            color: isSelected ? Theme.of(context).colorScheme.surfaceTint.withValues(alpha: 0.1) : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
           ),
           alignment: Alignment.center,
@@ -68,7 +68,7 @@ class _ToggleItem extends StatelessWidget {
             label,
             style: context.labelMedium.copyWith(
               color: isSelected
-                  ? ColorManager.white
+                  ? Theme.of(context).colorScheme.onSurface
                   : ColorManager.secondaryColor,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),

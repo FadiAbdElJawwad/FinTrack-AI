@@ -11,7 +11,7 @@ import '../../../../core/extension/string_validation.dart';
 import '../../../../core/extension/snackbar_extension.dart';
 import '../../../../core/error/auth_exception.dart';
 import '../../../../core/error/auth_exception_extension.dart';
-import '../controllers/auth_controller.dart';
+import '../state/auth_controller.dart';
 
 class SignUpScreen extends HookConsumerWidget {
   const SignUpScreen({super.key});

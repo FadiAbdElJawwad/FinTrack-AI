@@ -1,11 +1,12 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../../transactions/data/providers/transaction_providers.dart';
+import '../../../transactions/presentation/state/transaction_controller.dart';
+import '../../../transactions/domain/usecases/group_transactions_usecase.dart';
 import '../../../transactions/domain/models/transaction_model.dart';
 import '../states/dashboard_state.dart';
 
 final dashboardControllerProvider =
     Provider.autoDispose<AsyncValue<DashboardState>>((ref) {
-      final transactionsAsync = ref.watch(transactionsStreamProvider);
+      final transactionsAsync = ref.watch(transactionControllerProvider);
 
       return transactionsAsync.whenData((transactions) {
         double income = 0.0;

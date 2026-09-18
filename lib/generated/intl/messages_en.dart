@@ -25,6 +25,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "add": MessageLookupByLibrary.simpleMessage("Add"),
     "addNote": MessageLookupByLibrary.simpleMessage("Add note..."),
     "addTransaction": MessageLookupByLibrary.simpleMessage("Add Transaction"),
+    "aiInvalidInput": MessageLookupByLibrary.simpleMessage(
+      "Couldn\'t understand that input. Try rephrasing.",
+    ),
+    "aiNetworkError": MessageLookupByLibrary.simpleMessage(
+      "Network error. Check your connection.",
+    ),
+    "aiSchemaValidationFailed": MessageLookupByLibrary.simpleMessage(
+      "Couldn\'t extract transaction details. Try again.",
+    ),
+    "aiServiceUnavailable": MessageLookupByLibrary.simpleMessage(
+      "AI service is temporarily unavailable.",
+    ),
+    "aiUnauthorized": MessageLookupByLibrary.simpleMessage(
+      "Unable to verify request. Please try again.",
+    ),
+    "aiUnknown": MessageLookupByLibrary.simpleMessage(
+      "Something went wrong. Please try again.",
+    ),
     "all": MessageLookupByLibrary.simpleMessage("All"),
     "appTitle": MessageLookupByLibrary.simpleMessage("FinTrack AI"),
     "applyFilter": MessageLookupByLibrary.simpleMessage("Apply Filter"),
@@ -36,6 +54,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "cash": MessageLookupByLibrary.simpleMessage("Cash"),
+    "catEntertainment": MessageLookupByLibrary.simpleMessage("Entertainment"),
+    "catFood": MessageLookupByLibrary.simpleMessage("Food"),
+    "catOther": MessageLookupByLibrary.simpleMessage("Other"),
+    "catSalary": MessageLookupByLibrary.simpleMessage("Salary"),
+    "catShopping": MessageLookupByLibrary.simpleMessage("Shopping"),
+    "catTransport": MessageLookupByLibrary.simpleMessage("Transport"),
     "category": MessageLookupByLibrary.simpleMessage("CATEGORY"),
     "completed": MessageLookupByLibrary.simpleMessage("Completed"),
     "confirmPassword": MessageLookupByLibrary.simpleMessage("Confirm Password"),
@@ -112,12 +136,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "Password must be at least 6 characters long",
     ),
     "lastMonth": MessageLookupByLibrary.simpleMessage("Last Month"),
+    "listeningStatus": MessageLookupByLibrary.simpleMessage("Listening..."),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "loginBody": MessageLookupByLibrary.simpleMessage(
       "Log in to manage your portfolio",
     ),
     "loginTitle": MessageLookupByLibrary.simpleMessage("Welcome Back"),
     "manual": MessageLookupByLibrary.simpleMessage("Manual"),
+    "micPermissionDenied": MessageLookupByLibrary.simpleMessage(
+      "Microphone permission is required to use Voice Entry.",
+    ),
     "more": MessageLookupByLibrary.simpleMessage("+ More"),
     "networkRequestFailed": MessageLookupByLibrary.simpleMessage(
       "Network error. Please check your connection.",
@@ -155,6 +183,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "paymentMethod": MessageLookupByLibrary.simpleMessage("Payment Method"),
     "paypal": MessageLookupByLibrary.simpleMessage("PayPal"),
+    "processingButton": MessageLookupByLibrary.simpleMessage("Processing..."),
+    "processingStatus": MessageLookupByLibrary.simpleMessage("Processing..."),
     "quickPresets": MessageLookupByLibrary.simpleMessage("QUICK PRESETS"),
     "rangeError": MessageLookupByLibrary.simpleMessage(
       "Date range cannot exceed one month",
@@ -178,6 +208,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "selectWallet": MessageLookupByLibrary.simpleMessage("SELECT WALLET"),
     "sendResetLink": MessageLookupByLibrary.simpleMessage("Send Reset Link"),
+    "sessionExpired": MessageLookupByLibrary.simpleMessage(
+      "Your session has expired. Please log in again.",
+    ),
     "signInWithAnotherAccount": MessageLookupByLibrary.simpleMessage(
       "Sign in with another account",
     ),
@@ -187,11 +220,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "signupTitle": MessageLookupByLibrary.simpleMessage("Create an Account"),
     "skip": MessageLookupByLibrary.simpleMessage("Skip"),
+    "speechTimeout": MessageLookupByLibrary.simpleMessage(
+      "No speech detected. Try again.",
+    ),
     "splashBody": MessageLookupByLibrary.simpleMessage(
       "Smart Financial Tracking",
     ),
     "startDate": MessageLookupByLibrary.simpleMessage("Start Date"),
     "status": MessageLookupByLibrary.simpleMessage("Status"),
+    "stopAndProcess": MessageLookupByLibrary.simpleMessage("Stop & Process"),
+    "tapToSpeak": MessageLookupByLibrary.simpleMessage("Tap to speak"),
     "thisMonth": MessageLookupByLibrary.simpleMessage("This Month"),
     "thisWeek": MessageLookupByLibrary.simpleMessage("This Week"),
     "tooManyRequests": MessageLookupByLibrary.simpleMessage(
@@ -207,6 +245,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Transaction Details",
     ),
     "transactions": MessageLookupByLibrary.simpleMessage("Transactions"),
+    "tryAgainButton": MessageLookupByLibrary.simpleMessage("Try Again"),
+    "tryAgainVoice": MessageLookupByLibrary.simpleMessage("Please try again."),
     "type": MessageLookupByLibrary.simpleMessage("Type"),
     "unknownError": MessageLookupByLibrary.simpleMessage(
       "An unexpected error occurred.",
@@ -219,6 +259,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "No user found with this email.",
     ),
     "voice": MessageLookupByLibrary.simpleMessage("Voice"),
+    "voiceEntryTitle": MessageLookupByLibrary.simpleMessage("Voice Entry"),
     "weakPasswordAuth": MessageLookupByLibrary.simpleMessage(
       "The password is too weak.",
     ),

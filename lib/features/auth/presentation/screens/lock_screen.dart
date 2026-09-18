@@ -8,6 +8,7 @@ import '../../../../core/constant/images_manager.dart';
 import '../../../../core/constant/shared_prefs_keys.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
+import '../../../../core/extension/snackbar_extension.dart';
 import '../../../../core/providers/shared_prefs_provider.dart';
 import '../../../../core/services/biometric_service.dart';
 
@@ -21,7 +22,13 @@ class LockScreen extends HookConsumerWidget {
     Future<void> handleUnlock() async {
       final success = await biometricService.authenticate();
       if (success && context.mounted) {
-        context.goNamed('homeScreen');
+        if (FirebaseAuth.instance.currentUser != null) {
+          context.goNamed('homeScreen');
+        } else {
+          // Session expired
+          context.showErrorSnackBar(context.loc.sessionExpired);
+          context.goNamed('login');
+        }
       }
     }
 

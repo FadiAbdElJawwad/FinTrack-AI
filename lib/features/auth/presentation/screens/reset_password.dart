@@ -10,7 +10,7 @@ import '../../../../core/extension/string_validation.dart';
 import '../../../../core/extension/snackbar_extension.dart';
 import '../../../../core/error/auth_exception.dart';
 import '../../../../core/error/auth_exception_extension.dart';
-import '../controllers/reset_password_controller.dart';
+import '../state/reset_password_controller.dart';
 
 class ResetPassword extends HookConsumerWidget {
   const ResetPassword({super.key});

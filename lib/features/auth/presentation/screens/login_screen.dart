@@ -11,7 +11,7 @@ import '../../../../core/extension/string_validation.dart';
 import '../../../../core/extension/snackbar_extension.dart';
 import '../../../../core/error/auth_exception.dart';
 import '../../../../core/error/auth_exception_extension.dart';
-import '../controllers/auth_controller.dart';
+import '../state/auth_controller.dart';
 
 class LoginScreen extends HookConsumerWidget {
   const LoginScreen({super.key});
@@ -23,7 +23,7 @@ class LoginScreen extends HookConsumerWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final authState = ref.watch(authControllerProvider);
     final obscurePassword = useState(true);
-    final hasSavedCredentials = ref.watch(hasCredentialsProvider);
+    final isBiometricAvailable = ref.watch(isBiometricAvailableProvider);
 
     ref.listen<AsyncValue<void>>(authControllerProvider, (previous, next) {
       next.whenOrNull(
@@ -117,7 +117,7 @@ class LoginScreen extends HookConsumerWidget {
                             child: Text(context.loc.login),
                           ),
                         ),
-                        if (hasSavedCredentials.value == true) ...[
+                        if (isBiometricAvailable == true) ...[
                           context.addHorizontalSpace(16),
                           IconButton.filled(
                             onPressed: authState.isLoading
@@ -126,7 +126,7 @@ class LoginScreen extends HookConsumerWidget {
                                     FocusScope.of(context).unfocus();
                                     ref
                                         .read(authControllerProvider.notifier)
-                                        .loginWithBiometrics();
+                                        .unlockWithBiometrics();
                                   },
                             icon: const Icon(
                               Icons.fingerprint,

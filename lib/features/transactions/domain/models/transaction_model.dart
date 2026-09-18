@@ -15,6 +15,39 @@ enum TransactionCategory {
   other,
 }
 
+List<TransactionCategory> categoriesForType(TransactionType type) {
+  if (type == TransactionType.expense) {
+    return [
+      TransactionCategory.food,
+      TransactionCategory.transport,
+      TransactionCategory.shopping,
+      TransactionCategory.entertainment,
+      TransactionCategory.other,
+    ];
+  } else {
+    return [
+      TransactionCategory.salary,
+      TransactionCategory.other,
+    ];
+  }
+}
+
+class TransactionDraft {
+  final double amount;
+  final String title;
+  final TransactionType type;
+  final TransactionCategory category;
+  final DateTime? date;
+
+  const TransactionDraft({
+    required this.amount,
+    required this.title,
+    required this.type,
+    required this.category,
+    this.date,
+  });
+}
+
 @freezed
 abstract class TransactionModel with _$TransactionModel {
   const factory TransactionModel({

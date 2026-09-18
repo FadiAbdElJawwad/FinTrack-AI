@@ -12,6 +12,7 @@ enum AuthErrorType {
   biometricDenied,
   noSavedCredentials,
   googleSignInCanceled,
+  sessionExpired,
   unknown,
 }
 

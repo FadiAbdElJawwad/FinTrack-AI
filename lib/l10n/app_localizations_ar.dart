@@ -348,4 +348,76 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get creditCard => 'بطاقة ائتمان';
+
+  @override
+  String get sessionExpired =>
+      'انتهت صلاحية جلستك. الرجاء تسجيل الدخول مرة أخرى.';
+
+  @override
+  String get aiUnauthorized => 'تعذر التحقق من الطلب. حاول مرة أخرى.';
+
+  @override
+  String get aiInvalidInput => 'تعذر فهم المُدخل. أعد الصياغة.';
+
+  @override
+  String get aiServiceUnavailable => 'خدمة الذكاء الاصطناعي غير متاحة مؤقتاً.';
+
+  @override
+  String get aiSchemaValidationFailed =>
+      'تعذر استخراج تفاصيل المعاملة. حاول مرة أخرى.';
+
+  @override
+  String get aiNetworkError => 'خطأ في الشبكة. تحقق من الاتصال.';
+
+  @override
+  String get aiUnknown => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
+  String get micPermissionDenied =>
+      'إذن الميكروفون مطلوب لاستخدام الإدخال الصوتي.';
+
+  @override
+  String get speechTimeout => 'لم يتم رصد أي صوت. حاول مرة أخرى.';
+
+  @override
+  String get voiceEntryTitle => 'إدخال صوتي';
+
+  @override
+  String get listeningStatus => 'جارِ الاستماع...';
+
+  @override
+  String get processingStatus => 'جارِ المعالجة...';
+
+  @override
+  String get tapToSpeak => 'اضغط للتحدث';
+
+  @override
+  String get tryAgainVoice => 'يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get tryAgainButton => 'حاول مرة أخرى';
+
+  @override
+  String get processingButton => 'جارِ المعالجة...';
+
+  @override
+  String get stopAndProcess => 'إيقاف ومعالجة';
+
+  @override
+  String get catFood => 'طعام';
+
+  @override
+  String get catTransport => 'مواصلات';
+
+  @override
+  String get catShopping => 'تسوق';
+
+  @override
+  String get catSalary => 'راتب';
+
+  @override
+  String get catEntertainment => 'ترفيه';
+
+  @override
+  String get catOther => 'أخرى';
 }

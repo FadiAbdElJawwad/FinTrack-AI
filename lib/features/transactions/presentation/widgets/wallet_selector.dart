@@ -29,10 +29,10 @@ class WalletSelector extends StatelessWidget {
               selected: isSelected,
               onSelected: (_) => onSelect(wallet),
               selectedColor: ColorManager.primaryBlue,
-              backgroundColor: ColorManager.white.withValues(alpha: 0.05),
+              backgroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
               labelStyle: context.labelSmall.copyWith(
                 color: isSelected
-                    ? ColorManager.white
+                    ? Colors.white
                     : ColorManager.secondaryColor,
               ),
               shape: RoundedRectangleBorder(

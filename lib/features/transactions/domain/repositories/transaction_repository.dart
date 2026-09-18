@@ -1,4 +1,4 @@
-import '../../domain/models/transaction_model.dart';
+import '../models/transaction_model.dart';
 
 abstract class TransactionRepository {
   Future<void> addTransaction(TransactionModel transaction);

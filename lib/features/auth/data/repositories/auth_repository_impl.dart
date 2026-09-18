@@ -5,31 +5,25 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/error/auth_exception.dart';
-import '../../../../core/services/biometric_service.dart';
-import '../../../../core/services/secure_storage_service.dart';
+import '../../domain/repositories/auth_repository.dart';
 
-final authRepositoryProvider = Provider<AuthRepository>((ref) {
+final authRepositoryProvider = Provider<AuthRepositoryInterface>((ref) {
   return AuthRepository(
     FirebaseAuth.instance,
     FirebaseFirestore.instance,
-    ref.watch(secureStorageServiceProvider),
-    ref.watch(biometricServiceProvider),
   );
 });
 
-class AuthRepository {
+class AuthRepository implements AuthRepositoryInterface {
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
-  final SecureStorageService _secureStorage;
-  final BiometricService _biometricService;
 
   AuthRepository(
     this._auth,
     this._firestore,
-    this._secureStorage,
-    this._biometricService,
   );
 
+  @override
   Future<UserCredential> signIn(String email, String password) async {
     try {
       return await _auth.signInWithEmailAndPassword(
@@ -45,6 +39,7 @@ class AuthRepository {
     }
   }
 
+  @override
   Future<UserCredential> signInWithGoogle() async {
     try {
       final googleSignIn = GoogleSignIn.instance;
@@ -97,29 +92,7 @@ class AuthRepository {
     }
   }
 
-  Future<UserCredential> biometricSignIn() async {
-    final authenticated = await _biometricService.authenticate();
-    if (!authenticated) {
-      throw AppAuthException(AuthErrorType.biometricDenied);
-    }
-
-    final credentials = await _secureStorage.getCredentials();
-    if (credentials == null) {
-      throw AppAuthException(AuthErrorType.noSavedCredentials);
-    }
-
-    try {
-      return await _auth.signInWithEmailAndPassword(
-        email: credentials['email']!,
-        password: credentials['password']!,
-      );
-    } on FirebaseAuthException catch (e) {
-      throw _handleAuthException(e);
-    } catch (e) {
-      throw AppAuthException(AuthErrorType.unknown, message: e.toString());
-    }
-  }
-
+  @override
   Future<UserCredential> signUp(
     String fullName,
     String email,
@@ -150,6 +123,7 @@ class AuthRepository {
     }
   }
 
+  @override
   Future<void> resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);

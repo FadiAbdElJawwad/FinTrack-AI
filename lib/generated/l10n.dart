@@ -959,6 +959,206 @@ class S {
   String get creditCard {
     return Intl.message('Credit Card', name: 'creditCard', desc: '', args: []);
   }
+
+  /// `Your session has expired. Please log in again.`
+  String get sessionExpired {
+    return Intl.message(
+      'Your session has expired. Please log in again.',
+      name: 'sessionExpired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unable to verify request. Please try again.`
+  String get aiUnauthorized {
+    return Intl.message(
+      'Unable to verify request. Please try again.',
+      name: 'aiUnauthorized',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Couldn't understand that input. Try rephrasing.`
+  String get aiInvalidInput {
+    return Intl.message(
+      'Couldn\'t understand that input. Try rephrasing.',
+      name: 'aiInvalidInput',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `AI service is temporarily unavailable.`
+  String get aiServiceUnavailable {
+    return Intl.message(
+      'AI service is temporarily unavailable.',
+      name: 'aiServiceUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Couldn't extract transaction details. Try again.`
+  String get aiSchemaValidationFailed {
+    return Intl.message(
+      'Couldn\'t extract transaction details. Try again.',
+      name: 'aiSchemaValidationFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Network error. Check your connection.`
+  String get aiNetworkError {
+    return Intl.message(
+      'Network error. Check your connection.',
+      name: 'aiNetworkError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Something went wrong. Please try again.`
+  String get aiUnknown {
+    return Intl.message(
+      'Something went wrong. Please try again.',
+      name: 'aiUnknown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Microphone permission is required to use Voice Entry.`
+  String get micPermissionDenied {
+    return Intl.message(
+      'Microphone permission is required to use Voice Entry.',
+      name: 'micPermissionDenied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No speech detected. Try again.`
+  String get speechTimeout {
+    return Intl.message(
+      'No speech detected. Try again.',
+      name: 'speechTimeout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Voice Entry`
+  String get voiceEntryTitle {
+    return Intl.message(
+      'Voice Entry',
+      name: 'voiceEntryTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Listening...`
+  String get listeningStatus {
+    return Intl.message(
+      'Listening...',
+      name: 'listeningStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Processing...`
+  String get processingStatus {
+    return Intl.message(
+      'Processing...',
+      name: 'processingStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap to speak`
+  String get tapToSpeak {
+    return Intl.message('Tap to speak', name: 'tapToSpeak', desc: '', args: []);
+  }
+
+  /// `Please try again.`
+  String get tryAgainVoice {
+    return Intl.message(
+      'Please try again.',
+      name: 'tryAgainVoice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try Again`
+  String get tryAgainButton {
+    return Intl.message(
+      'Try Again',
+      name: 'tryAgainButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Processing...`
+  String get processingButton {
+    return Intl.message(
+      'Processing...',
+      name: 'processingButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stop & Process`
+  String get stopAndProcess {
+    return Intl.message(
+      'Stop & Process',
+      name: 'stopAndProcess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Food`
+  String get catFood {
+    return Intl.message('Food', name: 'catFood', desc: '', args: []);
+  }
+
+  /// `Transport`
+  String get catTransport {
+    return Intl.message('Transport', name: 'catTransport', desc: '', args: []);
+  }
+
+  /// `Shopping`
+  String get catShopping {
+    return Intl.message('Shopping', name: 'catShopping', desc: '', args: []);
+  }
+
+  /// `Salary`
+  String get catSalary {
+    return Intl.message('Salary', name: 'catSalary', desc: '', args: []);
+  }
+
+  /// `Entertainment`
+  String get catEntertainment {
+    return Intl.message(
+      'Entertainment',
+      name: 'catEntertainment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other`
+  String get catOther {
+    return Intl.message('Other', name: 'catOther', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -10,7 +10,7 @@ import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../../features/transactions/presentation/utils/transaction_ui_extension.dart';
 import '../widgets/home_action_card.dart';
-import '../controllers/dashboard_controller.dart';
+import '../state/dashboard_controller.dart';
 import '../widgets/home_skeleton.dart';
 import '../../../../features/transactions/presentation/widgets/add_transaction_bottom_sheet.dart';
 
@@ -135,7 +135,9 @@ class HomeScreen extends HookConsumerWidget {
                   HomeActionCard(
                     icon: Icons.mic,
                     label: context.loc.voice,
-                    onTap: () {},
+                    onTap: () {
+                      context.pushNamed(AppRoutes.voiceEntryName);
+                    },
                   ),
                   context.addHorizontalSpace(12),
                   HomeActionCard(

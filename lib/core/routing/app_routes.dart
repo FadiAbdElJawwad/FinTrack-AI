@@ -9,6 +9,7 @@ class AppRoutes {
   static const String transactionsScreen = '/transactionsScreen';
   static const String transactionDetails = '/transactionDetails';
   static const String transactionDetailsWithId = '/transactionDetails/:id';
+  static const String voiceEntry = '/voiceEntry';
 
   // Route Names
   static const String splashName = 'splash';
@@ -20,4 +21,5 @@ class AppRoutes {
   static const String homeScreenName = 'homeScreen';
   static const String transactionsScreenName = 'transactionsScreen';
   static const String transactionDetailsName = 'transactionDetails';
+  static const String voiceEntryName = 'voiceEntry';
 }

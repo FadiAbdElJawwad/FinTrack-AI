@@ -350,4 +350,76 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get creditCard => 'Credit Card';
+
+  @override
+  String get sessionExpired => 'Your session has expired. Please log in again.';
+
+  @override
+  String get aiUnauthorized => 'Unable to verify request. Please try again.';
+
+  @override
+  String get aiInvalidInput =>
+      'Couldn\'t understand that input. Try rephrasing.';
+
+  @override
+  String get aiServiceUnavailable => 'AI service is temporarily unavailable.';
+
+  @override
+  String get aiSchemaValidationFailed =>
+      'Couldn\'t extract transaction details. Try again.';
+
+  @override
+  String get aiNetworkError => 'Network error. Check your connection.';
+
+  @override
+  String get aiUnknown => 'Something went wrong. Please try again.';
+
+  @override
+  String get micPermissionDenied =>
+      'Microphone permission is required to use Voice Entry.';
+
+  @override
+  String get speechTimeout => 'No speech detected. Try again.';
+
+  @override
+  String get voiceEntryTitle => 'Voice Entry';
+
+  @override
+  String get listeningStatus => 'Listening...';
+
+  @override
+  String get processingStatus => 'Processing...';
+
+  @override
+  String get tapToSpeak => 'Tap to speak';
+
+  @override
+  String get tryAgainVoice => 'Please try again.';
+
+  @override
+  String get tryAgainButton => 'Try Again';
+
+  @override
+  String get processingButton => 'Processing...';
+
+  @override
+  String get stopAndProcess => 'Stop & Process';
+
+  @override
+  String get catFood => 'Food';
+
+  @override
+  String get catTransport => 'Transport';
+
+  @override
+  String get catShopping => 'Shopping';
+
+  @override
+  String get catSalary => 'Salary';
+
+  @override
+  String get catEntertainment => 'Entertainment';
+
+  @override
+  String get catOther => 'Other';
 }

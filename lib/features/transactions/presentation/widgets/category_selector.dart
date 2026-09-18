@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../domain/models/transaction_model.dart';
+import '../utils/transaction_category_extension.dart';
 
 class CategorySelector extends StatelessWidget {
   final List<TransactionCategory> categories;
@@ -28,14 +28,14 @@ class CategorySelector extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(right: 8),
               child: ChoiceChip(
-                label: Text(cat.name[0].toUpperCase() + cat.name.substring(1)),
+                label: Text(cat.getLocalizedName(context)),
                 selected: isSelected,
                 onSelected: (_) => onSelect(cat),
                 selectedColor: ColorManager.primaryBlue,
-                backgroundColor: ColorManager.white.withValues(alpha: 0.05),
+                backgroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
                 labelStyle: context.labelSmall.copyWith(
                   color: isSelected
-                      ? ColorManager.white
+                      ? Colors.white
                       : ColorManager.secondaryColor,
                 ),
                 shape: RoundedRectangleBorder(
@@ -49,7 +49,7 @@ class CategorySelector extends StatelessWidget {
           ActionChip(
             label: Text(context.loc.more),
             onPressed: () {},
-            backgroundColor: ColorManager.white.withValues(alpha: 0.05),
+            backgroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
             labelStyle: context.labelSmall.copyWith(
               color: ColorManager.secondaryColor,
             ),

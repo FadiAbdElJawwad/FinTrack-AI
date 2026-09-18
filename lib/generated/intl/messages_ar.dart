@@ -25,6 +25,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "add": MessageLookupByLibrary.simpleMessage("إضافة"),
     "addNote": MessageLookupByLibrary.simpleMessage("أضف ملاحظة..."),
     "addTransaction": MessageLookupByLibrary.simpleMessage("إضافة معاملة"),
+    "aiInvalidInput": MessageLookupByLibrary.simpleMessage(
+      "تعذر فهم المُدخل. أعد الصياغة.",
+    ),
+    "aiNetworkError": MessageLookupByLibrary.simpleMessage(
+      "خطأ في الشبكة. تحقق من الاتصال.",
+    ),
+    "aiSchemaValidationFailed": MessageLookupByLibrary.simpleMessage(
+      "تعذر استخراج تفاصيل المعاملة. حاول مرة أخرى.",
+    ),
+    "aiServiceUnavailable": MessageLookupByLibrary.simpleMessage(
+      "خدمة الذكاء الاصطناعي غير متاحة مؤقتاً.",
+    ),
+    "aiUnauthorized": MessageLookupByLibrary.simpleMessage(
+      "تعذر التحقق من الطلب. حاول مرة أخرى.",
+    ),
+    "aiUnknown": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ ما. حاول مرة أخرى.",
+    ),
     "all": MessageLookupByLibrary.simpleMessage("الكل"),
     "appTitle": MessageLookupByLibrary.simpleMessage("FinTrack AI"),
     "applyFilter": MessageLookupByLibrary.simpleMessage("تطبيق الفلتر"),
@@ -38,6 +56,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "cash": MessageLookupByLibrary.simpleMessage("نقدي"),
+    "catEntertainment": MessageLookupByLibrary.simpleMessage("ترفيه"),
+    "catFood": MessageLookupByLibrary.simpleMessage("طعام"),
+    "catOther": MessageLookupByLibrary.simpleMessage("أخرى"),
+    "catSalary": MessageLookupByLibrary.simpleMessage("راتب"),
+    "catShopping": MessageLookupByLibrary.simpleMessage("تسوق"),
+    "catTransport": MessageLookupByLibrary.simpleMessage("مواصلات"),
     "category": MessageLookupByLibrary.simpleMessage("الفئة"),
     "completed": MessageLookupByLibrary.simpleMessage("مكتمل"),
     "confirmPassword": MessageLookupByLibrary.simpleMessage(
@@ -114,12 +138,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "يجب أن تكون كلمة المرور على الأقل 6 أحرف",
     ),
     "lastMonth": MessageLookupByLibrary.simpleMessage("الشهر الماضي"),
+    "listeningStatus": MessageLookupByLibrary.simpleMessage("جارِ الاستماع..."),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "loginBody": MessageLookupByLibrary.simpleMessage(
       "سجل الدخول لإدارة محفظتك",
     ),
     "loginTitle": MessageLookupByLibrary.simpleMessage("مرحبًا بعودتك"),
     "manual": MessageLookupByLibrary.simpleMessage("يدوي"),
+    "micPermissionDenied": MessageLookupByLibrary.simpleMessage(
+      "إذن الميكروفون مطلوب لاستخدام الإدخال الصوتي.",
+    ),
     "more": MessageLookupByLibrary.simpleMessage("+ المزيد"),
     "networkRequestFailed": MessageLookupByLibrary.simpleMessage(
       "خطأ في الشبكة. يرجى التحقق من اتصالك.",
@@ -153,6 +181,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "paymentMethod": MessageLookupByLibrary.simpleMessage("طريقة الدفع"),
     "paypal": MessageLookupByLibrary.simpleMessage("بايبال"),
+    "processingButton": MessageLookupByLibrary.simpleMessage(
+      "جارِ المعالجة...",
+    ),
+    "processingStatus": MessageLookupByLibrary.simpleMessage(
+      "جارِ المعالجة...",
+    ),
     "quickPresets": MessageLookupByLibrary.simpleMessage("اختصارات سريعة"),
     "rangeError": MessageLookupByLibrary.simpleMessage(
       "لا يمكن أن تتجاوز الفترة الزمنية شهرًا واحدًا",
@@ -178,6 +212,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "selectWallet": MessageLookupByLibrary.simpleMessage("اختر المحفظة"),
     "sendResetLink": MessageLookupByLibrary.simpleMessage("إرسال رابط الإعادة"),
+    "sessionExpired": MessageLookupByLibrary.simpleMessage(
+      "انتهت صلاحية جلستك. الرجاء تسجيل الدخول مرة أخرى.",
+    ),
     "signInWithAnotherAccount": MessageLookupByLibrary.simpleMessage(
       "تسجيل الدخول باستخدام حساب آخر",
     ),
@@ -185,9 +222,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "signupBody": MessageLookupByLibrary.simpleMessage("أدخل بياناتك للبدء."),
     "signupTitle": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
     "skip": MessageLookupByLibrary.simpleMessage("تخطي"),
+    "speechTimeout": MessageLookupByLibrary.simpleMessage(
+      "لم يتم رصد أي صوت. حاول مرة أخرى.",
+    ),
     "splashBody": MessageLookupByLibrary.simpleMessage("تتبع مالي ذكي"),
     "startDate": MessageLookupByLibrary.simpleMessage("تاريخ البدء"),
     "status": MessageLookupByLibrary.simpleMessage("الحالة"),
+    "stopAndProcess": MessageLookupByLibrary.simpleMessage("إيقاف ومعالجة"),
+    "tapToSpeak": MessageLookupByLibrary.simpleMessage("اضغط للتحدث"),
     "thisMonth": MessageLookupByLibrary.simpleMessage("هذا الشهر"),
     "thisWeek": MessageLookupByLibrary.simpleMessage("هذا الأسبوع"),
     "tooManyRequests": MessageLookupByLibrary.simpleMessage(
@@ -203,6 +245,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "تفاصيل المعاملة",
     ),
     "transactions": MessageLookupByLibrary.simpleMessage("المعاملات"),
+    "tryAgainButton": MessageLookupByLibrary.simpleMessage("حاول مرة أخرى"),
+    "tryAgainVoice": MessageLookupByLibrary.simpleMessage(
+      "يرجى المحاولة مرة أخرى.",
+    ),
     "type": MessageLookupByLibrary.simpleMessage("النوع"),
     "unknownError": MessageLookupByLibrary.simpleMessage("حدث خطأ غير متوقع."),
     "unlock": MessageLookupByLibrary.simpleMessage("إلغاء القفل"),
@@ -213,6 +259,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "لم يتم العثور على مستخدم بهذا البريد الإلكتروني.",
     ),
     "voice": MessageLookupByLibrary.simpleMessage("صوت"),
+    "voiceEntryTitle": MessageLookupByLibrary.simpleMessage("إدخال صوتي"),
     "weakPasswordAuth": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور ضعيفة جدًا.",
     ),

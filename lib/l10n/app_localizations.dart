@@ -763,6 +763,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Credit Card'**
   String get creditCard;
+
+  /// No description provided for @sessionExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired. Please log in again.'**
+  String get sessionExpired;
+
+  /// No description provided for @aiUnauthorized.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to verify request. Please try again.'**
+  String get aiUnauthorized;
+
+  /// No description provided for @aiInvalidInput.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t understand that input. Try rephrasing.'**
+  String get aiInvalidInput;
+
+  /// No description provided for @aiServiceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'AI service is temporarily unavailable.'**
+  String get aiServiceUnavailable;
+
+  /// No description provided for @aiSchemaValidationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t extract transaction details. Try again.'**
+  String get aiSchemaValidationFailed;
+
+  /// No description provided for @aiNetworkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Check your connection.'**
+  String get aiNetworkError;
+
+  /// No description provided for @aiUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get aiUnknown;
+
+  /// No description provided for @micPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone permission is required to use Voice Entry.'**
+  String get micPermissionDenied;
+
+  /// No description provided for @speechTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'No speech detected. Try again.'**
+  String get speechTimeout;
+
+  /// No description provided for @voiceEntryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice Entry'**
+  String get voiceEntryTitle;
+
+  /// No description provided for @listeningStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening...'**
+  String get listeningStatus;
+
+  /// No description provided for @processingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get processingStatus;
+
+  /// No description provided for @tapToSpeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to speak'**
+  String get tapToSpeak;
+
+  /// No description provided for @tryAgainVoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again.'**
+  String get tryAgainVoice;
+
+  /// No description provided for @tryAgainButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgainButton;
+
+  /// No description provided for @processingButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get processingButton;
+
+  /// No description provided for @stopAndProcess.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop & Process'**
+  String get stopAndProcess;
+
+  /// No description provided for @catFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get catFood;
+
+  /// No description provided for @catTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get catTransport;
+
+  /// No description provided for @catShopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get catShopping;
+
+  /// No description provided for @catSalary.
+  ///
+  /// In en, this message translates to:
+  /// **'Salary'**
+  String get catSalary;
+
+  /// No description provided for @catEntertainment.
+  ///
+  /// In en, this message translates to:
+  /// **'Entertainment'**
+  String get catEntertainment;
+
+  /// No description provided for @catOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get catOther;
 }
 
 class _AppLocalizationsDelegate

@@ -43,16 +43,16 @@ class TransactionMetadataRow extends StatelessWidget {
               const SizedBox(height: 8),
               TextField(
                 controller: notesController,
-                style: context.labelMedium.copyWith(color: ColorManager.white),
+                style: context.labelMedium.copyWith(color: Theme.of(context).colorScheme.onSurface),
                 maxLines: 1,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                   hintText: context.loc.addNote,
                   hintStyle: context.labelMedium.copyWith(
-                    color: ColorManager.white.withValues(alpha: 0.3),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
                   ),
                   filled: true,
-                  fillColor: ColorManager.white.withValues(alpha: 0.05),
+                  fillColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 14,
@@ -102,7 +102,7 @@ class _InputSelector extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             decoration: BoxDecoration(
-              color: ColorManager.white.withValues(alpha: 0.05),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -113,7 +113,7 @@ class _InputSelector extends StatelessWidget {
                   child: Text(
                     value,
                     style: context.labelMedium.copyWith(
-                      color: ColorManager.white,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
