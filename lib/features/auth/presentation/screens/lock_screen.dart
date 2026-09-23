@@ -1,16 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/constant/images_manager.dart';
-import '../../../../core/constant/shared_prefs_keys.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../../core/extension/snackbar_extension.dart';
-import '../../../../core/providers/shared_prefs_provider.dart';
 import '../../../../core/services/biometric_service.dart';
+import '../state/auth_controller.dart';
 
 class LockScreen extends HookConsumerWidget {
   const LockScreen({super.key});
@@ -22,7 +20,7 @@ class LockScreen extends HookConsumerWidget {
     Future<void> handleUnlock() async {
       final success = await biometricService.authenticate();
       if (success && context.mounted) {
-        if (FirebaseAuth.instance.currentUser != null) {
+        if (ref.read(currentUserProvider) != null) {
           context.goNamed('homeScreen');
         } else {
           // Session expired
@@ -33,9 +31,7 @@ class LockScreen extends HookConsumerWidget {
     }
 
     Future<void> handleSignOut() async {
-      await FirebaseAuth.instance.signOut();
-      final prefs = ref.read(sharedPrefsProvider);
-      await prefs.setBool(SharedPrefsKeys.isBiometricEnabledKey, false);
+      await ref.read(authControllerProvider.notifier).signOut();
       if (context.mounted) {
         context.goNamed('login');
       }

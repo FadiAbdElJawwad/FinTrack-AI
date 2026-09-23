@@ -134,5 +134,7 @@
   "catShopping": "تسوق",
   "catSalary": "راتب",
   "catEntertainment": "ترفيه",
-  "catOther": "أخرى"
+  "catOther": "أخرى",
+  "defaultWalletName": "نقدي",
+  "unknownWallet": "غير معروف"
 }

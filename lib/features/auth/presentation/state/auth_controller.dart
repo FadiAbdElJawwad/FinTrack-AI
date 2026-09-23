@@ -1,12 +1,22 @@
 import 'dart:async';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../core/constant/shared_prefs_keys.dart';
+import '../../../../core/providers/firebase_providers.dart';
 import '../../../../core/providers/shared_prefs_provider.dart';
 import '../../../../core/services/biometric_service.dart';
 import '../../../../core/error/auth_exception.dart';
 import '../../data/repositories/auth_repository_impl.dart';
+import '../../domain/models/user_model.dart';
 import '../../domain/repositories/auth_repository.dart';
+
+/// The authenticated user as a pure domain entity, or `null` when signed out.
+///
+/// Recomputed whenever the auth session changes so consumers never read a
+/// stale cached value after sign-in/out.
+final currentUserProvider = Provider<UserModel?>((ref) {
+  ref.watch(authStateChangesProvider);
+  return ref.watch(authRepositoryProvider).currentUser;
+});
 
 
 final isBiometricAvailableProvider = Provider.autoDispose<bool>((ref) {
@@ -14,10 +24,11 @@ final isBiometricAvailableProvider = Provider.autoDispose<bool>((ref) {
   return prefs.getBool(SharedPrefsKeys.isBiometricEnabledKey) ?? false;
 });
 
-final authControllerProvider =
-    AsyncNotifierProvider.autoDispose<AuthController, void>(AuthController.new);
+final authControllerProvider = AsyncNotifierProvider<AuthController, void>(
+  AuthController.new,
+);
 
-class AuthController extends AutoDisposeAsyncNotifier<void> {
+class AuthController extends AsyncNotifier<void> {
   late AuthRepositoryInterface _repository;
 
   @override
@@ -53,7 +64,7 @@ class AuthController extends AutoDisposeAsyncNotifier<void> {
         throw AppAuthException(AuthErrorType.biometricDenied);
       }
       
-      if (FirebaseAuth.instance.currentUser == null) {
+      if (_repository.currentUser == null) {
         throw AppAuthException(AuthErrorType.sessionExpired);
       }
     });
@@ -91,6 +102,14 @@ class AuthController extends AutoDisposeAsyncNotifier<void> {
     }
 
     state = result;
+  }
+
+  /// Signs out of the repository session and clears the biometric-unlock
+  /// preference so the lock screen is not re-armed for the next session.
+  Future<void> signOut() async {
+    await _repository.signOut();
+    final prefs = ref.read(sharedPrefsProvider);
+    await prefs.setBool(SharedPrefsKeys.isBiometricEnabledKey, false);
   }
 
   Future<void> _handlePostAuth({

@@ -1,41 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import '../../domain/models/transaction_model.dart';
 import '../../domain/repositories/transaction_repository.dart';
+import '../datasources/tx_remote_datasource.dart';
 
 final transactionRepositoryProvider = Provider<TransactionRepository>((ref) {
-  return FirestoreTransactionRepository(
-    FirebaseFirestore.instance,
-    FirebaseAuth.instance,
-  );
+  return FirestoreTransactionRepository(ref.watch(txRemoteDataSourceProvider));
 });
 
+/// Implements [TransactionRepository] on top of [TxRemoteDataSource].
+///
+/// Owns exception translation and domain-model mapping; Firestore specifics
+/// (queries, DocReferences, ordering) live in the data source.
 class FirestoreTransactionRepository implements TransactionRepository {
-  final FirebaseFirestore _firestore;
-  final FirebaseAuth _auth;
+  FirestoreTransactionRepository(this._dataSource);
 
-  FirestoreTransactionRepository(this._firestore, this._auth);
-
-  String get _userId {
-    final user = _auth.currentUser;
-    if (user == null) {
-      throw Exception(
-        'User must be logged in to perform transaction operations.',
-      );
-    }
-    return user.uid;
-  }
-
-  CollectionReference<Map<String, dynamic>> get _transactionsDb =>
-      _firestore.collection('users').doc(_userId).collection('transactions');
+  final TxRemoteDataSource _dataSource;
 
   @override
   Future<void> addTransaction(TransactionModel transaction) async {
     try {
-      final docRef = _transactionsDb.doc();
-      final txWithId = transaction.copyWith(id: docRef.id);
-      await docRef.set(txWithId.toJson());
+      await _dataSource.create(transaction.toJson());
     } on FirebaseException catch (e) {
       throw Exception('Firestore error while adding transaction: ${e.message}');
     } catch (e) {
@@ -49,7 +35,7 @@ class FirestoreTransactionRepository implements TransactionRepository {
       if (transaction.id == null) {
         throw Exception('Transaction ID is required for updates.');
       }
-      await _transactionsDb.doc(transaction.id).update(transaction.toJson());
+      await _dataSource.update(transaction.id!, transaction.toJson());
     } on FirebaseException catch (e) {
       throw Exception(
         'Firestore error while updating transaction: ${e.message}',
@@ -62,7 +48,7 @@ class FirestoreTransactionRepository implements TransactionRepository {
   @override
   Future<void> deleteTransaction(String id) async {
     try {
-      await _transactionsDb.doc(id).delete();
+      await _dataSource.delete(id);
     } on FirebaseException catch (e) {
       throw Exception(
         'Firestore error while deleting transaction: ${e.message}',
@@ -75,13 +61,9 @@ class FirestoreTransactionRepository implements TransactionRepository {
   @override
   Stream<List<TransactionModel>> getTransactionsStream() {
     try {
-      return _transactionsDb.orderBy('date', descending: true).snapshots().map((
-        snapshot,
-      ) {
-        return snapshot.docs.map((doc) {
-          return TransactionModel.fromJson(doc.data());
-        }).toList();
-      });
+      return _dataSource.watchAll().map(
+            (docs) => docs.map(TransactionModel.fromJson).toList(),
+          );
     } on FirebaseException catch (e) {
       throw Exception(
         'Firestore error while streaming transactions: ${e.message}',

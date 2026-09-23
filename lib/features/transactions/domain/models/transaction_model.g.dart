@@ -13,7 +13,8 @@ _TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
       type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
       category: $enumDecode(_$TransactionCategoryEnumMap, json['category']),
       title: json['title'] as String,
-      date: DateTime.parse(json['date'] as String),
+      date: dateFromJson(json['date']),
+      walletId: json['walletId'] as String? ?? '',
     );
 
 Map<String, dynamic> _$TransactionModelToJson(_TransactionModel instance) =>
@@ -23,7 +24,8 @@ Map<String, dynamic> _$TransactionModelToJson(_TransactionModel instance) =>
       'type': _$TransactionTypeEnumMap[instance.type]!,
       'category': _$TransactionCategoryEnumMap[instance.category]!,
       'title': instance.title,
-      'date': instance.date.toIso8601String(),
+      'date': dateToJson(instance.date),
+      'walletId': instance.walletId,
     };
 
 const _$TransactionTypeEnumMap = {

@@ -34,14 +34,17 @@ class GoRouterRefreshStream extends ChangeNotifier {
 }
 
 class RouteGenerator {
-  static final router = GoRouter(
+  static GoRouter build({
+    required FirebaseAuth firebaseAuth,
+    required SharedPreferences prefs,
+  }) {
+    return GoRouter(
     initialLocation: AppRoutes.splash,
     refreshListenable: GoRouterRefreshStream(
-      FirebaseAuth.instance.authStateChanges(),
+      firebaseAuth.authStateChanges(),
     ),
     redirect: (context, state) async {
-      final user = FirebaseAuth.instance.currentUser;
-      final prefs = await SharedPreferences.getInstance();
+      final user = firebaseAuth.currentUser;
 
       final bool hasSeenOnboarding =
           prefs.getBool(SharedPrefsKeys.hasSeenOnboardingKey) ?? false;
@@ -130,5 +133,6 @@ class RouteGenerator {
         builder: (context, state) => const VoiceEntryScreen(),
       ),
     ],
-  );
+    );
+  }
 }

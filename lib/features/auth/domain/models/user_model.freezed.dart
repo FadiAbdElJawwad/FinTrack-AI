@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserModel {
 
- String get uid; String get email; String get fullName; String? get photoUrl; double get totalBalance; String get baseCurrency;@TimestampConverter() DateTime? get createdAt;
+ String get uid; String get email; String get fullName; String? get photoUrl; double get totalBalance; String get baseCurrency;@JsonKey(fromJson: createdAtFromJson, toJson: createdAtToJson) DateTime? get createdAt;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
- String uid, String email, String fullName, String? photoUrl, double totalBalance, String baseCurrency,@TimestampConverter() DateTime? createdAt
+ String uid, String email, String fullName, String? photoUrl, double totalBalance, String baseCurrency,@JsonKey(fromJson: createdAtFromJson, toJson: createdAtToJson) DateTime? createdAt
 });
 
 
@@ -165,7 +165,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String uid,  String email,  String fullName,  String? photoUrl,  double totalBalance,  String baseCurrency, @TimestampConverter()  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String uid,  String email,  String fullName,  String? photoUrl,  double totalBalance,  String baseCurrency, @JsonKey(fromJson: createdAtFromJson, toJson: createdAtToJson)  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
 return $default(_that.uid,_that.email,_that.fullName,_that.photoUrl,_that.totalBalance,_that.baseCurrency,_that.createdAt);case _:
@@ -186,7 +186,7 @@ return $default(_that.uid,_that.email,_that.fullName,_that.photoUrl,_that.totalB
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String uid,  String email,  String fullName,  String? photoUrl,  double totalBalance,  String baseCurrency, @TimestampConverter()  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String uid,  String email,  String fullName,  String? photoUrl,  double totalBalance,  String baseCurrency, @JsonKey(fromJson: createdAtFromJson, toJson: createdAtToJson)  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _UserModel():
 return $default(_that.uid,_that.email,_that.fullName,_that.photoUrl,_that.totalBalance,_that.baseCurrency,_that.createdAt);case _:
@@ -206,7 +206,7 @@ return $default(_that.uid,_that.email,_that.fullName,_that.photoUrl,_that.totalB
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String uid,  String email,  String fullName,  String? photoUrl,  double totalBalance,  String baseCurrency, @TimestampConverter()  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String uid,  String email,  String fullName,  String? photoUrl,  double totalBalance,  String baseCurrency, @JsonKey(fromJson: createdAtFromJson, toJson: createdAtToJson)  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
 return $default(_that.uid,_that.email,_that.fullName,_that.photoUrl,_that.totalBalance,_that.baseCurrency,_that.createdAt);case _:
@@ -221,7 +221,7 @@ return $default(_that.uid,_that.email,_that.fullName,_that.photoUrl,_that.totalB
 @JsonSerializable()
 
 class _UserModel extends UserModel {
-  const _UserModel({required this.uid, required this.email, required this.fullName, this.photoUrl, this.totalBalance = 0.0, this.baseCurrency = 'USD', @TimestampConverter() this.createdAt}): super._();
+  const _UserModel({required this.uid, required this.email, required this.fullName, this.photoUrl, this.totalBalance = 0.0, this.baseCurrency = 'USD', @JsonKey(fromJson: createdAtFromJson, toJson: createdAtToJson) this.createdAt}): super._();
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 @override final  String uid;
@@ -230,7 +230,7 @@ class _UserModel extends UserModel {
 @override final  String? photoUrl;
 @override@JsonKey() final  double totalBalance;
 @override@JsonKey() final  String baseCurrency;
-@override@TimestampConverter() final  DateTime? createdAt;
+@override@JsonKey(fromJson: createdAtFromJson, toJson: createdAtToJson) final  DateTime? createdAt;
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
@@ -267,7 +267,7 @@ abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Re
   factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
- String uid, String email, String fullName, String? photoUrl, double totalBalance, String baseCurrency,@TimestampConverter() DateTime? createdAt
+ String uid, String email, String fullName, String? photoUrl, double totalBalance, String baseCurrency,@JsonKey(fromJson: createdAtFromJson, toJson: createdAtToJson) DateTime? createdAt
 });
 
 

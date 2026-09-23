@@ -420,4 +420,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get catOther => 'أخرى';
+
+  @override
+  String get defaultWalletName => 'نقدي';
+
+  @override
+  String get unknownWallet => 'غير معروف';
 }

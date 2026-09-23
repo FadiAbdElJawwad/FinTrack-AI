@@ -1,6 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../../../core/utils/timestamp_converter.dart';
-
 part 'transaction_model.freezed.dart';
 part 'transaction_model.g.dart';
 
@@ -48,6 +46,19 @@ class TransactionDraft {
   });
 }
 
+/// Pure-Dart JSON codec for [TransactionModel.date].
+///
+/// Wire format is an ISO-8601 `String`, byte-for-byte identical to the
+/// previously generated codec. Firestore `Timestamp` coercion is a Data-layer
+/// concern and never leaks into Domain models.
+DateTime dateFromJson(Object? json) {
+  if (json is String) return DateTime.parse(json);
+  if (json is DateTime) return json;
+  throw FormatException('Expected date to be an ISO-8601 string, got: $json');
+}
+
+String dateToJson(DateTime date) => date.toIso8601String();
+
 @freezed
 abstract class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
@@ -56,7 +67,8 @@ abstract class TransactionModel with _$TransactionModel {
     required TransactionType type,
     required TransactionCategory category,
     required String title,
-    @TimestampConverter() required DateTime date,
+    @JsonKey(fromJson: dateFromJson, toJson: dateToJson) required DateTime date,
+    @JsonKey(defaultValue: '') required String walletId,
   }) = _TransactionModel;
 
   const TransactionModel._();

@@ -73,6 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "date": MessageLookupByLibrary.simpleMessage("DATE"),
     "dateRange": MessageLookupByLibrary.simpleMessage("Date Range"),
+    "defaultWalletName": MessageLookupByLibrary.simpleMessage("Cash"),
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
     "deleteConfirm": MessageLookupByLibrary.simpleMessage(
       "Are you sure you want to delete this transaction?",
@@ -251,6 +252,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "unknownError": MessageLookupByLibrary.simpleMessage(
       "An unexpected error occurred.",
     ),
+    "unknownWallet": MessageLookupByLibrary.simpleMessage("Unknown"),
     "unlock": MessageLookupByLibrary.simpleMessage("Unlock"),
     "userDisabled": MessageLookupByLibrary.simpleMessage(
       "This user account has been disabled.",

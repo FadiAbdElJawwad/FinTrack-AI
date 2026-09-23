@@ -77,6 +77,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "date": MessageLookupByLibrary.simpleMessage("التاريخ"),
     "dateRange": MessageLookupByLibrary.simpleMessage("الفترة الزمنية"),
+    "defaultWalletName": MessageLookupByLibrary.simpleMessage("نقدي"),
     "delete": MessageLookupByLibrary.simpleMessage("حذف"),
     "deleteConfirm": MessageLookupByLibrary.simpleMessage(
       "هل أنت متأكد من رغبتك في حذف هذه المعاملة؟",
@@ -251,6 +252,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "type": MessageLookupByLibrary.simpleMessage("النوع"),
     "unknownError": MessageLookupByLibrary.simpleMessage("حدث خطأ غير متوقع."),
+    "unknownWallet": MessageLookupByLibrary.simpleMessage("غير معروف"),
     "unlock": MessageLookupByLibrary.simpleMessage("إلغاء القفل"),
     "userDisabled": MessageLookupByLibrary.simpleMessage(
       "تم تعطيل حساب المستخدم هذا.",

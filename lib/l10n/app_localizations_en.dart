@@ -422,4 +422,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get catOther => 'Other';
+
+  @override
+  String get defaultWalletName => 'Cash';
+
+  @override
+  String get unknownWallet => 'Unknown';
 }

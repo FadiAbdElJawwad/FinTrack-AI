@@ -13,7 +13,7 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
   photoUrl: json['photoUrl'] as String?,
   totalBalance: (json['totalBalance'] as num?)?.toDouble() ?? 0.0,
   baseCurrency: json['baseCurrency'] as String? ?? 'USD',
-  createdAt: const TimestampConverter().fromJson(json['createdAt']),
+  createdAt: createdAtFromJson(json['createdAt']),
 );
 
 Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
@@ -24,5 +24,5 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
       'photoUrl': instance.photoUrl,
       'totalBalance': instance.totalBalance,
       'baseCurrency': instance.baseCurrency,
-      'createdAt': const TimestampConverter().toJson(instance.createdAt),
+      'createdAt': createdAtToJson(instance.createdAt),
     };

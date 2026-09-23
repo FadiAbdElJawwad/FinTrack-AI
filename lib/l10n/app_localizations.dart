@@ -901,6 +901,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get catOther;
+
+  /// No description provided for @defaultWalletName.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get defaultWalletName;
+
+  /// No description provided for @unknownWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknownWallet;
 }
 
 class _AppLocalizationsDelegate

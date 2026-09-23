@@ -134,5 +134,7 @@
   "catShopping": "Shopping",
   "catSalary": "Salary",
   "catEntertainment": "Entertainment",
-  "catOther": "Other"
+  "catOther": "Other",
+  "defaultWalletName": "Cash",
+  "unknownWallet": "Unknown"
 }

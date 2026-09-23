@@ -1,5 +1,4 @@
 import 'package:fin_track_ai/core/routing/app_routes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,6 +8,7 @@ import '../../../../core/constant/images_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../../features/transactions/presentation/utils/transaction_ui_extension.dart';
+import '../../../auth/presentation/state/auth_controller.dart';
 import '../widgets/home_action_card.dart';
 import '../state/dashboard_controller.dart';
 import '../widgets/home_skeleton.dart';
@@ -28,7 +28,11 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dashboardState = ref.watch(dashboardControllerProvider);
     final currencyFormat = NumberFormat.currency(symbol: '\$');
-    final user = FirebaseAuth.instance.currentUser;
+    final user = ref.watch(currentUserProvider);
+
+
+    final userName =
+        (user == null || user.fullName.isEmpty) ? 'User' : user.fullName;
 
     return Scaffold(
       appBar: AppBar(
@@ -41,7 +45,7 @@ class HomeScreen extends HookConsumerWidget {
           children: [
             Text(getGreeting(context), style: context.labelSmall),
             Text(
-              user?.displayName ?? "User",
+              userName,
               style: context.labelLarge.copyWith(
                 color: ColorManager.secondaryColor,
               ),

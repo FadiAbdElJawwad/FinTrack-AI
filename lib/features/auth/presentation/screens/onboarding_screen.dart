@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/constant/shared_prefs_keys.dart';
+import '../../../../core/providers/shared_prefs_provider.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
-import '../../domain/models/onboarding_model.dart';
+import '../viewmodels/onboarding_view_model.dart';
 import '../widgets/slider_indicator.dart';
 
 class OnboardingScreen extends HookConsumerWidget {
@@ -20,7 +20,7 @@ class OnboardingScreen extends HookConsumerWidget {
     useListenable(pageController);
 
     Future<void> finishOnboarding() async {
-      final prefs = await SharedPreferences.getInstance();
+      final prefs = ref.read(sharedPrefsProvider);
       await prefs.setBool(SharedPrefsKeys.hasSeenOnboardingKey, true);
       if (context.mounted) {
         context.goNamed('login');

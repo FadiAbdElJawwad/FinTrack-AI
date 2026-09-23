@@ -2,6 +2,10 @@ import '../../../../core/constant/images_manager.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/extension/app_sizes.dart';
 
+/// Presentation-layer view model for the onboarding carousel.
+///
+/// Relocated out of `domain/` in the architecture refactor: it depends on
+/// `BuildContext`/localized strings and therefore was never a domain entity.
 class OnboardingModel {
   OnboardingModel({this.image, this.body, this.title});
   final String? image;

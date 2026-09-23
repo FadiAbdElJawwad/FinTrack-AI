@@ -6,6 +6,7 @@ import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../../core/widgets/loading_overlay.dart';
 import '../../domain/models/transaction_model.dart';
+import '../../../wallets/presentation/state/wallet_controller.dart';
 import '../state/transaction_controller.dart';
 import '../utils/transaction_category_extension.dart';
 import 'amount_input_area.dart';
@@ -32,8 +33,8 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
     final selectedCategory = useState<TransactionCategory?>(
       existingTransaction?.category ?? prefillDraft?.category,
     );
-    final selectedWallet = useState(
-      context.loc.bank,
+    final selectedWalletId = useState<String?>(
+      existingTransaction?.walletId,
     );
     final selectedDate = useState(
       existingTransaction?.date ?? prefillDraft?.date ?? DateTime.now(),
@@ -50,17 +51,23 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
 
     useValueListenable(amountController);
 
-    final wallets = [
-      context.loc.bank,
-      context.loc.cash,
-      context.loc.paypal,
-      context.loc.creditCard,
-    ];
+    final walletsAsync = ref.watch(walletControllerProvider);
+    final wallets = walletsAsync.valueOrNull ?? [];
+    
+
+    useEffect(() {
+      if (selectedWalletId.value == null && wallets.isNotEmpty) {
+        selectedWalletId.value = wallets.firstWhere(
+            (w) => w.isDefault, orElse: () => wallets.first).id;
+      }
+      return null;
+    }, [wallets.length]);
+
     final categories = categoriesForType(selectedType.value);
 
     final double amount = double.tryParse(amountController.text) ?? 0.0;
     final bool isFormValid =
-        amount > 0 && selectedCategory.value != null && !isLoading.value;
+        amount > 0 && selectedCategory.value != null && selectedWalletId.value != null && !isLoading.value;
 
     Future<void> handleSave() async {
       if (!isFormValid) return;
@@ -75,6 +82,7 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
           notesText: notesController.text,
           date: selectedDate.value,
           context: context,
+          walletId: selectedWalletId.value!,
         );
 
         if (existingTransaction == null) {
@@ -162,10 +170,18 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
                   ),
                 ),
                 context.addVerticalSpace(12),
+                if (walletsAsync.hasError)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Text(
+                      'Failed to load wallets',
+                      style: context.labelSmall.copyWith(color: ColorManager.errorColor),
+                    ),
+                  ),
                 WalletSelector(
                   wallets: wallets,
-                  selectedWallet: selectedWallet.value,
-                  onSelect: (val) => selectedWallet.value = val,
+                  selectedWalletId: selectedWalletId.value,
+                  onSelect: (val) => selectedWalletId.value = val,
                 ),
                 const SizedBox(height: 24),
                 Text(
@@ -233,6 +249,7 @@ TransactionModel _buildTransactionFromForm({
   required String notesText,
   required DateTime date,
   required BuildContext context,
+  required String walletId,
 }) {
   return TransactionModel(
     id: existingTransaction?.id,
@@ -241,5 +258,6 @@ TransactionModel _buildTransactionFromForm({
     category: category,
     title: notesText.isEmpty ? category.getLocalizedName(context) : notesText,
     date: date,
+    walletId: walletId,
   );
 }

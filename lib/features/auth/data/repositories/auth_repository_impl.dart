@@ -5,12 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/error/auth_exception.dart';
+import '../../../../core/providers/firebase_providers.dart';
+import '../../domain/models/user_model.dart';
 import '../../domain/repositories/auth_repository.dart';
 
 final authRepositoryProvider = Provider<AuthRepositoryInterface>((ref) {
   return AuthRepository(
-    FirebaseAuth.instance,
-    FirebaseFirestore.instance,
+    ref.watch(firebaseAuthProvider),
+    ref.watch(firestoreProvider),
   );
 });
 
@@ -24,12 +26,13 @@ class AuthRepository implements AuthRepositoryInterface {
   );
 
   @override
-  Future<UserCredential> signIn(String email, String password) async {
+  Future<UserModel> signIn(String email, String password) async {
     try {
-      return await _auth.signInWithEmailAndPassword(
+      final credential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      return _mapUser(credential.user);
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     } on FirebaseException catch (e) {
@@ -40,7 +43,7 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<UserCredential> signInWithGoogle() async {
+  Future<UserModel> signInWithGoogle() async {
     try {
       final googleSignIn = GoogleSignIn.instance;
       await googleSignIn.initialize(
@@ -70,7 +73,7 @@ class AuthRepository implements AuthRepositoryInterface {
         });
       }
 
-      return userCredential;
+      return _mapUser(userCredential.user);
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     } on PlatformException catch (e) {
@@ -93,7 +96,7 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<UserCredential> signUp(
+  Future<UserModel> signUp(
     String fullName,
     String email,
     String password,
@@ -113,7 +116,7 @@ class AuthRepository implements AuthRepositoryInterface {
         });
       }
 
-      return userCredential;
+      return _mapUser(userCredential.user);
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     } on FirebaseException catch (e) {
@@ -134,6 +137,31 @@ class AuthRepository implements AuthRepositoryInterface {
     } catch (e) {
       throw AppAuthException(AuthErrorType.unknown, message: e.toString());
     }
+  }
+
+  @override
+  Future<void> signOut() {
+    return _auth.signOut();
+  }
+
+  @override
+  UserModel? get currentUser {
+    final user = _auth.currentUser;
+    return user == null ? null : _mapUser(user);
+  }
+
+  /// Maps a Firebase [User] (may be null when signed out) onto the pure
+  /// domain [UserModel]. No SDK types cross the repository boundary.
+  UserModel _mapUser(User? user) {
+    if (user == null) {
+      throw AppAuthException(AuthErrorType.sessionExpired);
+    }
+    return UserModel(
+      uid: user.uid,
+      email: user.email ?? '',
+      fullName: user.displayName ?? '',
+      photoUrl: user.photoURL,
+    );
   }
 
   AppAuthException _handleAuthException(FirebaseAuthException e) {

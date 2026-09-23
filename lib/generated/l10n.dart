@@ -1159,6 +1159,16 @@ class S {
   String get catOther {
     return Intl.message('Other', name: 'catOther', desc: '', args: []);
   }
+
+  /// `Cash`
+  String get defaultWalletName {
+    return Intl.message('Cash', name: 'defaultWalletName', desc: '', args: []);
+  }
+
+  /// `Unknown`
+  String get unknownWallet {
+    return Intl.message('Unknown', name: 'unknownWallet', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

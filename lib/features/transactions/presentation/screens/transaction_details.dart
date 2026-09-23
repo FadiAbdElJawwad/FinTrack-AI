@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/text_style_extension.dart';
+import '../../../wallets/domain/models/wallet_model.dart';
+import '../../../wallets/presentation/state/wallet_controller.dart';
 import '../state/transaction_controller.dart';
 import '../utils/transaction_ui_extension.dart';
 import '../widgets/add_transaction_bottom_sheet.dart';
@@ -88,6 +90,7 @@ class _TransactionDetailsState extends ConsumerState<TransactionDetails> {
   @override
   Widget build(BuildContext context) {
     final transactionsAsyncValue = ref.watch(transactionControllerProvider);
+    final walletsAsyncValue = ref.watch(walletControllerProvider);
 
     return transactionsAsyncValue.when(
       data: (transactions) {
@@ -100,6 +103,17 @@ class _TransactionDetailsState extends ConsumerState<TransactionDetails> {
             body: Center(child: Text(context.loc.transactionDeleted)),
           );
         }
+
+        final walletName = walletsAsyncValue.maybeWhen(
+          data: (wallets) {
+            final wallet = wallets.firstWhere(
+              (w) => w.id == transaction.walletId,
+              orElse: () => WalletModel(name: context.loc.unknownWallet, icon: ''),
+            );
+            return wallet.name;
+          },
+          orElse: () => context.loc.unknownWallet,
+        );
 
         return Scaffold(
           appBar: AppBar(
@@ -238,7 +252,7 @@ class _TransactionDetailsState extends ConsumerState<TransactionDetails> {
                             context.addVerticalSpace(16),
                             _DetailRow(
                               label: context.loc.paymentMethod,
-                              value: context.loc.bankAccount,
+                              value: walletName,
                             ),
                             const Divider(color: ColorManager.secondaryColor),
                             context.addVerticalSpace(16),
