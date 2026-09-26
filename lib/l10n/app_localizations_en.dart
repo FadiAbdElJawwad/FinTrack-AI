@@ -61,9 +61,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get password => 'Password';
 
   @override
-  String get confirmPassword => 'Confirm Password';
-
-  @override
   String get fullName => 'Full Name';
 
   @override
@@ -127,9 +124,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'New password cannot be the same as the current password';
 
   @override
-  String get emptyConfirmPassword => 'Confirm Password cannot be empty';
-
-  @override
   String get passwordsDoNotMatch => 'Passwords do not match';
 
   @override
@@ -184,9 +178,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signInWithAnotherAccount => 'Sign in with another account';
-
-  @override
-  String get unlock => 'Unlock';
 
   @override
   String get googleSignInCanceled => 'Google Sign-In was canceled.';
@@ -280,9 +271,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentMethod => 'Payment Method';
 
   @override
-  String get bankAccount => 'Bank Account';
-
-  @override
   String get type => 'Type';
 
   @override
@@ -338,18 +326,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get more => '+ More';
-
-  @override
-  String get bank => 'Bank';
-
-  @override
-  String get cash => 'Cash';
-
-  @override
-  String get paypal => 'PayPal';
-
-  @override
-  String get creditCard => 'Credit Card';
 
   @override
   String get sessionExpired => 'Your session has expired. Please log in again.';
@@ -428,4 +404,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unknownWallet => 'Unknown';
+
+  @override
+  String get selectCurrency => 'Select Currency';
+
+  @override
+  String get currencyChangeSuccess => 'Currency updated successfully.';
+
+  @override
+  String get currencyChangeFailed => 'Failed to update currency:';
+
+  @override
+  String get internetRequiredFirstLaunch =>
+      'This app requires an internet connection on first launch.';
+
+  @override
+  String get exchangeRateServiceError =>
+      'We couldn\'t load exchange rates right now. Please try again.';
 }

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'core/constant/app_env.dart';
+import 'core/error/currency_exception.dart';
 import 'core/theme/app_theme.dart';
+import 'features/currency/data/services/exchange_rate_service.dart';
+import 'features/currency/presentation/screens/exchange_rate_gate_screen.dart';
 import 'firebase_options.dart';
 import 'generated/l10n.dart';
 import 'core/providers/theme_provider.dart';
@@ -14,9 +17,13 @@ import 'core/providers/shared_prefs_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  assert(
+    AppEnv.appsScriptProxyUrl.isNotEmpty && AppEnv.appSharedSecret.isNotEmpty,
+    'Missing --dart-define secrets: see README for the required flags.',
+  );
 
   final prefs = await SharedPreferences.getInstance();
 
@@ -36,6 +43,7 @@ class FinTrackApp extends ConsumerWidget {
     final locale = ref.watch(localeProvider);
     final themeMode = ref.watch(themeProvider);
     final goRouter = ref.watch(goRouterProvider);
+    final ratesBootstrap = ref.watch(exchangeRatesBootstrapProvider);
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
@@ -52,6 +60,14 @@ class FinTrackApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
+      builder: (context, child) {
+        final error = ratesBootstrap.error;
+        if (error is NoExchangeRatesAvailableException ||
+            error is ExchangeRateServiceException) {
+          return ExchangeRateGateScreen(error: error!);
+        }
+        return child ?? const SizedBox.shrink();
+      },
     );
   }
 }

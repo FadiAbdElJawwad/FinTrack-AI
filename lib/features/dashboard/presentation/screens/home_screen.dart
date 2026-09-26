@@ -7,12 +7,15 @@ import '../../../../core/constant/color_manager.dart';
 import '../../../../core/constant/images_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
-import '../../../../features/transactions/presentation/utils/transaction_ui_extension.dart';
 import '../../../auth/presentation/state/auth_controller.dart';
+import '../../../currency/domain/models/app_currency.dart';
+import '../../../currency/presentation/state/currency_controller.dart';
+import '../../../currency/presentation/widgets/currency_selector_dialog.dart';
 import '../widgets/home_action_card.dart';
 import '../state/dashboard_controller.dart';
 import '../widgets/home_skeleton.dart';
 import '../../../../features/transactions/presentation/widgets/add_transaction_bottom_sheet.dart';
+import '../../../../features/transactions/presentation/widgets/transaction_list_tile.dart';
 
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
@@ -27,7 +30,10 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dashboardState = ref.watch(dashboardControllerProvider);
-    final currencyFormat = NumberFormat.currency(symbol: '\$');
+    final appCurrencyCode = ref.watch(currencyControllerProvider).valueOrNull ?? 'USD';
+    final currencyFormat = NumberFormat.currency(
+      symbol: appCurrencyFromCode(appCurrencyCode).symbol,
+    );
     final user = ref.watch(currentUserProvider);
 
 
@@ -53,6 +59,15 @@ class HomeScreen extends HookConsumerWidget {
           ],
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => const CurrencySelectorDialog(),
+              );
+            },
+            icon: const Icon(Icons.currency_exchange),
+          ),
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.notifications_none),
@@ -197,45 +212,8 @@ class HomeScreen extends HookConsumerWidget {
                           separatorBuilder: (context, index) =>
                               context.addVerticalSpace(8),
                           itemBuilder: (context, index) {
-                            final tx = group.value[index];
-                            return GestureDetector(
-                              onTap: () {
-                                context.pushNamed(
-                                  AppRoutes.transactionDetailsName,
-                                  pathParameters: {'id': tx.id!},
-                                );
-                              },
-                              child: Card(
-                                child: ListTile(
-                                  leading: Card(
-                                    color: ColorManager.primaryBlue.withValues(
-                                      alpha: 0.1,
-                                    ),
-                                    shape: const StadiumBorder(),
-                                    elevation: 0,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Icon(tx.categoryIcon),
-                                    ),
-                                  ),
-                                  title: Text(
-                                    tx.title,
-                                    style: context.labelMedium,
-                                  ),
-                                  subtitle: Text(
-                                    tx.formattedDate,
-                                    style: context.labelSmall.copyWith(
-                                      color: ColorManager.secondaryColor,
-                                    ),
-                                  ),
-                                  trailing: Text(
-                                    tx.formattedAmount,
-                                    style: context.labelMedium.copyWith(
-                                      color: tx.amountColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            return TransactionListTile(
+                              transaction: group.value[index],
                             );
                           },
                         ),

@@ -1,17 +1,15 @@
  import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
+import '../constant/app_env.dart';
 import '../error/ai_parsing_exception.dart';
 
 final geminiServiceProvider = Provider<GeminiService>((ref) {
-  final proxyUrl = dotenv.env['APPS_SCRIPT_PROXY_URL'] ?? '';
-  final sharedSecret = dotenv.env['APP_SHARED_SECRET'] ?? '';
   return GeminiService(
-    proxyUrl: proxyUrl,
-    sharedSecret: sharedSecret,
+    proxyUrl: AppEnv.appsScriptProxyUrl,
+    sharedSecret: AppEnv.appSharedSecret,
   );
 });
 

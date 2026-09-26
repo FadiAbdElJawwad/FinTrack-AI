@@ -61,9 +61,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get password => 'كلمة المرور';
 
   @override
-  String get confirmPassword => 'تأكيد كلمة المرور';
-
-  @override
   String get fullName => 'الاسم الكامل';
 
   @override
@@ -127,9 +124,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'لا يمكن أن تكون كلمة المرور الجديدة نفسها كلمة المرور الحالية';
 
   @override
-  String get emptyConfirmPassword => 'لا يمكن أن يكون تأكيد كلمة المرور فارغًا';
-
-  @override
   String get passwordsDoNotMatch => 'كلمات المرور لا تتطابق';
 
   @override
@@ -183,9 +177,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get signInWithAnotherAccount => 'تسجيل الدخول باستخدام حساب آخر';
-
-  @override
-  String get unlock => 'إلغاء القفل';
 
   @override
   String get googleSignInCanceled => 'تم إلغاء تسجيل الدخول باستخدام جوجل.';
@@ -278,9 +269,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get paymentMethod => 'طريقة الدفع';
 
   @override
-  String get bankAccount => 'حساب بنكي';
-
-  @override
   String get type => 'النوع';
 
   @override
@@ -336,18 +324,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get more => '+ المزيد';
-
-  @override
-  String get bank => 'حساب بنكي';
-
-  @override
-  String get cash => 'نقدي';
-
-  @override
-  String get paypal => 'بايبال';
-
-  @override
-  String get creditCard => 'بطاقة ائتمان';
 
   @override
   String get sessionExpired =>
@@ -426,4 +402,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get unknownWallet => 'غير معروف';
+
+  @override
+  String get selectCurrency => 'اختر العملة';
+
+  @override
+  String get currencyChangeSuccess => 'تم تحديث العملة بنجاح.';
+
+  @override
+  String get currencyChangeFailed => 'فشل تحديث العملة:';
+
+  @override
+  String get internetRequiredFirstLaunch =>
+      'يتطلب هذا التطبيق اتصالاً بالإنترنت عند التشغيل الأول.';
+
+  @override
+  String get exchangeRateServiceError =>
+      'تعذّر تحميل أسعار الصرف حالياً. يرجى المحاولة مرة أخرى.';
 }

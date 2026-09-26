@@ -11,6 +11,7 @@ import '../../../../core/extension/string_validation.dart';
 import '../../../../core/extension/snackbar_extension.dart';
 import '../../../../core/error/auth_exception.dart';
 import '../../../../core/error/auth_exception_extension.dart';
+import '../../../../core/widgets/loading_overlay.dart';
 import '../state/auth_controller.dart';
 
 class SignUpScreen extends HookConsumerWidget {
@@ -201,11 +202,7 @@ class SignUpScreen extends HookConsumerWidget {
               ),
             ),
           ),
-          if (authState.isLoading)
-            Container(
-              color: Colors.black54,
-              child: const Center(child: CircularProgressIndicator()),
-            ),
+          if (authState.isLoading) const LoadingOverlay(),
         ],
       ),
     );

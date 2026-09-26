@@ -47,13 +47,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "appTitle": MessageLookupByLibrary.simpleMessage("FinTrack AI"),
     "applyFilter": MessageLookupByLibrary.simpleMessage("Apply Filter"),
     "backToLogin": MessageLookupByLibrary.simpleMessage("Back to Login"),
-    "bank": MessageLookupByLibrary.simpleMessage("Bank"),
-    "bankAccount": MessageLookupByLibrary.simpleMessage("Bank Account"),
     "biometricDenied": MessageLookupByLibrary.simpleMessage(
       "Biometric authentication denied or cancelled.",
     ),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
-    "cash": MessageLookupByLibrary.simpleMessage("Cash"),
     "catEntertainment": MessageLookupByLibrary.simpleMessage("Entertainment"),
     "catFood": MessageLookupByLibrary.simpleMessage("Food"),
     "catOther": MessageLookupByLibrary.simpleMessage("Other"),
@@ -62,11 +59,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "catTransport": MessageLookupByLibrary.simpleMessage("Transport"),
     "category": MessageLookupByLibrary.simpleMessage("CATEGORY"),
     "completed": MessageLookupByLibrary.simpleMessage("Completed"),
-    "confirmPassword": MessageLookupByLibrary.simpleMessage("Confirm Password"),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
       "Continue with Google",
     ),
-    "creditCard": MessageLookupByLibrary.simpleMessage("Credit Card"),
+    "currencyChangeFailed": MessageLookupByLibrary.simpleMessage(
+      "Failed to update currency:",
+    ),
+    "currencyChangeSuccess": MessageLookupByLibrary.simpleMessage(
+      "Currency updated successfully.",
+    ),
     "customRange": MessageLookupByLibrary.simpleMessage("CUSTOM RANGE"),
     "databaseError": MessageLookupByLibrary.simpleMessage(
       "A database error occurred.",
@@ -89,9 +90,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailAlreadyInUse": MessageLookupByLibrary.simpleMessage(
       "Email is already registered.",
     ),
-    "emptyConfirmPassword": MessageLookupByLibrary.simpleMessage(
-      "Confirm Password cannot be empty",
-    ),
     "emptyEmail": MessageLookupByLibrary.simpleMessage("Email cannot be empty"),
     "emptyName": MessageLookupByLibrary.simpleMessage("Name cannot be empty"),
     "emptyPassword": MessageLookupByLibrary.simpleMessage(
@@ -104,6 +102,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Enable Biometric Login",
     ),
     "endDate": MessageLookupByLibrary.simpleMessage("End Date"),
+    "exchangeRateServiceError": MessageLookupByLibrary.simpleMessage(
+      "We couldn\'t load exchange rates right now. Please try again.",
+    ),
     "expense": MessageLookupByLibrary.simpleMessage("Expense"),
     "fieldCannotBeEmpty": MessageLookupByLibrary.simpleMessage(
       "This field cannot be empty",
@@ -124,6 +125,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Already have an account?",
     ),
     "income": MessageLookupByLibrary.simpleMessage("Income"),
+    "internetRequiredFirstLaunch": MessageLookupByLibrary.simpleMessage(
+      "This app requires an internet connection on first launch.",
+    ),
     "invalidCredential": MessageLookupByLibrary.simpleMessage(
       "Invalid email or password.",
     ),
@@ -183,7 +187,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Passwords do not match",
     ),
     "paymentMethod": MessageLookupByLibrary.simpleMessage("Payment Method"),
-    "paypal": MessageLookupByLibrary.simpleMessage("PayPal"),
     "processingButton": MessageLookupByLibrary.simpleMessage("Processing..."),
     "processingStatus": MessageLookupByLibrary.simpleMessage("Processing..."),
     "quickPresets": MessageLookupByLibrary.simpleMessage("QUICK PRESETS"),
@@ -204,6 +207,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "saveTransaction": MessageLookupByLibrary.simpleMessage("Save Transaction"),
     "scan": MessageLookupByLibrary.simpleMessage("Scan"),
     "seeAll": MessageLookupByLibrary.simpleMessage("See All"),
+    "selectCurrency": MessageLookupByLibrary.simpleMessage("Select Currency"),
     "selectDateRange": MessageLookupByLibrary.simpleMessage(
       "Select Date Range",
     ),
@@ -253,7 +257,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "An unexpected error occurred.",
     ),
     "unknownWallet": MessageLookupByLibrary.simpleMessage("Unknown"),
-    "unlock": MessageLookupByLibrary.simpleMessage("Unlock"),
     "userDisabled": MessageLookupByLibrary.simpleMessage(
       "This user account has been disabled.",
     ),

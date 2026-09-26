@@ -175,16 +175,6 @@ class S {
     return Intl.message('Password', name: 'password', desc: '', args: []);
   }
 
-  /// `Confirm Password`
-  String get confirmPassword {
-    return Intl.message(
-      'Confirm Password',
-      name: 'confirmPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Full Name`
   String get fullName {
     return Intl.message('Full Name', name: 'fullName', desc: '', args: []);
@@ -375,16 +365,6 @@ class S {
     );
   }
 
-  /// `Confirm Password cannot be empty`
-  String get emptyConfirmPassword {
-    return Intl.message(
-      'Confirm Password cannot be empty',
-      name: 'emptyConfirmPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Passwords do not match`
   String get passwordsDoNotMatch {
     return Intl.message(
@@ -558,11 +538,6 @@ class S {
       desc: '',
       args: [],
     );
-  }
-
-  /// `Unlock`
-  String get unlock {
-    return Intl.message('Unlock', name: 'unlock', desc: '', args: []);
   }
 
   /// `Google Sign-In was canceled.`
@@ -800,16 +775,6 @@ class S {
     );
   }
 
-  /// `Bank Account`
-  String get bankAccount {
-    return Intl.message(
-      'Bank Account',
-      name: 'bankAccount',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Type`
   String get type {
     return Intl.message('Type', name: 'type', desc: '', args: []);
@@ -938,26 +903,6 @@ class S {
   /// `+ More`
   String get more {
     return Intl.message('+ More', name: 'more', desc: '', args: []);
-  }
-
-  /// `Bank`
-  String get bank {
-    return Intl.message('Bank', name: 'bank', desc: '', args: []);
-  }
-
-  /// `Cash`
-  String get cash {
-    return Intl.message('Cash', name: 'cash', desc: '', args: []);
-  }
-
-  /// `PayPal`
-  String get paypal {
-    return Intl.message('PayPal', name: 'paypal', desc: '', args: []);
-  }
-
-  /// `Credit Card`
-  String get creditCard {
-    return Intl.message('Credit Card', name: 'creditCard', desc: '', args: []);
   }
 
   /// `Your session has expired. Please log in again.`
@@ -1168,6 +1113,56 @@ class S {
   /// `Unknown`
   String get unknownWallet {
     return Intl.message('Unknown', name: 'unknownWallet', desc: '', args: []);
+  }
+
+  /// `Select Currency`
+  String get selectCurrency {
+    return Intl.message(
+      'Select Currency',
+      name: 'selectCurrency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Currency updated successfully.`
+  String get currencyChangeSuccess {
+    return Intl.message(
+      'Currency updated successfully.',
+      name: 'currencyChangeSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to update currency:`
+  String get currencyChangeFailed {
+    return Intl.message(
+      'Failed to update currency:',
+      name: 'currencyChangeFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This app requires an internet connection on first launch.`
+  String get internetRequiredFirstLaunch {
+    return Intl.message(
+      'This app requires an internet connection on first launch.',
+      name: 'internetRequiredFirstLaunch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We couldn't load exchange rates right now. Please try again.`
+  String get exchangeRateServiceError {
+    return Intl.message(
+      'We couldn\'t load exchange rates right now. Please try again.',
+      name: 'exchangeRateServiceError',
+      desc: '',
+      args: [],
+    );
   }
 }
 

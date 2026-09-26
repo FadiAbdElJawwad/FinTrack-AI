@@ -5,7 +5,11 @@ import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../../core/widgets/loading_overlay.dart';
+import '../../../../core/widgets/bottom_sheet_drag_handle.dart';
 import '../../domain/models/transaction_model.dart';
+import '../../../currency/data/services/exchange_rate_service.dart';
+import '../../../currency/domain/models/app_currency.dart';
+import '../../../currency/presentation/state/currency_controller.dart';
 import '../../../wallets/presentation/state/wallet_controller.dart';
 import '../state/transaction_controller.dart';
 import '../utils/transaction_category_extension.dart';
@@ -53,7 +57,9 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
 
     final walletsAsync = ref.watch(walletControllerProvider);
     final wallets = walletsAsync.valueOrNull ?? [];
-    
+
+    final appCurrencyCode = ref.watch(currencyControllerProvider).valueOrNull ?? 'USD';
+    final selectedInputCurrency = useState(appCurrencyFromCode(appCurrencyCode));
 
     useEffect(() {
       if (selectedWalletId.value == null && wallets.isNotEmpty) {
@@ -62,6 +68,11 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
       }
       return null;
     }, [wallets.length]);
+
+    useEffect(() {
+      selectedInputCurrency.value = appCurrencyFromCode(appCurrencyCode);
+      return null;
+    }, [appCurrencyCode]);
 
     final categories = categoriesForType(selectedType.value);
 
@@ -74,9 +85,17 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
 
       isLoading.value = true;
       try {
+        final rateService = ref.read(exchangeRateServiceProvider);
+        await rateService.ensureLoaded();
+        if (!context.mounted) return;
+        final rate = rateService.rateBetween(
+          selectedInputCurrency.value.code,
+          appCurrencyCode,
+        );
+
         final transaction = _buildTransactionFromForm(
           existingTransaction: existingTransaction,
-          amount: amount,
+          amount: amount * rate,
           type: selectedType.value,
           category: selectedCategory.value!,
           notesText: notesController.text,
@@ -124,16 +143,7 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
+                const BottomSheetDragHandle(),
                 context.addVerticalSpace(20),
                 TransactionTypeToggle(
                   selectedType: selectedType.value,
@@ -146,6 +156,9 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
                 AmountInputArea(
                   controller: amountController,
                   type: selectedType.value,
+                  currency: selectedInputCurrency.value,
+                  onCurrencyChanged: (currency) =>
+                      selectedInputCurrency.value = currency,
                 ),
                 context.addVerticalSpace(24),
                 TransactionMetadataRow(

@@ -3,16 +3,21 @@ import 'package:fin_track_ai/core/extension/text_style_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../../core/constant/color_manager.dart';
+import '../../../currency/domain/models/app_currency.dart';
 import '../../domain/models/transaction_model.dart';
 
 class AmountInputArea extends StatelessWidget {
   final TextEditingController controller;
   final TransactionType type;
+  final AppCurrency currency;
+  final ValueChanged<AppCurrency> onCurrencyChanged;
 
   const AmountInputArea({
     super.key,
     required this.controller,
     required this.type,
+    required this.currency,
+    required this.onCurrencyChanged,
   });
 
   @override
@@ -21,24 +26,36 @@ class AmountInputArea extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Row(
-          children: [
-            Text(
-              isExpense ? '- \$' : '+ \$',
-              style: context.headlineLarge.copyWith(
-                color: isExpense
-                    ? ColorManager.errorColor
-                    : ColorManager.successColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 32,
+        PopupMenuButton<AppCurrency>(
+          onSelected: onCurrencyChanged,
+          itemBuilder: (context) => AppCurrency.values
+              .map(
+                (c) => PopupMenuItem(
+                  value: c,
+                  child: Text('${c.code} (${c.symbol})'),
+                ),
+              )
+              .toList(),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                isExpense ? '- ${currency.symbol}' : '+ ${currency.symbol}',
+                style: context.headlineLarge.copyWith(
+                  color: isExpense
+                      ? ColorManager.errorColor
+                      : ColorManager.successColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32,
+                ),
               ),
-            ),
-            const Icon(
-              Icons.arrow_drop_down,
-              color: ColorManager.secondaryColor,
-              size: 18,
-            ),
-          ],
+              const Icon(
+                Icons.arrow_drop_down,
+                color: ColorManager.secondaryColor,
+                size: 18,
+              ),
+            ],
+          ),
         ),
         context.addHorizontalSpace(8),
         IntrinsicWidth(

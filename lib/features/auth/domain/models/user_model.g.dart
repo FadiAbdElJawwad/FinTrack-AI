@@ -11,7 +11,6 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
   email: json['email'] as String,
   fullName: json['fullName'] as String,
   photoUrl: json['photoUrl'] as String?,
-  totalBalance: (json['totalBalance'] as num?)?.toDouble() ?? 0.0,
   baseCurrency: json['baseCurrency'] as String? ?? 'USD',
   createdAt: createdAtFromJson(json['createdAt']),
 );
@@ -22,7 +21,6 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
       'email': instance.email,
       'fullName': instance.fullName,
       'photoUrl': instance.photoUrl,
-      'totalBalance': instance.totalBalance,
       'baseCurrency': instance.baseCurrency,
       'createdAt': createdAtToJson(instance.createdAt),
     };

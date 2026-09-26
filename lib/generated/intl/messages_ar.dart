@@ -49,13 +49,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "backToLogin": MessageLookupByLibrary.simpleMessage(
       "العودة إلى تسجيل الدخول",
     ),
-    "bank": MessageLookupByLibrary.simpleMessage("حساب بنكي"),
-    "bankAccount": MessageLookupByLibrary.simpleMessage("حساب بنكي"),
     "biometricDenied": MessageLookupByLibrary.simpleMessage(
       "تم رفض المصادقة الحيوية أو تم إلغاؤها.",
     ),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
-    "cash": MessageLookupByLibrary.simpleMessage("نقدي"),
     "catEntertainment": MessageLookupByLibrary.simpleMessage("ترفيه"),
     "catFood": MessageLookupByLibrary.simpleMessage("طعام"),
     "catOther": MessageLookupByLibrary.simpleMessage("أخرى"),
@@ -64,13 +61,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "catTransport": MessageLookupByLibrary.simpleMessage("مواصلات"),
     "category": MessageLookupByLibrary.simpleMessage("الفئة"),
     "completed": MessageLookupByLibrary.simpleMessage("مكتمل"),
-    "confirmPassword": MessageLookupByLibrary.simpleMessage(
-      "تأكيد كلمة المرور",
-    ),
     "continueWithGoogle": MessageLookupByLibrary.simpleMessage(
       "المتابعة باستخدام جوجل",
     ),
-    "creditCard": MessageLookupByLibrary.simpleMessage("بطاقة ائتمان"),
+    "currencyChangeFailed": MessageLookupByLibrary.simpleMessage(
+      "فشل تحديث العملة:",
+    ),
+    "currencyChangeSuccess": MessageLookupByLibrary.simpleMessage(
+      "تم تحديث العملة بنجاح.",
+    ),
     "customRange": MessageLookupByLibrary.simpleMessage("فترة مخصصة"),
     "databaseError": MessageLookupByLibrary.simpleMessage(
       "حدث خطأ في قاعدة البيانات.",
@@ -89,9 +88,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "emailAlreadyInUse": MessageLookupByLibrary.simpleMessage(
       "البريد الإلكتروني مسجل بالفعل.",
     ),
-    "emptyConfirmPassword": MessageLookupByLibrary.simpleMessage(
-      "لا يمكن أن يكون تأكيد كلمة المرور فارغًا",
-    ),
     "emptyEmail": MessageLookupByLibrary.simpleMessage(
       "لا يمكن أن يكون البريد الإلكتروني فارغًا",
     ),
@@ -108,6 +104,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "تمكين تسجيل الدخول عبر البيانات الحيوية",
     ),
     "endDate": MessageLookupByLibrary.simpleMessage("تاريخ الانتهاء"),
+    "exchangeRateServiceError": MessageLookupByLibrary.simpleMessage(
+      "تعذّر تحميل أسعار الصرف حالياً. يرجى المحاولة مرة أخرى.",
+    ),
     "expense": MessageLookupByLibrary.simpleMessage("مصاريف"),
     "fieldCannotBeEmpty": MessageLookupByLibrary.simpleMessage(
       "لا يمكن أن يكون هذا الحقل فارغًا",
@@ -126,6 +125,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "haveAccount": MessageLookupByLibrary.simpleMessage("هل لديك حساب بالفعل؟"),
     "income": MessageLookupByLibrary.simpleMessage("دخل"),
+    "internetRequiredFirstLaunch": MessageLookupByLibrary.simpleMessage(
+      "يتطلب هذا التطبيق اتصالاً بالإنترنت عند التشغيل الأول.",
+    ),
     "invalidCredential": MessageLookupByLibrary.simpleMessage(
       "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
     ),
@@ -181,7 +183,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "كلمات المرور لا تتطابق",
     ),
     "paymentMethod": MessageLookupByLibrary.simpleMessage("طريقة الدفع"),
-    "paypal": MessageLookupByLibrary.simpleMessage("بايبال"),
     "processingButton": MessageLookupByLibrary.simpleMessage(
       "جارِ المعالجة...",
     ),
@@ -208,6 +209,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "saveTransaction": MessageLookupByLibrary.simpleMessage("حفظ المعاملة"),
     "scan": MessageLookupByLibrary.simpleMessage("مسح"),
     "seeAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
+    "selectCurrency": MessageLookupByLibrary.simpleMessage("اختر العملة"),
     "selectDateRange": MessageLookupByLibrary.simpleMessage(
       "اختر الفترة الزمنية",
     ),
@@ -253,7 +255,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "type": MessageLookupByLibrary.simpleMessage("النوع"),
     "unknownError": MessageLookupByLibrary.simpleMessage("حدث خطأ غير متوقع."),
     "unknownWallet": MessageLookupByLibrary.simpleMessage("غير معروف"),
-    "unlock": MessageLookupByLibrary.simpleMessage("إلغاء القفل"),
     "userDisabled": MessageLookupByLibrary.simpleMessage(
       "تم تعطيل حساب المستخدم هذا.",
     ),

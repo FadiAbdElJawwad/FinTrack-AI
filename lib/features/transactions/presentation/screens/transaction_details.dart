@@ -1,6 +1,7 @@
 import 'package:fin_track_ai/core/services/share_service.dart';
 import '../../../../core/extension/app_sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constant/color_manager.dart';
@@ -11,91 +12,86 @@ import '../state/transaction_controller.dart';
 import '../utils/transaction_ui_extension.dart';
 import '../widgets/add_transaction_bottom_sheet.dart';
 
-class TransactionDetails extends StatefulHookConsumerWidget {
+class TransactionDetails extends HookConsumerWidget {
   final String transactionId;
   const TransactionDetails({super.key, required this.transactionId});
 
   @override
-  ConsumerState<TransactionDetails> createState() => _TransactionDetailsState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = useState<bool>(false);
+    final isSharing = useState<bool>(false);
+    final receiptKey = useMemoized(() => GlobalKey());
 
-class _TransactionDetailsState extends ConsumerState<TransactionDetails> {
-  bool _isLoading = false;
-  bool _isSharing = false;
-  final GlobalKey _receiptKey = GlobalKey();
-
-  Future<void> _shareTransactionImage(String title) async {
-    setState(() => _isSharing = true);
-    try {
-      await ShareService.shareWidgetAsImage(
-        key: _receiptKey,
-        fileName: 'transaction_receipt.png',
-        pixelRatio: MediaQuery.of(context).devicePixelRatio,
-        text: '${context.loc.transactionDetails}: $title',
-      );
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error sharing receipt: $e')));
-      }
-    } finally {
-      if (mounted) setState(() => _isSharing = false);
-    }
-  }
-
-  Future<void> _handleDelete() async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(context.loc.deleteTransaction),
-        content: Text(context.loc.deleteConfirm),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(context.loc.cancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(
-              context.loc.delete,
-              style: const TextStyle(color: ColorManager.errorColor),
-            ),
-          ),
-        ],
-      ),
-    );
-
-    if (confirm == true) {
-      setState(() => _isLoading = true);
+    Future<void> shareTransactionImage(String title) async {
+      isSharing.value = true;
       try {
-        await ref
-            .read(transactionControllerProvider.notifier)
-            .deleteTransaction(widget.transactionId);
-        if (mounted) {
-          Navigator.pop(context);
-        }
+        await ShareService.shareWidgetAsImage(
+          key: receiptKey,
+          fileName: 'transaction_receipt.png',
+          pixelRatio: MediaQuery.of(context).devicePixelRatio,
+          text: '${context.loc.transactionDetails}: $title',
+        );
       } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error deleting transaction: $e')),
-          );
+        if (context.mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Error sharing receipt: $e')));
         }
       } finally {
-        if (mounted) setState(() => _isLoading = false);
+        if (context.mounted) isSharing.value = false;
       }
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
+    Future<void> handleDelete() async {
+      final confirm = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(context.loc.deleteTransaction),
+          content: Text(context.loc.deleteConfirm),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(context.loc.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(
+                context.loc.delete,
+                style: const TextStyle(color: ColorManager.errorColor),
+              ),
+            ),
+          ],
+        ),
+      );
+
+      if (confirm == true) {
+        isLoading.value = true;
+        try {
+          await ref
+              .read(transactionControllerProvider.notifier)
+              .deleteTransaction(transactionId);
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+        } catch (e) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error deleting transaction: $e')),
+            );
+          }
+        } finally {
+          if (context.mounted) isLoading.value = false;
+        }
+      }
+    }
+
     final transactionsAsyncValue = ref.watch(transactionControllerProvider);
     final walletsAsyncValue = ref.watch(walletControllerProvider);
 
     return transactionsAsyncValue.when(
       data: (transactions) {
         final transaction = transactions
-            .where((tx) => tx.id == widget.transactionId)
+            .where((tx) => tx.id == transactionId)
             .firstOrNull;
 
         if (transaction == null) {
@@ -120,7 +116,7 @@ class _TransactionDetailsState extends ConsumerState<TransactionDetails> {
             title: Text(context.loc.transactionDetails),
             centerTitle: true,
             actions: [
-              _isSharing
+              isSharing.value
                   ? const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       child: Center(
@@ -133,12 +129,12 @@ class _TransactionDetailsState extends ConsumerState<TransactionDetails> {
                     )
                   : IconButton(
                       onPressed: () =>
-                          _shareTransactionImage(transaction.title),
+                          shareTransactionImage(transaction.title),
                       icon: const Icon(Icons.share),
                     ),
             ],
           ),
-          bottomNavigationBar: _isLoading
+          bottomNavigationBar: isLoading.value
               ? const SizedBox(
                   height: 100,
                   child: Center(child: CircularProgressIndicator()),
@@ -183,7 +179,7 @@ class _TransactionDetailsState extends ConsumerState<TransactionDetails> {
                       ),
                     ),
                     TextButton(
-                      onPressed: _handleDelete,
+                      onPressed: handleDelete,
                       child: Text(
                         context.loc.delete,
                         style: context.labelLarge.copyWith(
@@ -196,7 +192,7 @@ class _TransactionDetailsState extends ConsumerState<TransactionDetails> {
           body: SafeArea(
             child: SingleChildScrollView(
               child: RepaintBoundary(
-                key: _receiptKey,
+                key: receiptKey,
                 child: Container(
                   color: Theme.of(context).scaffoldBackgroundColor,
                   padding: const EdgeInsets.all(20),

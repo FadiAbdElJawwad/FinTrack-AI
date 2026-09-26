@@ -69,7 +69,6 @@ class AuthRepository implements AuthRepositoryInterface {
           'photoUrl': userCredential.user!.photoURL,
           'uid': userCredential.user!.uid,
           'baseCurrency': 'USD',
-          'totalBalance': 0.0,
         });
       }
 

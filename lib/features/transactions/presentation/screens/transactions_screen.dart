@@ -1,5 +1,3 @@
-import 'package:fin_track_ai/core/routing/app_routes.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,8 +7,8 @@ import '../../../../core/extension/text_style_extension.dart';
 import '../../../dashboard/presentation/state/dashboard_controller.dart';
 import '../state/transaction_filters_provider.dart';
 import '../../../transactions/domain/models/transaction_model.dart';
-import '../utils/transaction_ui_extension.dart';
 import '../widgets/date_range_bottom_sheet.dart';
+import '../widgets/transaction_list_tile.dart';
 
 class TransactionsScreen extends HookConsumerWidget {
   const TransactionsScreen({super.key});
@@ -178,44 +176,8 @@ class TransactionsScreen extends HookConsumerWidget {
                               separatorBuilder: (context, index) =>
                                   context.addVerticalSpace(8),
                               itemBuilder: (context, index) {
-                                final tx = group.value[index];
-                                return GestureDetector(
-                                  onTap: () {
-                                    context.pushNamed(
-                                      AppRoutes.transactionDetailsName,
-                                      pathParameters: {'id': tx.id!},
-                                    );
-                                  },
-                                  child: Card(
-                                    child: ListTile(
-                                      leading: Card(
-                                        color: ColorManager.primaryBlue
-                                            .withValues(alpha: 0.1),
-                                        shape: const StadiumBorder(),
-                                        elevation: 0,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Icon(tx.categoryIcon),
-                                        ),
-                                      ),
-                                      title: Text(
-                                        tx.title,
-                                        style: context.labelMedium,
-                                      ),
-                                      subtitle: Text(
-                                        tx.formattedDate,
-                                        style: context.labelSmall.copyWith(
-                                          color: ColorManager.secondaryColor,
-                                        ),
-                                      ),
-                                      trailing: Text(
-                                        tx.formattedAmount,
-                                        style: context.labelMedium.copyWith(
-                                          color: tx.amountColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                return TransactionListTile(
+                                  transaction: group.value[index],
                                 );
                               },
                             ),

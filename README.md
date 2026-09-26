@@ -264,16 +264,12 @@ flutter pub get
    - **Android**: `google-services.json` → Place in `android/app/`
 
 ### Step 4: Environment Configuration
-1. Copy `.env.example` to `.env`
-   ```bash
-   cp .env.example .env
-   ```
-2. Add your configuration values:
-   ```
-   GEMINI_API_KEY=your_gemini_api_key
-   FIREBASE_PROJECT_ID=your_firebase_project_id
-   GOOGLE_OAUTH_CLIENT_ID=your_google_oauth_client_id
-   ```
+
+Secrets and environment variables are injected via `--dart-define` flags at build/run time.
+
+Required variables (see `.env.example` for reference):
+- `APPS_SCRIPT_PROXY_URL`: Google Apps Script proxy endpoint
+- `APP_SHARED_SECRET`: Shared secret for proxy authentication
 
 ### Step 5: Generate Code
 ```bash
@@ -284,17 +280,25 @@ flutter pub run build_runner build --delete-conflicting-outputs
 
 **Development (Debug Mode)**
 ```bash
-flutter run
+flutter run \
+  --dart-define=APPS_SCRIPT_PROXY_URL=your_proxy_url \
+  --dart-define=APP_SHARED_SECRET=your_shared_secret
 ```
 
 **Release Mode**
 ```bash
 # iOS
-flutter build ios --release
+flutter build ios --release \
+  --dart-define=APPS_SCRIPT_PROXY_URL=your_proxy_url \
+  --dart-define=APP_SHARED_SECRET=your_shared_secret
 
 # Android
-flutter build apk --release
-flutter build appbundle --release
+flutter build apk --release \
+  --dart-define=APPS_SCRIPT_PROXY_URL=your_proxy_url \
+  --dart-define=APP_SHARED_SECRET=your_shared_secret
+flutter build appbundle --release \
+  --dart-define=APPS_SCRIPT_PROXY_URL=your_proxy_url \
+  --dart-define=APP_SHARED_SECRET=your_shared_secret
 ```
 
 ---

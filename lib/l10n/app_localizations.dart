@@ -194,12 +194,6 @@ abstract class AppLocalizations {
   /// **'Password'**
   String get password;
 
-  /// No description provided for @confirmPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm Password'**
-  String get confirmPassword;
-
   /// No description provided for @fullName.
   ///
   /// In en, this message translates to:
@@ -320,12 +314,6 @@ abstract class AppLocalizations {
   /// **'New password cannot be the same as the current password'**
   String get passwordSameAsCurrent;
 
-  /// No description provided for @emptyConfirmPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm Password cannot be empty'**
-  String get emptyConfirmPassword;
-
   /// No description provided for @passwordsDoNotMatch.
   ///
   /// In en, this message translates to:
@@ -433,12 +421,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign in with another account'**
   String get signInWithAnotherAccount;
-
-  /// No description provided for @unlock.
-  ///
-  /// In en, this message translates to:
-  /// **'Unlock'**
-  String get unlock;
 
   /// No description provided for @googleSignInCanceled.
   ///
@@ -620,12 +602,6 @@ abstract class AppLocalizations {
   /// **'Payment Method'**
   String get paymentMethod;
 
-  /// No description provided for @bankAccount.
-  ///
-  /// In en, this message translates to:
-  /// **'Bank Account'**
-  String get bankAccount;
-
   /// No description provided for @type.
   ///
   /// In en, this message translates to:
@@ -739,30 +715,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'+ More'**
   String get more;
-
-  /// No description provided for @bank.
-  ///
-  /// In en, this message translates to:
-  /// **'Bank'**
-  String get bank;
-
-  /// No description provided for @cash.
-  ///
-  /// In en, this message translates to:
-  /// **'Cash'**
-  String get cash;
-
-  /// No description provided for @paypal.
-  ///
-  /// In en, this message translates to:
-  /// **'PayPal'**
-  String get paypal;
-
-  /// No description provided for @creditCard.
-  ///
-  /// In en, this message translates to:
-  /// **'Credit Card'**
-  String get creditCard;
 
   /// No description provided for @sessionExpired.
   ///
@@ -913,6 +865,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown'**
   String get unknownWallet;
+
+  /// No description provided for @selectCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Currency'**
+  String get selectCurrency;
+
+  /// No description provided for @currencyChangeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency updated successfully.'**
+  String get currencyChangeSuccess;
+
+  /// No description provided for @currencyChangeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update currency:'**
+  String get currencyChangeFailed;
+
+  /// No description provided for @internetRequiredFirstLaunch.
+  ///
+  /// In en, this message translates to:
+  /// **'This app requires an internet connection on first launch.'**
+  String get internetRequiredFirstLaunch;
+
+  /// No description provided for @exchangeRateServiceError.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load exchange rates right now. Please try again.'**
+  String get exchangeRateServiceError;
 }
 
 class _AppLocalizationsDelegate

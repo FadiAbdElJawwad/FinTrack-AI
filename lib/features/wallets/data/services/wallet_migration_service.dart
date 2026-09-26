@@ -32,6 +32,24 @@ class WalletMigrationService {
   final FirebaseFirestore firestore;
   final FirebaseAuth auth;
 
+  static const List<WalletModel> _defaultSecondaryWallets = [
+    WalletModel(
+      name: 'Bank Account',
+      icon: 'account_balance',
+      isDefault: false,
+    ),
+    WalletModel(
+      name: 'PayPal',
+      icon: 'account_balance_wallet',
+      isDefault: false,
+    ),
+    WalletModel(
+      name: 'Other',
+      icon: 'more_horiz',
+      isDefault: false,
+    ),
+  ];
+
   Future<void> runIfNeeded() async {
     final wallets = await repository.getWalletsStream().first;
 
@@ -43,25 +61,7 @@ class WalletMigrationService {
       );
       final walletId = await repository.addWallet(cashWallet);
 
-      final otherWallets = [
-        const WalletModel(
-          name: 'Bank Account',
-          icon: 'account_balance',
-          isDefault: false,
-        ),
-        const WalletModel(
-          name: 'PayPal',
-          icon: 'account_balance_wallet',
-          isDefault: false,
-        ),
-        const WalletModel(
-          name: 'Other',
-          icon: 'more_horiz',
-          isDefault: false,
-        ),
-      ];
-
-      for (final w in otherWallets) {
+      for (final w in _defaultSecondaryWallets) {
         await repository.addWallet(w);
       }
 
@@ -103,25 +103,7 @@ class WalletMigrationService {
     } else if (wallets.length == 1 &&
         wallets.first.name == 'Cash' &&
         wallets.first.isDefault == true) {
-      final otherWallets = [
-        const WalletModel(
-          name: 'Bank Account',
-          icon: 'account_balance',
-          isDefault: false,
-        ),
-        const WalletModel(
-          name: 'PayPal',
-          icon: 'account_balance_wallet',
-          isDefault: false,
-        ),
-        const WalletModel(
-          name: 'Other',
-          icon: 'more_horiz',
-          isDefault: false,
-        ),
-      ];
-
-      for (final w in otherWallets) {
+      for (final w in _defaultSecondaryWallets) {
         await repository.addWallet(w);
       }
     }

@@ -10,6 +10,7 @@ import '../../../../core/extension/string_validation.dart';
 import '../../../../core/extension/snackbar_extension.dart';
 import '../../../../core/error/auth_exception.dart';
 import '../../../../core/error/auth_exception_extension.dart';
+import '../../../../core/widgets/loading_overlay.dart';
 import '../state/reset_password_controller.dart';
 
 class ResetPassword extends HookConsumerWidget {
@@ -118,12 +119,7 @@ class ResetPassword extends HookConsumerWidget {
               ),
             ),
           ),
-          if (authState.isLoading)
-            Container(
-              color: Colors.black54,
-              alignment: Alignment.center,
-              child: const CircularProgressIndicator(),
-            ),
+          if (authState.isLoading) const LoadingOverlay(),
         ],
       ),
     );

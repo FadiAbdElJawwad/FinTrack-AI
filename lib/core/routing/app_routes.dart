@@ -7,7 +7,6 @@ class AppRoutes {
   static const String lockScreen = '/lockScreen';
   static const String homeScreen = '/homeScreen';
   static const String transactionsScreen = '/transactionsScreen';
-  static const String transactionDetails = '/transactionDetails';
   static const String transactionDetailsWithId = '/transactionDetails/:id';
   static const String voiceEntry = '/voiceEntry';
 
