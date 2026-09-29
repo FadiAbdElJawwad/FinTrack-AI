@@ -11,7 +11,7 @@ Portfolio-grade Flutter finance tracker. Quality metric = architectural clarity,
 
 ## Layout
 - `lib/core/{constant,error,extension,providers,routing,services,theme,widgets}/`
-- `lib/features/<feature>/{domain,data,presentation}/` — features: `auth`, `currency`, `dashboard`, `transactions`, `wallets`.
+- `lib/features/<feature>/{domain,data,presentation}/` — features: `auth`, `currency`, `dashboard`, `transactions`, `wallets` (`dashboard` has `presentation/` only).
 - `lib/l10n/`, `lib/generated/`
 
 ## Dependency rules (hard)

@@ -1,5 +1,5 @@
 name: fin_track_ai
-description: "A new Flutter project."
+description: "AI-powered personal finance tracker built with Flutter, Clean Architecture, Riverpod, and Firebase."
 publish_to: 'none'
 
 version: 1.0.0+1
