@@ -1,7 +1,10 @@
 import '../../../../core/error/ai_parsing_exception.dart';
 import '../models/transaction_model.dart';
 
-TransactionDraft parseGeminiTransaction(Map<String, dynamic> result) {
+TransactionDraft parseGeminiTransaction(
+  Map<String, dynamic> result, {
+  DateTime? now,
+}) {
   final rawAmount = result['amount'];
   double? amount;
   if (rawAmount is num) {
@@ -39,7 +42,7 @@ TransactionDraft parseGeminiTransaction(Map<String, dynamic> result) {
   if (dateStr != null && dateStr.isNotEmpty) {
     date = DateTime.tryParse(dateStr);
   }
-  date ??= DateTime.now();
+  date ??= now ?? DateTime.now();
 
   return TransactionDraft(
     amount: amount,

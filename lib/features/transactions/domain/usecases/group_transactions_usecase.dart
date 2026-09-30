@@ -1,9 +1,10 @@
 import '../models/transaction_model.dart';
 
 Map<String, List<TransactionModel>> groupTransactions(
-  List<TransactionModel> txs,
-) {
-  final now = DateTime.now();
+  List<TransactionModel> txs, {
+  DateTime? now,
+}) {
+  now ??= DateTime.now();
   final today = DateTime(now.year, now.month, now.day);
   final yesterday = today.subtract(const Duration(days: 1));
   final startOfMonth = DateTime(now.year, now.month, 1);
