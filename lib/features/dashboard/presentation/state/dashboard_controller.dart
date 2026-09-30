@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../transactions/presentation/state/transaction_controller.dart';
 import '../../../transactions/domain/usecases/group_transactions_usecase.dart';
-import '../../../transactions/domain/models/transaction_model.dart';
+import '../../../transactions/domain/usecases/calculate_totals_usecase.dart';
 import '../states/dashboard_state.dart';
 
 final dashboardControllerProvider =
@@ -9,22 +9,13 @@ final dashboardControllerProvider =
       final transactionsAsync = ref.watch(transactionControllerProvider);
 
       return transactionsAsync.whenData((transactions) {
-        double income = 0.0;
-        double expense = 0.0;
-
-        for (final tx in transactions) {
-          if (tx.type == TransactionType.income) {
-            income += tx.amount;
-          } else {
-            expense += tx.amount;
-          }
-        }
+        final totals = calculateTotals(transactions);
 
         return DashboardState(
           groupedTransactions: groupTransactions(transactions),
-          totalIncome: income,
-          totalExpense: expense,
-          currentBalance: income - expense,
+          totalIncome: totals.income,
+          totalExpense: totals.expense,
+          currentBalance: totals.balance,
         );
       });
     });
