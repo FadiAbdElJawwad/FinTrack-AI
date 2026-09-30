@@ -1,11 +1,13 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../dashboard/presentation/state/dashboard_controller.dart';
 import '../state/transaction_filters_provider.dart';
+import '../utils/error_message.dart';
 import '../../../transactions/domain/models/transaction_model.dart';
 import '../widgets/date_range_bottom_sheet.dart';
 import '../widgets/transaction_list_tile.dart';
@@ -29,7 +31,7 @@ class TransactionsScreen extends HookConsumerWidget {
       body: dashboardState.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) =>
-            Center(child: Text('Error: ${error.toString()}')),
+            Center(child: Text(errorMessage(context, error))),
         data: (state) {
           return SafeArea(
             child: Column(

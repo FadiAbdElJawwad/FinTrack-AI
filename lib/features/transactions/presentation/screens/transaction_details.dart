@@ -1,14 +1,18 @@
 import 'package:fin_track_ai/core/services/share_service.dart';
+
 import '../../../../core/extension/app_sizes.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../wallets/domain/models/wallet_model.dart';
 import '../../../wallets/presentation/state/wallet_controller.dart';
 import '../state/transaction_controller.dart';
+import '../utils/error_message.dart';
 import '../utils/transaction_ui_extension.dart';
 import '../widgets/add_transaction_bottom_sheet.dart';
 
@@ -75,9 +79,9 @@ class TransactionDetails extends HookConsumerWidget {
           }
         } catch (e) {
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error deleting transaction: $e')),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(errorMessage(context, e))));
           }
         } finally {
           if (context.mounted) isLoading.value = false;
@@ -104,7 +108,8 @@ class TransactionDetails extends HookConsumerWidget {
           data: (wallets) {
             final wallet = wallets.firstWhere(
               (w) => w.id == transaction.walletId,
-              orElse: () => WalletModel(name: context.loc.unknownWallet, icon: ''),
+              orElse: () =>
+                  WalletModel(name: context.loc.unknownWallet, icon: ''),
             );
             return wallet.name;
           },
@@ -128,8 +133,7 @@ class TransactionDetails extends HookConsumerWidget {
                       ),
                     )
                   : IconButton(
-                      onPressed: () =>
-                          shareTransactionImage(transaction.title),
+                      onPressed: () => shareTransactionImage(transaction.title),
                       icon: const Icon(Icons.share),
                     ),
             ],
@@ -225,9 +229,8 @@ class TransactionDetails extends HookConsumerWidget {
                       ),
                       context.addVerticalSpace(8),
                       Text(
-                        DateFormat(
-                          'EEEE, dd MMMM yyyy, hh:mm a',
-                        ).format(transaction.date),
+                        DateFormat('EEEE, dd MMMM yyyy, hh:mm a')
+                            .format(transaction.date),
                         style: context.bodyMedium,
                       ),
                       context.addVerticalSpace(40),
@@ -271,7 +274,7 @@ class TransactionDetails extends HookConsumerWidget {
           const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (e, st) => Scaffold(
         appBar: AppBar(),
-        body: Center(child: Text('Error: ${e.toString()}')),
+        body: Center(child: Text(errorMessage(context, e))),
       ),
     );
   }

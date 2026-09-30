@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../core/error/wallet_exception.dart';
 import '../../../../core/providers/firebase_providers.dart';
 
 /// Owns all direct Firestore reads/writes for wallets.
@@ -24,7 +25,10 @@ class WalletRemoteDataSource {
   String get _userId {
     final user = _auth.currentUser;
     if (user == null) {
-      throw Exception('User must be logged in to perform wallet operations.');
+      throw WalletException(
+        WalletErrorType.notAuthenticated,
+        message: 'User must be logged in to perform wallet operations.',
+      );
     }
     return user.uid;
   }
@@ -43,12 +47,7 @@ class WalletRemoteDataSource {
   Future<List<({String id, bool isDefault})>> fetchAll() async {
     final snapshot = await _walletsDb.get();
     return snapshot.docs
-        .map(
-          (doc) => (
-            id: doc.id,
-            isDefault: doc.data()['isDefault'] == true,
-          ),
-        )
+        .map((doc) => (id: doc.id, isDefault: doc.data()['isDefault'] == true))
         .toList();
   }
 
@@ -56,8 +55,8 @@ class WalletRemoteDataSource {
 
   /// Streams raw document maps as stored on Firestore.
   Stream<List<Map<String, dynamic>>> watchAll() {
-    return _walletsDb
-        .snapshots()
-        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+    return _walletsDb.snapshots().map(
+      (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
+    );
   }
 }

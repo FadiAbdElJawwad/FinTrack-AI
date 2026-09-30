@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../core/error/transaction_exception.dart';
 import '../../../../core/providers/firebase_providers.dart';
 
 /// Owns all direct Firestore reads/writes for transactions.
@@ -24,8 +25,9 @@ class TxRemoteDataSource {
   String get _userId {
     final user = _auth.currentUser;
     if (user == null) {
-      throw Exception(
-        'User must be logged in to perform transaction operations.',
+      throw TransactionException(
+        TransactionErrorType.notAuthenticated,
+        message: 'User must be logged in to perform transaction operations.',
       );
     }
     return user.uid;
