@@ -72,6 +72,20 @@ void main() {
       expect(parse({'type': 'InCoMe'}).type, TransactionType.income);
     });
 
+    test('type with surrounding whitespace parses as income', () {
+      expect(parse({'type': ' INCOME'}).type, TransactionType.income);
+      expect(parse({'type': '\tincome\n'}).type, TransactionType.income);
+    });
+
+    test('negative Infinity string amount throws', () {
+      expectSchemaFailure({'amount': '-Infinity'});
+    });
+
+    test('non-finite num amount throws', () {
+      expectSchemaFailure({'amount': double.nan});
+      expectSchemaFailure({'amount': double.infinity});
+    });
+
     test('missing type falls back to expense', () {
       final input = <String, dynamic>{'amount': 10};
       expect(
@@ -159,25 +173,16 @@ void main() {
     test(
       'NaN string amount must throw',
       () => expectSchemaFailure({'amount': 'NaN'}),
-      skip:
-          'Known bug: double.tryParse("NaN") yields NaN, which passes the '
-          '<= 0 check',
     );
 
     test(
       'Infinity string amount must throw',
       () => expectSchemaFailure({'amount': 'Infinity'}),
-      skip:
-          'Known bug: double.tryParse("Infinity") yields infinity, which '
-          'passes the <= 0 check',
     );
 
     test(
       'type with trailing space parses as income',
       () => expect(parse({'type': 'Income '}).type, TransactionType.income),
-      skip:
-          'Known bug: type string is not trimmed, "Income " falls back to '
-          'expense',
     );
   });
 }

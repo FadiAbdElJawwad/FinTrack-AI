@@ -13,14 +13,14 @@ TransactionDraft parseGeminiTransaction(
     amount = double.tryParse(rawAmount);
   }
 
-  if (amount == null || amount <= 0) {
+  if (amount == null || !amount.isFinite || amount <= 0) {
     throw AiParsingException(
       AiParsingErrorType.schemaValidationFailed,
       message: 'Invalid or missing amount',
     );
   }
 
-  final typeStr = result['type']?.toString().toLowerCase();
+  final typeStr = result['type']?.toString().trim().toLowerCase();
   final type = (typeStr == 'income')
       ? TransactionType.income
       : TransactionType.expense;
