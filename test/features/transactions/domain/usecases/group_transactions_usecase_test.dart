@@ -90,33 +90,95 @@ void main() {
     });
   });
 
-  group('groupTransactions known bugs', () {
-    test(
-      'transaction from a previous month must not disappear',
-      () {
-        final g = groupTransactions([
-          tx('old', DateTime(2024, 3, 10)),
-        ], now: now);
-        final all = g.values.expand((l) => l).map((t) => t.id);
-        expect(all, contains('old'));
-      },
-      skip:
-          'Known bug: transactions before the start of the month get no '
-          'group and are dropped',
-    );
+  group('groupTransactions new groups', () {
+    test('future transaction in the next month is UPCOMING', () {
+      final g = groupTransactions([tx('a', DateTime(2024, 6, 20))], now: now);
+      expect(g.keys, ['UPCOMING']);
+    });
 
-    test(
-      'future transaction in the next month is not THIS MONTH',
-      () {
-        final g = groupTransactions([
-          tx('future', DateTime(2024, 6, 20)),
-        ], now: now);
-        expect(g['THIS MONTH'] ?? const [], isEmpty);
-      },
-      skip:
-          'Known bug: any date after the start of the month, including '
-          'future months, is grouped as THIS MONTH',
-    );
+    test('first instant of next month is UPCOMING', () {
+      final g = groupTransactions([tx('a', DateTime(2024, 6, 1))], now: now);
+      expect(g.keys, ['UPCOMING']);
+    });
+
+    test('last instant of this month is THIS MONTH', () {
+      final g = groupTransactions([
+        tx('a', DateTime(2024, 5, 31, 23, 59, 59)),
+      ], now: now);
+      expect(g.keys, ['THIS MONTH']);
+    });
+
+    test('transaction from a previous month is EARLIER', () {
+      final g = groupTransactions([
+        tx('a', DateTime(2024, 4, 30, 23, 59)),
+      ], now: now);
+      expect(g.keys, ['EARLIER']);
+    });
+
+    test('transaction from a previous year is EARLIER', () {
+      final g = groupTransactions([tx('a', DateTime(2023, 12, 31))], now: now);
+      expect(g.keys, ['EARLIER']);
+    });
+
+    test('December now treats January of next year as UPCOMING', () {
+      final dec = DateTime(2024, 12, 15, 10);
+      final g = groupTransactions([tx('a', DateTime(2025, 1, 1))], now: dec);
+      expect(g.keys, ['UPCOMING']);
+    });
+
+    test('group keys follow the fixed order', () {
+      final g = groupTransactions([
+        tx('earlier', DateTime(2024, 3, 1)),
+        tx('month', DateTime(2024, 5, 3)),
+        tx('yesterday', DateTime(2024, 5, 14, 12)),
+        tx('today', DateTime(2024, 5, 15, 8)),
+        tx('upcoming', DateTime(2024, 7, 1)),
+      ], now: now);
+      expect(g.keys, [
+        'UPCOMING',
+        'TODAY',
+        'YESTERDAY',
+        'THIS MONTH',
+        'EARLIER',
+      ]);
+    });
+
+    test('every transaction lands in exactly one group', () {
+      final input = [
+        for (var i = 0; i < 400; i++)
+          tx('t$i', DateTime(2023, 11, 1).add(Duration(hours: i * 37))),
+      ];
+      final g = groupTransactions(input, now: now);
+      final grouped = g.values.expand((l) => l).toList();
+      expect(grouped.length, input.length);
+      expect(grouped.map((t) => t.id).toSet().length, input.length);
+    });
+
+    test('order inside EARLIER and UPCOMING is preserved', () {
+      final g = groupTransactions([
+        tx('e2', DateTime(2024, 3, 5)),
+        tx('u2', DateTime(2024, 8, 1)),
+        tx('e1', DateTime(2024, 1, 5)),
+        tx('u1', DateTime(2024, 7, 1)),
+      ], now: now);
+      expect(ids(g, 'EARLIER'), ['e2', 'e1']);
+      expect(ids(g, 'UPCOMING'), ['u2', 'u1']);
+    });
+  });
+
+  group('groupTransactions known bugs', () {
+    test('transaction from a previous month must not disappear', () {
+      final g = groupTransactions([tx('old', DateTime(2024, 3, 10))], now: now);
+      final all = g.values.expand((l) => l).map((t) => t.id);
+      expect(all, contains('old'));
+    });
+
+    test('future transaction in the next month is not THIS MONTH', () {
+      final g = groupTransactions([
+        tx('future', DateTime(2024, 6, 20)),
+      ], now: now);
+      expect(g['THIS MONTH'] ?? const [], isEmpty);
+    });
 
     test(
       'yesterday across a DST change is still YESTERDAY',
