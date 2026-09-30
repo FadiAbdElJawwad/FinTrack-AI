@@ -15,6 +15,19 @@ final walletMigrationProvider = Provider<WalletMigrationService>((ref) {
   );
 });
 
+/// Runs [WalletMigrationService.runIfNeeded] at most once per uid per app
+/// process.
+///
+/// Deliberately not autoDispose: the result must survive controller dispose
+/// and rebuild. Consumers must `ref.read(provider(uid).future)` and, on
+/// failure, `ref.invalidate(provider(uid))` so the next rebuild retries.
+final walletMigrationRunProvider = FutureProvider.family<void, String>((
+  ref,
+  uid,
+) {
+  return ref.read(walletMigrationProvider).runIfNeeded();
+});
+
 /// Seeds default wallets on first launch and backfills legacy transactions
 /// that predate wallet support.
 ///
@@ -43,14 +56,19 @@ class WalletMigrationService {
       icon: 'account_balance_wallet',
       isDefault: false,
     ),
-    WalletModel(
-      name: 'Other',
-      icon: 'more_horiz',
-      isDefault: false,
-    ),
+    WalletModel(name: 'Other', icon: 'more_horiz', isDefault: false),
   ];
 
+  /// Wraps [_migrate] so Firebase errors surface as [WalletException].
   Future<void> runIfNeeded() async {
+    try {
+      await _migrate();
+    } catch (e, st) {
+      Error.throwWithStackTrace(translateWalletError(e), st);
+    }
+  }
+
+  Future<void> _migrate() async {
     final wallets = await repository.getWalletsStream().first;
 
     if (wallets.isEmpty) {

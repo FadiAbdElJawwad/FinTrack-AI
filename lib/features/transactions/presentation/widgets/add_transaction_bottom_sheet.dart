@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
@@ -13,6 +14,7 @@ import '../../../currency/presentation/state/currency_controller.dart';
 import '../../../wallets/presentation/state/wallet_controller.dart';
 import '../state/transaction_controller.dart';
 import '../utils/transaction_category_extension.dart';
+import '../utils/error_message.dart';
 import 'amount_input_area.dart';
 import 'category_selector.dart';
 import 'transaction_metadata_row.dart';
@@ -32,14 +34,14 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedType = useState(
-      existingTransaction?.type ?? prefillDraft?.type ?? TransactionType.expense,
+      existingTransaction?.type ??
+          prefillDraft?.type ??
+          TransactionType.expense,
     );
     final selectedCategory = useState<TransactionCategory?>(
       existingTransaction?.category ?? prefillDraft?.category,
     );
-    final selectedWalletId = useState<String?>(
-      existingTransaction?.walletId,
-    );
+    final selectedWalletId = useState<String?>(existingTransaction?.walletId);
     final selectedDate = useState(
       existingTransaction?.date ?? prefillDraft?.date ?? DateTime.now(),
     );
@@ -58,13 +60,17 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
     final walletsAsync = ref.watch(walletControllerProvider);
     final wallets = walletsAsync.valueOrNull ?? [];
 
-    final appCurrencyCode = ref.watch(currencyControllerProvider).valueOrNull ?? 'USD';
-    final selectedInputCurrency = useState(appCurrencyFromCode(appCurrencyCode));
+    final appCurrencyCode =
+        ref.watch(currencyControllerProvider).valueOrNull ?? 'USD';
+    final selectedInputCurrency = useState(
+      appCurrencyFromCode(appCurrencyCode),
+    );
 
     useEffect(() {
       if (selectedWalletId.value == null && wallets.isNotEmpty) {
-        selectedWalletId.value = wallets.firstWhere(
-            (w) => w.isDefault, orElse: () => wallets.first).id;
+        selectedWalletId.value = wallets
+            .firstWhere((w) => w.isDefault, orElse: () => wallets.first)
+            .id;
       }
       return null;
     }, [wallets.length]);
@@ -78,7 +84,10 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
 
     final double amount = double.tryParse(amountController.text) ?? 0.0;
     final bool isFormValid =
-        amount > 0 && selectedCategory.value != null && selectedWalletId.value != null && !isLoading.value;
+        amount > 0 &&
+        selectedCategory.value != null &&
+        selectedWalletId.value != null &&
+        !isLoading.value;
 
     Future<void> handleSave() async {
       if (!isFormValid) return;
@@ -119,9 +128,8 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
         }
       } catch (e) {
         if (context.mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('Error: $e')));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(errorMessage(context, e))));
         }
       } finally {
         isLoading.value = false;
@@ -187,8 +195,10 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Text(
-                      'Failed to load wallets',
-                      style: context.labelSmall.copyWith(color: ColorManager.errorColor),
+                      errorMessage(context, walletsAsync.error!),
+                      style: context.labelSmall.copyWith(
+                        color: ColorManager.errorColor,
+                      ),
                     ),
                   ),
                 WalletSelector(
@@ -218,18 +228,17 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
                     onPressed: isFormValid ? handleSave : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorManager.primaryBlue,
-                      disabledBackgroundColor: Theme.of(context).colorScheme.onSurface.withValues(
-                        alpha: 0.05,
-                      ),
+                      disabledBackgroundColor: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.05),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
                       elevation: 0,
                     ),
                     child: isLoading.value
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
+                        ? const CircularProgressIndicator(color: Colors.white)
                         : Text(
                             existingTransaction == null
                                 ? context.loc.saveTransaction

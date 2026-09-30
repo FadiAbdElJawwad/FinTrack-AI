@@ -20,9 +20,9 @@ Portfolio-grade Flutter finance tracker. Quality metric = architectural clarity,
 - Firestore types (`DocumentSnapshot`, `Timestamp`) never leave the Data layer; map to domain entities.
 
 ## Riverpod rules
-- Riverpod is 2.6.1 and has no `ref.mounted`. After every `await` inside a Notifier, check a `_disposed` flag that is set in `ref.onDispose`. Never access provider internals through `dynamic`.
+- Riverpod is 2.6.1 and has no `ref.mounted`. After an await inside a Notifier, check a `_disposed` flag (set in `ref.onDispose`) before touching `state` or `ref`. Code that does nothing after an await needs no flag. Never access provider internals through `dynamic`.
 - Real-time Firestore data → `StreamNotifier`. No `setState`, no `StatefulWidget` for business state.
-- Optimistic updates must roll back on failure.
+- Firestore writes rely on the SDK's local cache for immediate UI updates: do not add manual optimistic state to StreamNotifiers. Repositories translate SDK errors into typed exceptions; controllers never wrap errors into strings.
 
 ## UI rules
 - **Reuse before create:** search `lib/core/widgets/` before creating any widget. If a match exists, extend it.
