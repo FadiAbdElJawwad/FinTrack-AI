@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/constant/images_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
@@ -14,6 +15,7 @@ import '../../../currency/presentation/widgets/currency_selector_dialog.dart';
 import '../widgets/home_action_card.dart';
 import '../state/dashboard_controller.dart';
 import '../widgets/home_skeleton.dart';
+import '../../../../features/transactions/presentation/utils/error_message.dart';
 import '../../../../features/transactions/presentation/widgets/add_transaction_bottom_sheet.dart';
 import '../../../../features/transactions/presentation/widgets/transaction_list_tile.dart';
 
@@ -30,21 +32,21 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dashboardState = ref.watch(dashboardControllerProvider);
-    final appCurrencyCode = ref.watch(currencyControllerProvider).valueOrNull ?? 'USD';
+    final appCurrencyCode =
+        ref.watch(currencyControllerProvider).valueOrNull ?? 'USD';
     final currencyFormat = NumberFormat.currency(
       symbol: appCurrencyFromCode(appCurrencyCode).symbol,
     );
     final user = ref.watch(currentUserProvider);
 
-
-    final userName =
-        (user == null || user.fullName.isEmpty) ? 'User' : user.fullName;
+    final userName = (user == null || user.fullName.isEmpty)
+        ? 'User'
+        : user.fullName;
 
     return Scaffold(
       appBar: AppBar(
-        leading: CircleAvatar(
-          child: Image.asset(ImagesManager.userAvatar),
-        ).padStart(20),
+        leading: CircleAvatar(child: Image.asset(ImagesManager.userAvatar))
+            .padStart(20),
         centerTitle: false,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +79,7 @@ class HomeScreen extends HookConsumerWidget {
       body: dashboardState.when(
         loading: () => const HomeSkeleton(),
         error: (error, stack) =>
-            Center(child: Text('Error: ${error.toString()}')),
+            Center(child: Text(errorMessage(context, error))),
         data: (state) => SingleChildScrollView(
           child: Column(
             children: [
