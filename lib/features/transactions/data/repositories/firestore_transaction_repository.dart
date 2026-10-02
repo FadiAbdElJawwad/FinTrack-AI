@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/error/transaction_exception.dart';
@@ -55,17 +56,40 @@ TransactionErrorType _typeForCode(String code) {
 /// Owns exception translation and domain-model mapping; Firestore specifics
 /// (queries, DocReferences, ordering) live in the data source.
 class FirestoreTransactionRepository implements TransactionRepository {
-  FirestoreTransactionRepository(this._dataSource);
+  FirestoreTransactionRepository(
+    this._dataSource, {
+    this.writeTimeout = const Duration(seconds: 3),
+  });
 
   final TxRemoteDataSource _dataSource;
 
-  @override
-  Future<void> addTransaction(TransactionModel transaction) async {
+  /// Upper bound for waiting on server acknowledgement of a write.
+  ///
+  /// Firestore applies writes to its local cache immediately, but the write
+  /// Future completes only on server acknowledgement, which never happens
+  /// offline. Fast failures (invalid data, auth) still surface as typed
+  /// errors; a timeout means the write is queued locally and will sync.
+  final Duration writeTimeout;
+
+  Future<void> _awaitWrite(Future<void> Function() write) async {
     try {
-      await _dataSource.create(transaction.toJson());
+      await write().timeout(
+        writeTimeout,
+        onTimeout: () {
+          debugPrint(
+            '[TransactionRepository] write not acknowledged within '
+            '${writeTimeout.inSeconds}s; queued locally',
+          );
+        },
+      );
     } catch (e, st) {
       Error.throwWithStackTrace(translateTransactionError(e), st);
     }
+  }
+
+  @override
+  Future<void> addTransaction(TransactionModel transaction) async {
+    await _awaitWrite(() => _dataSource.create(transaction.toJson()));
   }
 
   @override
@@ -77,20 +101,12 @@ class FirestoreTransactionRepository implements TransactionRepository {
         message: 'Transaction ID is required for updates.',
       );
     }
-    try {
-      await _dataSource.update(id, transaction.toJson());
-    } catch (e, st) {
-      Error.throwWithStackTrace(translateTransactionError(e), st);
-    }
+    await _awaitWrite(() => _dataSource.update(id, transaction.toJson()));
   }
 
   @override
   Future<void> deleteTransaction(String id) async {
-    try {
-      await _dataSource.delete(id);
-    } catch (e, st) {
-      Error.throwWithStackTrace(translateTransactionError(e), st);
-    }
+    await _awaitWrite(() => _dataSource.delete(id));
   }
 
   @override

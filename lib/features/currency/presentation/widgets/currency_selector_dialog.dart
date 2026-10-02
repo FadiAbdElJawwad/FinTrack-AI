@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/snackbar_extension.dart';
+import '../../../transactions/presentation/utils/error_message.dart';
 import '../../domain/models/app_currency.dart';
 import '../state/currency_controller.dart';
 
@@ -13,21 +14,26 @@ class CurrencySelectorDialog extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentCode = ref.watch(currencyControllerProvider).valueOrNull ?? 'USD';
+    final currentCode =
+        ref.watch(currencyControllerProvider).valueOrNull ?? 'USD';
     final isLoading = useState(false);
 
     Future<void> handleSelect(AppCurrency selected) async {
       if (selected.code == currentCode || isLoading.value) return;
       isLoading.value = true;
       try {
-        await ref.read(currencyControllerProvider.notifier).changeCurrency(selected.code);
+        await ref
+            .read(currencyControllerProvider.notifier)
+            .changeCurrency(selected.code);
         if (context.mounted) {
           context.showSuccessSnackBar(context.loc.currencyChangeSuccess);
           Navigator.pop(context);
         }
       } catch (e) {
         if (context.mounted) {
-          context.showErrorSnackBar('${context.loc.currencyChangeFailed} $e');
+          context.showErrorSnackBar(
+            '${context.loc.currencyChangeFailed} ${errorMessage(context, e)}',
+          );
         }
       } finally {
         isLoading.value = false;
@@ -51,7 +57,10 @@ class CurrencySelectorDialog extends HookConsumerWidget {
                     onTap: () => handleSelect(currency),
                     title: Text('${currency.code} (${currency.symbol})'),
                     trailing: isSelected
-                        ? const Icon(Icons.check_circle, color: ColorManager.primaryBlue)
+                        ? const Icon(
+                            Icons.check_circle,
+                            color: ColorManager.primaryBlue,
+                          )
                         : null,
                   );
                 }).toList(),
