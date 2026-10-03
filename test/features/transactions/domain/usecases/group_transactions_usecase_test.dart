@@ -1,13 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fin_track_ai/features/transactions/domain/models/transaction_model.dart';
 import 'package:fin_track_ai/features/transactions/domain/usecases/group_transactions_usecase.dart';
+import 'package:fin_track_ai/features/currency/domain/models/app_currency.dart';
 
 void main() {
   final now = DateTime(2024, 5, 15, 10, 30);
 
   TransactionModel tx(String id, DateTime date) => TransactionModel(
     id: id,
-    amount: 10,
+    amountMinor: 1000,
+    currency: AppCurrency.usd,
     type: TransactionType.expense,
     category: TransactionCategory.food,
     title: id,

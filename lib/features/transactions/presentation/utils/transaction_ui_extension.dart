@@ -1,6 +1,8 @@
 import 'package:fin_track_ai/core/constant/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../../../currency/presentation/utils/money_format.dart';
 import '../../domain/models/transaction_model.dart';
 
 extension TransactionUIExtension on TransactionModel {
@@ -9,8 +11,8 @@ extension TransactionUIExtension on TransactionModel {
       : ColorManager.errorColor;
 
   String get formattedAmount {
-    final currency = NumberFormat.currency(symbol: '\$').format(amount);
-    return type == TransactionType.income ? '+ $currency' : '- $currency';
+    final money = formatMoney(amountMinor, currency);
+    return type == TransactionType.income ? '+ $money' : '- $money';
   }
 
   String get formattedDate => DateFormat('MMM dd, hh:mm a').format(date);

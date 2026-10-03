@@ -12,38 +12,37 @@ part of 'transaction_model.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$TransactionModel {
 
- String? get id; double get amount; TransactionType get type; TransactionCategory get category; String get title;@JsonKey(fromJson: dateFromJson, toJson: dateToJson) DateTime get date;@JsonKey(defaultValue: '') String get walletId;
+ String? get id;/// Amount in minor units of [currency] (for example cents).
+ int get amountMinor;/// Currency the amount was entered in; never converted when stored.
+ AppCurrency get currency; TransactionType get type; TransactionCategory get category; String get title; DateTime get date; String get walletId;
 /// Create a copy of TransactionModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $TransactionModelCopyWith<TransactionModel> get copyWith => _$TransactionModelCopyWithImpl<TransactionModel>(this as TransactionModel, _$identity);
 
-  /// Serializes this TransactionModel to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
   final _this = this as TransactionModel;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.amount, _this.amount) || other.amount == _this.amount)&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.category, _this.category) || other.category == _this.category)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.date, _this.date) || other.date == _this.date)&&(identical(other.walletId, _this.walletId) || other.walletId == _this.walletId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.amountMinor, _this.amountMinor) || other.amountMinor == _this.amountMinor)&&(identical(other.currency, _this.currency) || other.currency == _this.currency)&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.category, _this.category) || other.category == _this.category)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.date, _this.date) || other.date == _this.date)&&(identical(other.walletId, _this.walletId) || other.walletId == _this.walletId));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode {
   final _this = this as TransactionModel;
-  return Object.hash(runtimeType,_this.id,_this.amount,_this.type,_this.category,_this.title,_this.date,_this.walletId);
+  return Object.hash(runtimeType,_this.id,_this.amountMinor,_this.currency,_this.type,_this.category,_this.title,_this.date,_this.walletId);
 }
 
 @override
 String toString() {
   final _this = this as TransactionModel;
-  return 'TransactionModel(id: ${_this.id}, amount: ${_this.amount}, type: ${_this.type}, category: ${_this.category}, title: ${_this.title}, date: ${_this.date}, walletId: ${_this.walletId})';
+  return 'TransactionModel(id: ${_this.id}, amountMinor: ${_this.amountMinor}, currency: ${_this.currency}, type: ${_this.type}, category: ${_this.category}, title: ${_this.title}, date: ${_this.date}, walletId: ${_this.walletId})';
 }
 
 
@@ -54,7 +53,7 @@ abstract mixin class $TransactionModelCopyWith<$Res>  {
   factory $TransactionModelCopyWith(TransactionModel value, $Res Function(TransactionModel) _then) = _$TransactionModelCopyWithImpl;
 @useResult
 $Res call({
- String? id, double amount, TransactionType type, TransactionCategory category, String title,@JsonKey(fromJson: dateFromJson, toJson: dateToJson) DateTime date,@JsonKey(defaultValue: '') String walletId
+ String? id, int amountMinor, AppCurrency currency, TransactionType type, TransactionCategory category, String title, DateTime date, String walletId
 });
 
 
@@ -71,11 +70,12 @@ class _$TransactionModelCopyWithImpl<$Res>
 
 /// Create a copy of TransactionModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? amount = null,Object? type = null,Object? category = null,Object? title = null,Object? date = null,Object? walletId = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? amountMinor = null,Object? currency = null,Object? type = null,Object? category = null,Object? title = null,Object? date = null,Object? walletId = null,}) {
   return _then(TransactionModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as double,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,amountMinor: null == amountMinor ? _self.amountMinor : amountMinor // ignore: cast_nullable_to_non_nullable
+as int,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as AppCurrency,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as TransactionType,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as TransactionCategory,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
@@ -165,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  double amount,  TransactionType type,  TransactionCategory category,  String title, @JsonKey(fromJson: dateFromJson, toJson: dateToJson)  DateTime date, @JsonKey(defaultValue: '')  String walletId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  int amountMinor,  AppCurrency currency,  TransactionType type,  TransactionCategory category,  String title,  DateTime date,  String walletId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TransactionModel() when $default != null:
-return $default(_that.id,_that.amount,_that.type,_that.category,_that.title,_that.date,_that.walletId);case _:
+return $default(_that.id,_that.amountMinor,_that.currency,_that.type,_that.category,_that.title,_that.date,_that.walletId);case _:
   return orElse();
 
 }
@@ -186,10 +186,10 @@ return $default(_that.id,_that.amount,_that.type,_that.category,_that.title,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  double amount,  TransactionType type,  TransactionCategory category,  String title, @JsonKey(fromJson: dateFromJson, toJson: dateToJson)  DateTime date, @JsonKey(defaultValue: '')  String walletId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  int amountMinor,  AppCurrency currency,  TransactionType type,  TransactionCategory category,  String title,  DateTime date,  String walletId)  $default,) {final _that = this;
 switch (_that) {
 case _TransactionModel():
-return $default(_that.id,_that.amount,_that.type,_that.category,_that.title,_that.date,_that.walletId);case _:
+return $default(_that.id,_that.amountMinor,_that.currency,_that.type,_that.category,_that.title,_that.date,_that.walletId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -206,10 +206,10 @@ return $default(_that.id,_that.amount,_that.type,_that.category,_that.title,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  double amount,  TransactionType type,  TransactionCategory category,  String title, @JsonKey(fromJson: dateFromJson, toJson: dateToJson)  DateTime date, @JsonKey(defaultValue: '')  String walletId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  int amountMinor,  AppCurrency currency,  TransactionType type,  TransactionCategory category,  String title,  DateTime date,  String walletId)?  $default,) {final _that = this;
 switch (_that) {
 case _TransactionModel() when $default != null:
-return $default(_that.id,_that.amount,_that.type,_that.category,_that.title,_that.date,_that.walletId);case _:
+return $default(_that.id,_that.amountMinor,_that.currency,_that.type,_that.category,_that.title,_that.date,_that.walletId);case _:
   return null;
 
 }
@@ -218,19 +218,22 @@ return $default(_that.id,_that.amount,_that.type,_that.category,_that.title,_tha
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _TransactionModel extends TransactionModel {
-  const _TransactionModel({this.id, required this.amount, required this.type, required this.category, required this.title, @JsonKey(fromJson: dateFromJson, toJson: dateToJson) required this.date, @JsonKey(defaultValue: '') required this.walletId}): super._();
-  factory _TransactionModel.fromJson(Map<String, dynamic> json) => _$TransactionModelFromJson(json);
+  const _TransactionModel({this.id, required this.amountMinor, required this.currency, required this.type, required this.category, required this.title, required this.date, required this.walletId}): super._();
+  
 
 @override final  String? id;
-@override final  double amount;
+/// Amount in minor units of [currency] (for example cents).
+@override final  int amountMinor;
+/// Currency the amount was entered in; never converted when stored.
+@override final  AppCurrency currency;
 @override final  TransactionType type;
 @override final  TransactionCategory category;
 @override final  String title;
-@override@JsonKey(fromJson: dateFromJson, toJson: dateToJson) final  DateTime date;
-@override@JsonKey(defaultValue: '') final  String walletId;
+@override final  DateTime date;
+@override final  String walletId;
 
 /// Create a copy of TransactionModel
 /// with the given fields replaced by the non-null parameter values.
@@ -238,25 +241,22 @@ class _TransactionModel extends TransactionModel {
 @pragma('vm:prefer-inline')
 _$TransactionModelCopyWith<_TransactionModel> get copyWith => __$TransactionModelCopyWithImpl<_TransactionModel>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$TransactionModelToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TransactionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.type, type) || other.type == type)&&(identical(other.category, category) || other.category == category)&&(identical(other.title, title) || other.title == title)&&(identical(other.date, date) || other.date == date)&&(identical(other.walletId, walletId) || other.walletId == walletId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TransactionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.amountMinor, amountMinor) || other.amountMinor == amountMinor)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.type, type) || other.type == type)&&(identical(other.category, category) || other.category == category)&&(identical(other.title, title) || other.title == title)&&(identical(other.date, date) || other.date == date)&&(identical(other.walletId, walletId) || other.walletId == walletId));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,amount,type,category,title,date,walletId);
+    return Object.hash(runtimeType,id,amountMinor,currency,type,category,title,date,walletId);
 }
 
 @override
 String toString() {
-    return 'TransactionModel(id: $id, amount: $amount, type: $type, category: $category, title: $title, date: $date, walletId: $walletId)';
+    return 'TransactionModel(id: $id, amountMinor: $amountMinor, currency: $currency, type: $type, category: $category, title: $title, date: $date, walletId: $walletId)';
 }
 
 
@@ -267,7 +267,7 @@ abstract mixin class _$TransactionModelCopyWith<$Res> implements $TransactionMod
   factory _$TransactionModelCopyWith(_TransactionModel value, $Res Function(_TransactionModel) _then) = __$TransactionModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, double amount, TransactionType type, TransactionCategory category, String title,@JsonKey(fromJson: dateFromJson, toJson: dateToJson) DateTime date,@JsonKey(defaultValue: '') String walletId
+ String? id, int amountMinor, AppCurrency currency, TransactionType type, TransactionCategory category, String title, DateTime date, String walletId
 });
 
 
@@ -284,11 +284,12 @@ class __$TransactionModelCopyWithImpl<$Res>
 
 /// Create a copy of TransactionModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? amount = null,Object? type = null,Object? category = null,Object? title = null,Object? date = null,Object? walletId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? amountMinor = null,Object? currency = null,Object? type = null,Object? category = null,Object? title = null,Object? date = null,Object? walletId = null,}) {
   return _then(_TransactionModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as double,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,amountMinor: null == amountMinor ? _self.amountMinor : amountMinor // ignore: cast_nullable_to_non_nullable
+as int,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as AppCurrency,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as TransactionType,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as TransactionCategory,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable

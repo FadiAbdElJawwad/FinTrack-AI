@@ -6,6 +6,7 @@ import 'package:fin_track_ai/features/transactions/data/datasources/tx_remote_da
 import 'package:fin_track_ai/features/transactions/data/repositories/firestore_transaction_repository.dart';
 import 'package:fin_track_ai/features/transactions/domain/models/transaction_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fin_track_ai/features/currency/domain/models/app_currency.dart';
 
 /// Writes are controlled by completers, so each test decides whether (and
 /// when) the "server acknowledgement" arrives.
@@ -32,7 +33,8 @@ const shortTimeout = Duration(milliseconds: 50);
 
 TransactionModel tx() => TransactionModel(
   id: 't1',
-  amount: 10,
+  amountMinor: 1000,
+  currency: AppCurrency.usd,
   type: TransactionType.expense,
   category: TransactionCategory.food,
   title: 'Lunch',
@@ -150,7 +152,8 @@ void main() {
       await expectLater(
         repo.updateTransaction(
           TransactionModel(
-            amount: 1,
+            amountMinor: 100,
+            currency: AppCurrency.usd,
             type: TransactionType.expense,
             category: TransactionCategory.food,
             title: 't',

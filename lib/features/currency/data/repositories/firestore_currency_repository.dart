@@ -6,13 +6,15 @@ import '../../domain/repositories/currency_repository.dart';
 import '../datasources/currency_remote_datasource.dart';
 
 final currencyRepositoryProvider = Provider<CurrencyRepository>((ref) {
-  return FirestoreCurrencyRepository(ref.watch(currencyRemoteDataSourceProvider));
+  return FirestoreCurrencyRepository(
+    ref.watch(currencyRemoteDataSourceProvider),
+  );
 });
 
 /// Implements [CurrencyRepository] on top of [CurrencyRemoteDataSource].
 ///
-/// Owns exception translation; Firestore specifics (batching, DocRefs) live
-/// in the data source.
+/// Owns exception translation; Firestore specifics (DocRefs) live in the
+/// data source.
 class FirestoreCurrencyRepository implements CurrencyRepository {
   FirestoreCurrencyRepository(this._dataSource);
 
@@ -23,28 +25,26 @@ class FirestoreCurrencyRepository implements CurrencyRepository {
     try {
       return _dataSource.watchBaseCurrency();
     } on FirebaseException catch (e) {
-      throw Exception('Firestore error while streaming base currency: ${e.message}');
+      throw Exception(
+        'Firestore error while streaming base currency: ${e.message}',
+      );
     } catch (e) {
       throw Exception('Unexpected error while streaming base currency: $e');
     }
   }
 
   @override
-  Future<void> changeCurrency({
-    required String from,
-    required String to,
-    required double rate,
-  }) async {
-    if (from == to) return;
+  Future<void> setBaseCurrency(String currency) async {
     try {
-      await _dataSource.reconvertTransactions(rate);
-      await _dataSource.setBaseCurrency(to);
+      await _dataSource.setBaseCurrency(currency);
     } on FirebaseException catch (e) {
-      debugPrint('[CurrencyRepository] changeCurrency FAILED. '
-          'code=${e.code} message=${e.message} plugin=${e.plugin}');
+      debugPrint(
+        '[CurrencyRepository] setBaseCurrency FAILED. '
+        'code=${e.code} message=${e.message} plugin=${e.plugin}',
+      );
       throw Exception('Firestore error while changing currency: ${e.message}');
     } catch (e) {
-      debugPrint('[CurrencyRepository] changeCurrency unexpected error: $e');
+      debugPrint('[CurrencyRepository] setBaseCurrency unexpected error: $e');
       throw Exception('Unexpected error while changing currency: $e');
     }
   }

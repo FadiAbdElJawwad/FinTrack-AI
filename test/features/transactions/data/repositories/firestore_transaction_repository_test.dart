@@ -6,6 +6,8 @@ import 'package:fin_track_ai/features/transactions/data/datasources/tx_remote_da
 import 'package:fin_track_ai/features/transactions/data/repositories/firestore_transaction_repository.dart';
 import 'package:fin_track_ai/features/transactions/domain/models/transaction_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fin_track_ai/features/currency/domain/models/app_currency.dart';
+import 'package:fin_track_ai/features/transactions/data/models/transaction_dto.dart';
 
 class FakeTxDataSource implements TxRemoteDataSource {
   Object? createError;
@@ -44,7 +46,8 @@ FirebaseException firebaseError(String code) =>
 
 TransactionModel tx({String? id = 't1'}) => TransactionModel(
   id: id,
-  amount: 10,
+  amountMinor: 1000,
+  currency: AppCurrency.usd,
   type: TransactionType.expense,
   category: TransactionCategory.food,
   title: 'Lunch',
@@ -186,7 +189,7 @@ void main() {
           isA<List<TransactionModel>>().having((l) => l.single.id, 'id', 't1'),
         ),
       );
-      dataSource.controller.add([tx().toJson()]);
+      dataSource.controller.add([TransactionDto.fromModel(tx()).toMap()]);
       await expectation;
     });
   });

@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
+import '../../../currency/domain/models/app_currency.dart';
+import '../../../currency/presentation/utils/money_format.dart';
 import '../../../dashboard/presentation/state/dashboard_controller.dart';
 import '../state/transaction_filters_provider.dart';
 import '../utils/error_message.dart';
@@ -136,7 +138,8 @@ class TransactionsScreen extends HookConsumerWidget {
                         Expanded(
                           child: _SummaryColumn(
                             label: context.loc.totalIncome.toUpperCase(),
-                            amount: state.totalIncome,
+                            amountMinor: state.incomeMinor,
+                            currency: state.currency,
                             color: Colors.green,
                           ),
                         ),
@@ -144,7 +147,8 @@ class TransactionsScreen extends HookConsumerWidget {
                         Expanded(
                           child: _SummaryColumn(
                             label: context.loc.totalExpense.toUpperCase(),
-                            amount: state.totalExpense,
+                            amountMinor: state.expenseMinor,
+                            currency: state.currency,
                             color: Colors.red,
                           ),
                         ),
@@ -229,12 +233,16 @@ class _FilterCard extends StatelessWidget {
 
 class _SummaryColumn extends StatelessWidget {
   final String label;
-  final double amount;
+
+  /// `null` when the total is unknown (rates unavailable).
+  final int? amountMinor;
+  final AppCurrency currency;
   final Color color;
 
   const _SummaryColumn({
     required this.label,
-    required this.amount,
+    required this.amountMinor,
+    required this.currency,
     required this.color,
   });
 
@@ -250,7 +258,7 @@ class _SummaryColumn extends StatelessWidget {
         ),
         context.addVerticalSpace(4),
         Text(
-          NumberFormat.simpleCurrency().format(amount),
+          amountMinor == null ? '—' : formatMoney(amountMinor!, currency),
           style: context.headlineMedium.copyWith(
             fontSize: 20,
             color: color,

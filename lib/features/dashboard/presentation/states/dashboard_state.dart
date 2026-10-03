@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../currency/domain/models/app_currency.dart';
 import '../../../transactions/domain/models/transaction_model.dart';
 
 part 'dashboard_state.freezed.dart';
@@ -7,10 +9,23 @@ part 'dashboard_state.freezed.dart';
 abstract class DashboardState with _$DashboardState {
   const factory DashboardState({
     @Default({}) Map<String, List<TransactionModel>> groupedTransactions,
-    @Default(0.0) double totalIncome,
-    @Default(0.0) double totalExpense,
-    @Default(0.0) double currentBalance,
+    @Default(AppCurrency.usd) AppCurrency currency,
+
+    /// Income in minor units of [currency]; `null` when a foreign-currency
+    /// part could not be converted because rates are unavailable.
+    int? incomeMinor,
+
+    /// Expense in minor units of [currency]; `null` as for [incomeMinor].
+    int? expenseMinor,
   }) = _DashboardState;
 
   const DashboardState._();
+
+  /// `null` when either total is unknown.
+  int? get balanceMinor {
+    final income = incomeMinor;
+    final expense = expenseMinor;
+    if (income == null || expense == null) return null;
+    return income - expense;
+  }
 }

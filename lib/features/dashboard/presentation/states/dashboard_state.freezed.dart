@@ -15,7 +15,10 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DashboardState {
 
- Map<String, List<TransactionModel>> get groupedTransactions; double get totalIncome; double get totalExpense; double get currentBalance;
+ Map<String, List<TransactionModel>> get groupedTransactions; AppCurrency get currency;/// Income in minor units of [currency]; `null` when a foreign-currency
+/// part could not be converted because rates are unavailable.
+ int? get incomeMinor;/// Expense in minor units of [currency]; `null` as for [incomeMinor].
+ int? get expenseMinor;
 /// Create a copy of DashboardState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +30,20 @@ $DashboardStateCopyWith<DashboardState> get copyWith => _$DashboardStateCopyWith
 @override
 bool operator ==(Object other) {
   final _this = this as DashboardState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardState&&const DeepCollectionEquality().equals(other.groupedTransactions, _this.groupedTransactions)&&(identical(other.totalIncome, _this.totalIncome) || other.totalIncome == _this.totalIncome)&&(identical(other.totalExpense, _this.totalExpense) || other.totalExpense == _this.totalExpense)&&(identical(other.currentBalance, _this.currentBalance) || other.currentBalance == _this.currentBalance));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardState&&const DeepCollectionEquality().equals(other.groupedTransactions, _this.groupedTransactions)&&(identical(other.currency, _this.currency) || other.currency == _this.currency)&&(identical(other.incomeMinor, _this.incomeMinor) || other.incomeMinor == _this.incomeMinor)&&(identical(other.expenseMinor, _this.expenseMinor) || other.expenseMinor == _this.expenseMinor));
 }
 
 
 @override
 int get hashCode {
   final _this = this as DashboardState;
-  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.groupedTransactions),_this.totalIncome,_this.totalExpense,_this.currentBalance);
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.groupedTransactions),_this.currency,_this.incomeMinor,_this.expenseMinor);
 }
 
 @override
 String toString() {
   final _this = this as DashboardState;
-  return 'DashboardState(groupedTransactions: ${_this.groupedTransactions}, totalIncome: ${_this.totalIncome}, totalExpense: ${_this.totalExpense}, currentBalance: ${_this.currentBalance})';
+  return 'DashboardState(groupedTransactions: ${_this.groupedTransactions}, currency: ${_this.currency}, incomeMinor: ${_this.incomeMinor}, expenseMinor: ${_this.expenseMinor})';
 }
 
 
@@ -51,7 +54,7 @@ abstract mixin class $DashboardStateCopyWith<$Res>  {
   factory $DashboardStateCopyWith(DashboardState value, $Res Function(DashboardState) _then) = _$DashboardStateCopyWithImpl;
 @useResult
 $Res call({
- Map<String, List<TransactionModel>> groupedTransactions, double totalIncome, double totalExpense, double currentBalance
+ Map<String, List<TransactionModel>> groupedTransactions, AppCurrency currency, int? incomeMinor, int? expenseMinor
 });
 
 
@@ -68,13 +71,13 @@ class _$DashboardStateCopyWithImpl<$Res>
 
 /// Create a copy of DashboardState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? groupedTransactions = null,Object? totalIncome = null,Object? totalExpense = null,Object? currentBalance = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? groupedTransactions = null,Object? currency = null,Object? incomeMinor = freezed,Object? expenseMinor = freezed,}) {
   return _then(DashboardState(
 groupedTransactions: null == groupedTransactions ? _self.groupedTransactions : groupedTransactions // ignore: cast_nullable_to_non_nullable
-as Map<String, List<TransactionModel>>,totalIncome: null == totalIncome ? _self.totalIncome : totalIncome // ignore: cast_nullable_to_non_nullable
-as double,totalExpense: null == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
-as double,currentBalance: null == currentBalance ? _self.currentBalance : currentBalance // ignore: cast_nullable_to_non_nullable
-as double,
+as Map<String, List<TransactionModel>>,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as AppCurrency,incomeMinor: freezed == incomeMinor ? _self.incomeMinor : incomeMinor // ignore: cast_nullable_to_non_nullable
+as int?,expenseMinor: freezed == expenseMinor ? _self.expenseMinor : expenseMinor // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -159,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Map<String, List<TransactionModel>> groupedTransactions,  double totalIncome,  double totalExpense,  double currentBalance)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Map<String, List<TransactionModel>> groupedTransactions,  AppCurrency currency,  int? incomeMinor,  int? expenseMinor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DashboardState() when $default != null:
-return $default(_that.groupedTransactions,_that.totalIncome,_that.totalExpense,_that.currentBalance);case _:
+return $default(_that.groupedTransactions,_that.currency,_that.incomeMinor,_that.expenseMinor);case _:
   return orElse();
 
 }
@@ -180,10 +183,10 @@ return $default(_that.groupedTransactions,_that.totalIncome,_that.totalExpense,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Map<String, List<TransactionModel>> groupedTransactions,  double totalIncome,  double totalExpense,  double currentBalance)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Map<String, List<TransactionModel>> groupedTransactions,  AppCurrency currency,  int? incomeMinor,  int? expenseMinor)  $default,) {final _that = this;
 switch (_that) {
 case _DashboardState():
-return $default(_that.groupedTransactions,_that.totalIncome,_that.totalExpense,_that.currentBalance);case _:
+return $default(_that.groupedTransactions,_that.currency,_that.incomeMinor,_that.expenseMinor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +203,10 @@ return $default(_that.groupedTransactions,_that.totalIncome,_that.totalExpense,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Map<String, List<TransactionModel>> groupedTransactions,  double totalIncome,  double totalExpense,  double currentBalance)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Map<String, List<TransactionModel>> groupedTransactions,  AppCurrency currency,  int? incomeMinor,  int? expenseMinor)?  $default,) {final _that = this;
 switch (_that) {
 case _DashboardState() when $default != null:
-return $default(_that.groupedTransactions,_that.totalIncome,_that.totalExpense,_that.currentBalance);case _:
+return $default(_that.groupedTransactions,_that.currency,_that.incomeMinor,_that.expenseMinor);case _:
   return null;
 
 }
@@ -215,7 +218,7 @@ return $default(_that.groupedTransactions,_that.totalIncome,_that.totalExpense,_
 
 
 class _DashboardState extends DashboardState {
-  const _DashboardState({ Map<String, List<TransactionModel>> groupedTransactions = const {}, this.totalIncome = 0.0, this.totalExpense = 0.0, this.currentBalance = 0.0}): _groupedTransactions = groupedTransactions,super._();
+  const _DashboardState({ Map<String, List<TransactionModel>> groupedTransactions = const {}, this.currency = AppCurrency.usd, this.incomeMinor, this.expenseMinor}): _groupedTransactions = groupedTransactions,super._();
   
 
  final  Map<String, List<TransactionModel>> _groupedTransactions;
@@ -225,9 +228,12 @@ class _DashboardState extends DashboardState {
   return EqualUnmodifiableMapView(_groupedTransactions);
 }
 
-@override@JsonKey() final  double totalIncome;
-@override@JsonKey() final  double totalExpense;
-@override@JsonKey() final  double currentBalance;
+@override@JsonKey() final  AppCurrency currency;
+/// Income in minor units of [currency]; `null` when a foreign-currency
+/// part could not be converted because rates are unavailable.
+@override final  int? incomeMinor;
+/// Expense in minor units of [currency]; `null` as for [incomeMinor].
+@override final  int? expenseMinor;
 
 /// Create a copy of DashboardState
 /// with the given fields replaced by the non-null parameter values.
@@ -239,18 +245,18 @@ _$DashboardStateCopyWith<_DashboardState> get copyWith => __$DashboardStateCopyW
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardState&&const DeepCollectionEquality().equals(other.groupedTransactions, _groupedTransactions)&&(identical(other.totalIncome, totalIncome) || other.totalIncome == totalIncome)&&(identical(other.totalExpense, totalExpense) || other.totalExpense == totalExpense)&&(identical(other.currentBalance, currentBalance) || other.currentBalance == currentBalance));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardState&&const DeepCollectionEquality().equals(other.groupedTransactions, _groupedTransactions)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.incomeMinor, incomeMinor) || other.incomeMinor == incomeMinor)&&(identical(other.expenseMinor, expenseMinor) || other.expenseMinor == expenseMinor));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_groupedTransactions),totalIncome,totalExpense,currentBalance);
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_groupedTransactions),currency,incomeMinor,expenseMinor);
 }
 
 @override
 String toString() {
-    return 'DashboardState(groupedTransactions: $groupedTransactions, totalIncome: $totalIncome, totalExpense: $totalExpense, currentBalance: $currentBalance)';
+    return 'DashboardState(groupedTransactions: $groupedTransactions, currency: $currency, incomeMinor: $incomeMinor, expenseMinor: $expenseMinor)';
 }
 
 
@@ -261,7 +267,7 @@ abstract mixin class _$DashboardStateCopyWith<$Res> implements $DashboardStateCo
   factory _$DashboardStateCopyWith(_DashboardState value, $Res Function(_DashboardState) _then) = __$DashboardStateCopyWithImpl;
 @override @useResult
 $Res call({
- Map<String, List<TransactionModel>> groupedTransactions, double totalIncome, double totalExpense, double currentBalance
+ Map<String, List<TransactionModel>> groupedTransactions, AppCurrency currency, int? incomeMinor, int? expenseMinor
 });
 
 
@@ -278,13 +284,13 @@ class __$DashboardStateCopyWithImpl<$Res>
 
 /// Create a copy of DashboardState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? groupedTransactions = null,Object? totalIncome = null,Object? totalExpense = null,Object? currentBalance = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? groupedTransactions = null,Object? currency = null,Object? incomeMinor = freezed,Object? expenseMinor = freezed,}) {
   return _then(_DashboardState(
 groupedTransactions: null == groupedTransactions ? _self._groupedTransactions : groupedTransactions // ignore: cast_nullable_to_non_nullable
-as Map<String, List<TransactionModel>>,totalIncome: null == totalIncome ? _self.totalIncome : totalIncome // ignore: cast_nullable_to_non_nullable
-as double,totalExpense: null == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
-as double,currentBalance: null == currentBalance ? _self.currentBalance : currentBalance // ignore: cast_nullable_to_non_nullable
-as double,
+as Map<String, List<TransactionModel>>,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as AppCurrency,incomeMinor: freezed == incomeMinor ? _self.incomeMinor : incomeMinor // ignore: cast_nullable_to_non_nullable
+as int?,expenseMinor: freezed == expenseMinor ? _self.expenseMinor : expenseMinor // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
