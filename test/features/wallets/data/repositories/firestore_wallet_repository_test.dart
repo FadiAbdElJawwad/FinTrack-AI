@@ -27,6 +27,9 @@ class FakeWalletDataSource implements WalletRemoteDataSource {
   }
 
   @override
+  Future<void> upsert(String id, Map<String, dynamic> data) async {}
+
+  @override
   Future<List<({String id, bool isDefault})>> fetchAll() async {
     if (fetchError != null) throw fetchError!;
     return existing;

@@ -43,9 +43,18 @@ class WalletRemoteDataSource {
     return docRef.id;
   }
 
+  /// Creates or overwrites the document [id], embedding the id in the
+  /// payload exactly like [create].
+  Future<void> upsert(String id, Map<String, dynamic> data) {
+    return _walletsDb.doc(id).set({...data, 'id': id});
+  }
+
+  /// Upper bound for wallet reads; a user never has more wallets than this.
+  static const int maxWallets = 50;
+
   /// Lightweight read-model used by the repository for delete-guard rules.
   Future<List<({String id, bool isDefault})>> fetchAll() async {
-    final snapshot = await _walletsDb.get();
+    final snapshot = await _walletsDb.limit(maxWallets).get();
     return snapshot.docs
         .map((doc) => (id: doc.id, isDefault: doc.data()['isDefault'] == true))
         .toList();
@@ -55,8 +64,9 @@ class WalletRemoteDataSource {
 
   /// Streams raw document maps as stored on Firestore.
   Stream<List<Map<String, dynamic>>> watchAll() {
-    return _walletsDb.snapshots().map(
-      (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
-    );
+    return _walletsDb
+        .limit(maxWallets)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 }

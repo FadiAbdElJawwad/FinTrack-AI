@@ -26,7 +26,10 @@ class ControlledTxDataSource implements TxRemoteDataSource {
   Future<void> delete(String id) => deleteCompleter.future;
 
   @override
-  Stream<List<Map<String, dynamic>>> watchAll() => const Stream.empty();
+  Stream<List<Map<String, dynamic>>> watchAll({
+    required String fromIsoDate,
+    required int limit,
+  }) => const Stream.empty();
 }
 
 const shortTimeout = Duration(milliseconds: 50);
