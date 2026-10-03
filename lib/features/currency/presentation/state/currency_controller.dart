@@ -1,13 +1,13 @@
 import 'dart:async';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/repositories/firestore_currency_repository.dart';
-import '../../data/services/exchange_rate_service.dart';
 
 final currencyControllerProvider =
     StreamNotifierProvider.autoDispose<CurrencyController, String>(
-  CurrencyController.new,
-);
+      CurrencyController.new,
+    );
 
 class CurrencyController extends AutoDisposeStreamNotifier<String> {
   @override
@@ -15,20 +15,10 @@ class CurrencyController extends AutoDisposeStreamNotifier<String> {
     return ref.watch(currencyRepositoryProvider).watchBaseCurrency();
   }
 
-  /// Converts every transaction from the current base currency to
-  /// [newCurrency] and only then flips the app's base currency.
+  /// Writes only the new base currency. Transactions keep their original
+  /// currency; conversion happens at display time.
   Future<void> changeCurrency(String newCurrency) async {
-    final source = state.valueOrNull ?? await future;
-    if (source == newCurrency) return;
-
-    final rateService = ref.read(exchangeRateServiceProvider);
-    await rateService.ensureLoaded();
-    final rate = rateService.rateBetween(source, newCurrency);
-
-    await ref.read(currencyRepositoryProvider).changeCurrency(
-          from: source,
-          to: newCurrency,
-          rate: rate,
-        );
+    if (state.valueOrNull == newCurrency) return;
+    await ref.read(currencyRepositoryProvider).setBaseCurrency(newCurrency);
   }
 }

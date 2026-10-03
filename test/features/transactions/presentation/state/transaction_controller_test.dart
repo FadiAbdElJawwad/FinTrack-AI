@@ -7,6 +7,7 @@ import 'package:fin_track_ai/features/transactions/domain/repositories/transacti
 import 'package:fin_track_ai/features/transactions/presentation/state/transaction_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:fin_track_ai/features/currency/domain/models/app_currency.dart';
 
 class ThrowingRepo implements TransactionRepository {
   ThrowingRepo(this.error);
@@ -36,7 +37,8 @@ class ThrowingRepo implements TransactionRepository {
 
 TransactionModel tx() => TransactionModel(
   id: 't1',
-  amount: 10,
+  amountMinor: 1000,
+  currency: AppCurrency.usd,
   type: TransactionType.expense,
   category: TransactionCategory.food,
   title: 'Lunch',

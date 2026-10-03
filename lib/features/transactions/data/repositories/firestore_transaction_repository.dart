@@ -8,6 +8,7 @@ import '../../../../core/error/transaction_exception.dart';
 import '../../domain/models/transaction_model.dart';
 import '../../domain/repositories/transaction_repository.dart';
 import '../datasources/tx_remote_datasource.dart';
+import '../models/transaction_dto.dart';
 
 final transactionRepositoryProvider = Provider<TransactionRepository>((ref) {
   return FirestoreTransactionRepository(ref.watch(txRemoteDataSourceProvider));
@@ -89,7 +90,9 @@ class FirestoreTransactionRepository implements TransactionRepository {
 
   @override
   Future<void> addTransaction(TransactionModel transaction) async {
-    await _awaitWrite(() => _dataSource.create(transaction.toJson()));
+    await _awaitWrite(
+      () => _dataSource.create(TransactionDto.fromModel(transaction).toMap()),
+    );
   }
 
   @override
@@ -101,7 +104,8 @@ class FirestoreTransactionRepository implements TransactionRepository {
         message: 'Transaction ID is required for updates.',
       );
     }
-    await _awaitWrite(() => _dataSource.update(id, transaction.toJson()));
+    final data = TransactionDto.fromModel(transaction).toMap();
+    await _awaitWrite(() => _dataSource.update(id, data));
   }
 
   @override
@@ -114,7 +118,7 @@ class FirestoreTransactionRepository implements TransactionRepository {
     try {
       return _dataSource
           .watchAll()
-          .map((docs) => docs.map(TransactionModel.fromJson).toList())
+          .map(_decodeAll)
           .transform(
             StreamTransformer<
               List<TransactionModel>,
@@ -128,5 +132,22 @@ class FirestoreTransactionRepository implements TransactionRepository {
     } catch (e, st) {
       Error.throwWithStackTrace(translateTransactionError(e), st);
     }
+  }
+
+  /// Decodes documents one by one; a malformed document is skipped (and
+  /// logged) so a single bad document never kills the stream.
+  static List<TransactionModel> _decodeAll(List<Map<String, dynamic>> docs) {
+    final models = <TransactionModel>[];
+    for (final doc in docs) {
+      try {
+        models.add(TransactionDto.fromMap(doc).toModel());
+      } on FormatException catch (e) {
+        debugPrint(
+          '[TransactionRepository] skipped malformed transaction '
+          '${doc['id'] ?? '<no id>'}: ${e.message}',
+        );
+      }
+    }
+    return models;
   }
 }

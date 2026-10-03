@@ -8,8 +8,8 @@ import '../../../../core/extension/text_style_extension.dart';
 import '../../../../core/widgets/loading_overlay.dart';
 import '../../../../core/widgets/bottom_sheet_drag_handle.dart';
 import '../../domain/models/transaction_model.dart';
-import '../../../currency/data/services/exchange_rate_service.dart';
 import '../../../currency/domain/models/app_currency.dart';
+import '../../../currency/domain/usecases/money.dart';
 import '../../../currency/presentation/state/currency_controller.dart';
 import '../../../wallets/presentation/state/wallet_controller.dart';
 import '../state/transaction_controller.dart';
@@ -45,26 +45,29 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
     final selectedDate = useState(
       existingTransaction?.date ?? prefillDraft?.date ?? DateTime.now(),
     );
-    final amountController = useTextEditingController(
-      text: existingTransaction != null
-          ? existingTransaction!.amount.toString()
-          : (prefillDraft != null ? prefillDraft!.amount.toString() : ''),
-    );
+
     final notesController = useTextEditingController(
       text: existingTransaction?.title ?? prefillDraft?.title ?? '',
     );
     final isLoading = useState(false);
-
-    useValueListenable(amountController);
 
     final walletsAsync = ref.watch(walletControllerProvider);
     final wallets = walletsAsync.valueOrNull ?? [];
 
     final appCurrencyCode =
         ref.watch(currencyControllerProvider).valueOrNull ?? 'USD';
+    final isEditing = existingTransaction != null;
     final selectedInputCurrency = useState(
-      appCurrencyFromCode(appCurrencyCode),
+      existingTransaction?.currency ?? appCurrencyFromCode(appCurrencyCode),
     );
+    final amountController = useTextEditingController(
+      text: _initialAmountText(
+        existingTransaction,
+        prefillDraft,
+        selectedInputCurrency.value,
+      ),
+    );
+    useValueListenable(amountController);
 
     useEffect(() {
       if (selectedWalletId.value == null && wallets.isNotEmpty) {
@@ -76,15 +79,22 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
     }, [wallets.length]);
 
     useEffect(() {
-      selectedInputCurrency.value = appCurrencyFromCode(appCurrencyCode);
+      // An edited transaction keeps its own currency.
+      if (!isEditing) {
+        selectedInputCurrency.value = appCurrencyFromCode(appCurrencyCode);
+      }
       return null;
     }, [appCurrencyCode]);
 
     final categories = categoriesForType(selectedType.value);
 
-    final double amount = double.tryParse(amountController.text) ?? 0.0;
+    final amountMinor = parseMinorUnits(
+      amountController.text,
+      selectedInputCurrency.value,
+    );
     final bool isFormValid =
-        amount > 0 &&
+        amountMinor != null &&
+        amountMinor > 0 &&
         selectedCategory.value != null &&
         selectedWalletId.value != null &&
         !isLoading.value;
@@ -94,17 +104,10 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
 
       isLoading.value = true;
       try {
-        final rateService = ref.read(exchangeRateServiceProvider);
-        await rateService.ensureLoaded();
-        if (!context.mounted) return;
-        final rate = rateService.rateBetween(
-          selectedInputCurrency.value.code,
-          appCurrencyCode,
-        );
-
         final transaction = _buildTransactionFromForm(
           existingTransaction: existingTransaction,
-          amount: amount * rate,
+          amountMinor: amountMinor,
+          currency: selectedInputCurrency.value,
           type: selectedType.value,
           category: selectedCategory.value!,
           notesText: notesController.text,
@@ -265,7 +268,8 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
 
 TransactionModel _buildTransactionFromForm({
   required TransactionModel? existingTransaction,
-  required double amount,
+  required int amountMinor,
+  required AppCurrency currency,
   required TransactionType type,
   required TransactionCategory category,
   required String notesText,
@@ -275,11 +279,31 @@ TransactionModel _buildTransactionFromForm({
 }) {
   return TransactionModel(
     id: existingTransaction?.id,
-    amount: amount,
+    amountMinor: amountMinor,
+    currency: currency,
     type: type,
     category: category,
     title: notesText.isEmpty ? category.getLocalizedName(context) : notesText,
     date: date,
     walletId: walletId,
   );
+}
+
+/// Initial text of the amount field: the edited transaction's exact amount,
+/// or the voice draft rounded to the input currency's decimals.
+String _initialAmountText(
+  TransactionModel? existingTransaction,
+  TransactionDraft? prefillDraft,
+  AppCurrency inputCurrency,
+) {
+  if (existingTransaction != null) {
+    return minorToPlainText(
+      existingTransaction.amountMinor,
+      existingTransaction.currency,
+    );
+  }
+  if (prefillDraft != null) {
+    return prefillDraft.amount.toStringAsFixed(inputCurrency.decimals);
+  }
+  return '';
 }

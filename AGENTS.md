@@ -18,6 +18,7 @@ Portfolio-grade Flutter finance tracker. Quality metric = architectural clarity,
 - Domain → nothing. **No `package:flutter/*` imports in domain**, no Firebase imports. Allowed third-party packages in Domain: `freezed_annotation`, `json_annotation` only.
 - Data → Domain only. Presentation → Domain (+ DI wiring).
 - Firestore types (`DocumentSnapshot`, `Timestamp`) never leave the Data layer; map to domain entities.
+- Domain models carry no JSON. Firestore serialization lives in Data-layer DTOs.
 
 ## Riverpod rules
 - Riverpod is 2.6.1 and has no `ref.mounted`. After an await inside a Notifier, check a `_disposed` flag (set in `ref.onDispose`) before touching `state` or `ref`. Code that does nothing after an await needs no flag. Never access provider internals through `dynamic`.
@@ -57,6 +58,7 @@ Portfolio-grade Flutter finance tracker. Quality metric = architectural clarity,
 ## Quality
 - Never edit a test expectation to make a test pass: report the failing test with the exact error.
 - Never sum income and expense into one number (for example a per-category total): separate by `TransactionType`.
+- Money is stored as `int` minor units plus the original currency. Never use `double` for stored or summed amounts; convert to the app currency only at display time.
 
 ## Output
 - Summary: files changed + why, analyzer result, test result, open risks.

@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../currency/domain/models/app_currency.dart';
+
 part 'transaction_model.freezed.dart';
-part 'transaction_model.g.dart';
 
 enum TransactionType { income, expense }
 
@@ -23,10 +25,7 @@ List<TransactionCategory> categoriesForType(TransactionType type) {
       TransactionCategory.other,
     ];
   } else {
-    return [
-      TransactionCategory.salary,
-      TransactionCategory.other,
-    ];
+    return [TransactionCategory.salary, TransactionCategory.other];
   }
 }
 
@@ -46,33 +45,22 @@ class TransactionDraft {
   });
 }
 
-/// Pure-Dart JSON codec for [TransactionModel.date].
-///
-/// Wire format is an ISO-8601 `String`, byte-for-byte identical to the
-/// previously generated codec. Firestore `Timestamp` coercion is a Data-layer
-/// concern and never leaks into Domain models.
-DateTime dateFromJson(Object? json) {
-  if (json is String) return DateTime.parse(json);
-  if (json is DateTime) return json;
-  throw FormatException('Expected date to be an ISO-8601 string, got: $json');
-}
-
-String dateToJson(DateTime date) => date.toIso8601String();
-
 @freezed
 abstract class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
     String? id,
-    required double amount,
+
+    /// Amount in minor units of [currency] (for example cents).
+    required int amountMinor,
+
+    /// Currency the amount was entered in; never converted when stored.
+    required AppCurrency currency,
     required TransactionType type,
     required TransactionCategory category,
     required String title,
-    @JsonKey(fromJson: dateFromJson, toJson: dateToJson) required DateTime date,
-    @JsonKey(defaultValue: '') required String walletId,
+    required DateTime date,
+    required String walletId,
   }) = _TransactionModel;
 
   const TransactionModel._();
-
-  factory TransactionModel.fromJson(Map<String, dynamic> json) =>
-      _$TransactionModelFromJson(json);
 }

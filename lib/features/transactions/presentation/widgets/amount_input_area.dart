@@ -2,6 +2,7 @@ import 'package:fin_track_ai/core/extension/app_sizes.dart';
 import 'package:fin_track_ai/core/extension/text_style_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../../../../core/constant/color_manager.dart';
 import '../../../currency/domain/models/app_currency.dart';
 import '../../domain/models/transaction_model.dart';
@@ -63,7 +64,9 @@ class AmountInputArea extends StatelessWidget {
             controller: controller,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+              FilteringTextInputFormatter.allow(
+                RegExp('^\\d*\\.?\\d{0,${currency.decimals}}'),
+              ),
             ],
             style: context.displayLarge.copyWith(
               fontWeight: FontWeight.bold,

@@ -1,25 +1,40 @@
+import '../../../currency/domain/models/app_currency.dart';
 import '../models/transaction_model.dart';
 
-class TransactionTotals {
-  final double income;
-  final double expense;
+/// Income and expense of one currency, in that currency's minor units.
+class CurrencyTotals {
+  final int incomeMinor;
+  final int expenseMinor;
 
-  const TransactionTotals({required this.income, required this.expense});
+  const CurrencyTotals({required this.incomeMinor, required this.expenseMinor});
 
-  double get balance => income - expense;
+  int get balanceMinor => incomeMinor - expenseMinor;
 }
 
-TransactionTotals calculateTotals(List<TransactionModel> transactions) {
-  double income = 0.0;
-  double expense = 0.0;
+/// Sums transactions per original currency, keeping income and expense
+/// strictly separate by [TransactionType]. No currency conversion happens
+/// here; amounts of different currencies are never added together.
+Map<AppCurrency, CurrencyTotals> calculateTotals(
+  List<TransactionModel> transactions,
+) {
+  final income = <AppCurrency, int>{};
+  final expense = <AppCurrency, int>{};
+  final currencies = <AppCurrency>{};
 
   for (final tx in transactions) {
+    currencies.add(tx.currency);
     if (tx.type == TransactionType.income) {
-      income += tx.amount;
+      income[tx.currency] = (income[tx.currency] ?? 0) + tx.amountMinor;
     } else {
-      expense += tx.amount;
+      expense[tx.currency] = (expense[tx.currency] ?? 0) + tx.amountMinor;
     }
   }
 
-  return TransactionTotals(income: income, expense: expense);
+  return {
+    for (final currency in currencies)
+      currency: CurrencyTotals(
+        incomeMinor: income[currency] ?? 0,
+        expenseMinor: expense[currency] ?? 0,
+      ),
+  };
 }

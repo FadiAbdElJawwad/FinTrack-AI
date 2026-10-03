@@ -2,16 +2,14 @@ import 'package:fin_track_ai/core/routing/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/constant/images_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../auth/presentation/state/auth_controller.dart';
-import '../../../currency/domain/models/app_currency.dart';
-import '../../../currency/presentation/state/currency_controller.dart';
 import '../../../currency/presentation/widgets/currency_selector_dialog.dart';
+import '../../../currency/presentation/utils/money_format.dart';
 import '../widgets/home_action_card.dart';
 import '../state/dashboard_controller.dart';
 import '../widgets/home_skeleton.dart';
@@ -32,11 +30,6 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dashboardState = ref.watch(dashboardControllerProvider);
-    final appCurrencyCode =
-        ref.watch(currencyControllerProvider).valueOrNull ?? 'USD';
-    final currencyFormat = NumberFormat.currency(
-      symbol: appCurrencyFromCode(appCurrencyCode).symbol,
-    );
     final user = ref.watch(currentUserProvider);
 
     final userName = (user == null || user.fullName.isEmpty)
@@ -107,38 +100,12 @@ class HomeScreen extends HookConsumerWidget {
                     ),
                     context.addVerticalSpace(8),
                     Text(
-                      currencyFormat.format(state.currentBalance),
+                      state.balanceMinor == null
+                          ? '—'
+                          : formatMoney(state.balanceMinor!, state.currency),
                       style: context.displayLarge.copyWith(
                         color: ColorManager.white,
                         fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    context.addVerticalSpace(16),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.trending_up,
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            '+2.5% this month',
-                            style: context.labelSmall.copyWith(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
                       ),
                     ),
                   ],
