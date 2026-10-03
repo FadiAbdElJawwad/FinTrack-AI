@@ -1,8 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../core/providers/firebase_providers.dart';
 import '../../domain/models/wallet_model.dart';
 import '../../domain/repositories/wallet_repository.dart';
 import '../repositories/firestore_wallet_repository.dart';
@@ -10,8 +7,6 @@ import '../repositories/firestore_wallet_repository.dart';
 final walletMigrationProvider = Provider<WalletMigrationService>((ref) {
   return WalletMigrationService(
     repository: ref.watch(walletRepositoryProvider),
-    firestore: ref.watch(firestoreProvider),
-    auth: ref.watch(firebaseAuthProvider),
   );
 });
 
@@ -28,102 +23,65 @@ final walletMigrationRunProvider = FutureProvider.family<void, String>((
   return ref.read(walletMigrationProvider).runIfNeeded();
 });
 
-/// Seeds default wallets on first launch and backfills legacy transactions
-/// that predate wallet support.
+/// Seeds the default wallets on first launch.
 ///
-/// Relocated verbatim from the presentation-layer `WalletController` so that
-/// persistence-integrity logic lives in the data layer and no platform SDK
-/// types (Firestore/Auth) reach the UI.
+/// Idempotent: every default wallet has a deterministic document id, so a
+/// repeated or concurrent run (second device, retry) overwrites the same
+/// documents instead of creating duplicates. Talks only to
+/// [WalletRepository]; no Firestore or Auth types.
 class WalletMigrationService {
-  WalletMigrationService({
-    required this.repository,
-    required this.firestore,
-    required this.auth,
-  });
+  WalletMigrationService({required this.repository});
 
   final WalletRepository repository;
-  final FirebaseFirestore firestore;
-  final FirebaseAuth auth;
 
-  static const List<WalletModel> _defaultSecondaryWallets = [
-    WalletModel(
+  static const String cashWalletId = 'cash';
+
+  static const WalletModel _cashWallet = WalletModel(
+    name: 'Cash',
+    icon: 'payments',
+    isDefault: true,
+  );
+
+  static const Map<String, WalletModel> _defaultSecondaryWallets = {
+    'bank': WalletModel(
       name: 'Bank Account',
       icon: 'account_balance',
       isDefault: false,
     ),
-    WalletModel(
+    'paypal': WalletModel(
       name: 'PayPal',
       icon: 'account_balance_wallet',
       isDefault: false,
     ),
-    WalletModel(name: 'Other', icon: 'more_horiz', isDefault: false),
-  ];
+    'other': WalletModel(name: 'Other', icon: 'more_horiz', isDefault: false),
+  };
 
-  /// Wraps [_migrate] so Firebase errors surface as [WalletException].
+  /// Wraps [_seed] so Firebase errors surface as typed wallet exceptions.
   Future<void> runIfNeeded() async {
     try {
-      await _migrate();
+      await _seed();
     } catch (e, st) {
       Error.throwWithStackTrace(translateWalletError(e), st);
     }
   }
 
-  Future<void> _migrate() async {
+  Future<void> _seed() async {
     final wallets = await repository.getWalletsStream().first;
 
     if (wallets.isEmpty) {
-      final cashWallet = WalletModel(
-        name: 'Cash',
-        icon: 'payments',
-        isDefault: true,
-      );
-      final walletId = await repository.addWallet(cashWallet);
-
-      for (final w in _defaultSecondaryWallets) {
-        await repository.addWallet(w);
-      }
-
-      final user = auth.currentUser;
-      if (user == null) return;
-
-      final txsRef = firestore
-          .collection('users')
-          .doc(user.uid)
-          .collection('transactions');
-      final snapshot = await txsRef.get();
-
-      final chunks = <List<QueryDocumentSnapshot<Map<String, dynamic>>>>[];
-      var currentChunk = <QueryDocumentSnapshot<Map<String, dynamic>>>[];
-
-      for (final doc in snapshot.docs) {
-        final data = doc.data();
-        if (!data.containsKey('walletId') ||
-            data['walletId'] == null ||
-            data['walletId'] == '') {
-          currentChunk.add(doc);
-          if (currentChunk.length == 500) {
-            chunks.add(currentChunk);
-            currentChunk = <QueryDocumentSnapshot<Map<String, dynamic>>>[];
-          }
-        }
-      }
-      if (currentChunk.isNotEmpty) {
-        chunks.add(currentChunk);
-      }
-
-      for (final chunk in chunks) {
-        final batch = firestore.batch();
-        for (final doc in chunk) {
-          batch.update(doc.reference, {'walletId': walletId});
-        }
-        await batch.commit();
-      }
+      await repository.upsertWallet(cashWalletId, _cashWallet);
+      await _upsertSecondaryWallets();
     } else if (wallets.length == 1 &&
         wallets.first.name == 'Cash' &&
         wallets.first.isDefault == true) {
-      for (final w in _defaultSecondaryWallets) {
-        await repository.addWallet(w);
-      }
+      await _upsertSecondaryWallets();
+    }
+  }
+
+  Future<void> _upsertSecondaryWallets() async {
+    for (final MapEntry(key: id, value: wallet)
+        in _defaultSecondaryWallets.entries) {
+      await repository.upsertWallet(id, wallet);
     }
   }
 }

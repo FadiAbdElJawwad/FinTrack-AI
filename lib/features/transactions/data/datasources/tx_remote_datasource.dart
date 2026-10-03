@@ -52,9 +52,19 @@ class TxRemoteDataSource {
   }
 
   /// Streams raw document maps, newest-first, as stored on Firestore.
-  Stream<List<Map<String, dynamic>>> watchAll() {
+  ///
+  /// Bounded for the Spark read quota: only documents whose ISO-8601 `date`
+  /// is on or after [fromIsoDate] (string order equals date order), at most
+  /// [limit] of them. A range filter plus `orderBy` on the same single field
+  /// uses the automatic single-field index; no composite index is needed.
+  Stream<List<Map<String, dynamic>>> watchAll({
+    required String fromIsoDate,
+    required int limit,
+  }) {
     return _transactionsDb
+        .where('date', isGreaterThanOrEqualTo: fromIsoDate)
         .orderBy('date', descending: true)
+        .limit(limit)
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }

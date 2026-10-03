@@ -1,15 +1,74 @@
 rules_version = '2';
+
+// Schema-validated rules for FinTrack AI.
+// No get()/exists()/getAfter(): every rule is evaluated without extra reads.
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /users/{userId} {
-        allow read, write: if request.auth.uid == userId;
-    }
-    match /users/{userId}/transactions/{document=**} {
-        allow read, write: if request.auth.uid == userId;
 
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
     }
-    match /users/{userId}/wallets/{walletId} {
-        allow read, write: if request.auth.uid == userId;
+
+    // ---- users/{userId} -------------------------------------------------
+    // Only baseCurrency is constrained: the auth flows write other fields
+    // (fullName, email, createdAt, uid, photoUrl) that must keep working.
+    function validBaseCurrency(data) {
+      return !('baseCurrency' in data)
+        || data.baseCurrency in ['USD', 'JOD', 'ILS'];
     }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create, update: if isOwner(userId)
+        && validBaseCurrency(request.resource.data);
+      // No client deletes of the user document: the app never deletes it.
+
+      // ---- users/{userId}/transactions/{txId} ---------------------------
+      // Mirrors TransactionDto.toMap() and the domain enums.
+      function validTransaction(data, txId) {
+        return data.keys().hasOnly(['id', 'amountMinor', 'currency', 'type',
+                                    'category', 'title', 'date', 'walletId'])
+          && data.keys().hasAll(['id', 'amountMinor', 'currency', 'type',
+                                 'category', 'title', 'date', 'walletId'])
+          && data.id == txId
+          && data.amountMinor is int
+          && data.amountMinor > 0
+          && data.amountMinor <= 1000000000000
+          && data.currency in ['USD', 'JOD', 'ILS']
+          && data.type in ['income', 'expense']
+          && data.category in ['food', 'transport', 'shopping', 'salary',
+                               'entertainment', 'other']
+          && data.title is string && data.title.size() <= 500
+          && data.date is string
+          && data.date.size() >= 10 && data.date.size() <= 40
+          && data.walletId is string && data.walletId.size() <= 100;
+      }
+
+      match /transactions/{txId} {
+        allow read, delete: if isOwner(userId);
+        allow create, update: if isOwner(userId)
+          && validTransaction(request.resource.data, txId);
+      }
+
+      // ---- users/{userId}/wallets/{walletId} ----------------------------
+      // Mirrors WalletModel.toJson() plus the embedded document id.
+      function validWallet(data, walletId) {
+        return data.keys().hasOnly(['id', 'name', 'icon', 'isDefault'])
+          && data.keys().hasAll(['id', 'name', 'icon', 'isDefault'])
+          && data.id == walletId
+          && data.name is string
+          && data.name.size() >= 1 && data.name.size() <= 50
+          && data.icon is string
+          && data.isDefault is bool;
+      }
+
+      match /wallets/{walletId} {
+        allow read, delete: if isOwner(userId);
+        allow create, update: if isOwner(userId)
+          && validWallet(request.resource.data, walletId);
+      }
+    }
+
+    // Everything else is denied by default (no matching allow).
   }
 }

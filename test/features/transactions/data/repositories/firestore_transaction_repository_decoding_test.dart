@@ -23,7 +23,10 @@ class StreamTxDataSource implements TxRemoteDataSource {
   Future<void> delete(String id) async {}
 
   @override
-  Stream<List<Map<String, dynamic>>> watchAll() => controller.stream;
+  Stream<List<Map<String, dynamic>>> watchAll({
+    required String fromIsoDate,
+    required int limit,
+  }) => controller.stream;
 }
 
 TransactionModel tx(String id, {AppCurrency currency = AppCurrency.usd}) =>

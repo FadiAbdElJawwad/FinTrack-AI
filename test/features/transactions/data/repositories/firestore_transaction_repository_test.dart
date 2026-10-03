@@ -35,7 +35,10 @@ class FakeTxDataSource implements TxRemoteDataSource {
   }
 
   @override
-  Stream<List<Map<String, dynamic>>> watchAll() {
+  Stream<List<Map<String, dynamic>>> watchAll({
+    required String fromIsoDate,
+    required int limit,
+  }) {
     if (watchBuildError != null) throw watchBuildError!;
     return controller.stream;
   }
