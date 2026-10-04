@@ -19,6 +19,9 @@ class FakeWalletRepo implements WalletRepository {
   Future<void> deleteWallet(String id) async {}
 
   @override
+  Future<void> upsertWallet(String id, WalletModel wallet) async {}
+
+  @override
   Stream<List<WalletModel>> getWalletsStream() => Stream.value([
     const WalletModel(id: 'w1', name: 'Cash', icon: 'payments'),
   ]);

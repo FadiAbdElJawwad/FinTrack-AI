@@ -60,9 +60,33 @@ class FirestoreTransactionRepository implements TransactionRepository {
   FirestoreTransactionRepository(
     this._dataSource, {
     this.writeTimeout = const Duration(seconds: 3),
+    this.windowMonths = 12,
+    this.maxDocuments = 1000,
+    this.clock = DateTime.now,
   });
 
   final TxRemoteDataSource _dataSource;
+
+  /// Time source for the listener window (injectable for tests).
+  final DateTime Function() clock;
+
+  /// Number of calendar months (including the current one) the listener
+  /// covers. Older transactions are not streamed.
+  final int windowMonths;
+
+  /// Hard cap on streamed documents, protecting the Spark read quota.
+  final int maxDocuments;
+
+  /// First day of the month `windowMonths - 1` months before the current
+  /// month, at 00:00 local time, as an ISO-8601 string.
+  String get windowStartIsoDate {
+    final now = clock();
+    return DateTime(
+      now.year,
+      now.month - (windowMonths - 1),
+      1,
+    ).toIso8601String();
+  }
 
   /// Upper bound for waiting on server acknowledgement of a write.
   ///
@@ -117,8 +141,8 @@ class FirestoreTransactionRepository implements TransactionRepository {
   Stream<List<TransactionModel>> getTransactionsStream() {
     try {
       return _dataSource
-          .watchAll()
-          .map(_decodeAll)
+          .watchAll(fromIsoDate: windowStartIsoDate, limit: maxDocuments)
+          .map(_decodeCapped)
           .transform(
             StreamTransformer<
               List<TransactionModel>,
@@ -132,6 +156,16 @@ class FirestoreTransactionRepository implements TransactionRepository {
     } catch (e, st) {
       Error.throwWithStackTrace(translateTransactionError(e), st);
     }
+  }
+
+  List<TransactionModel> _decodeCapped(List<Map<String, dynamic>> docs) {
+    if (docs.length >= maxDocuments) {
+      debugPrint(
+        '[TransactionRepository] listener hit the document cap '
+        '($maxDocuments); older transactions are not included',
+      );
+    }
+    return _decodeAll(docs);
   }
 
   /// Decodes documents one by one; a malformed document is skipped (and

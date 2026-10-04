@@ -63,6 +63,15 @@ class FirestoreWalletRepository implements WalletRepository {
   }
 
   @override
+  Future<void> upsertWallet(String id, WalletModel wallet) async {
+    try {
+      await _dataSource.upsert(id, wallet.toJson());
+    } catch (e, st) {
+      Error.throwWithStackTrace(translateWalletError(e), st);
+    }
+  }
+
+  @override
   Future<void> deleteWallet(String id) async {
     try {
       final wallets = await _dataSource.fetchAll();
