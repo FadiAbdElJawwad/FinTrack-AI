@@ -1,34 +1,57 @@
- import 'dart:async';
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
+
 import '../constant/app_env.dart';
 import '../error/ai_parsing_exception.dart';
+import '../providers/firebase_providers.dart';
 
 final geminiServiceProvider = Provider<GeminiService>((ref) {
+  final client = http.Client();
+  ref.onDispose(client.close);
   return GeminiService(
     proxyUrl: AppEnv.appsScriptProxyUrl,
     sharedSecret: AppEnv.appSharedSecret,
+    idTokenProvider: () async =>
+        ref.read(firebaseAuthProvider).currentUser?.getIdToken(),
+    client: client,
   );
 });
 
 class GeminiService {
   final String proxyUrl;
   final String sharedSecret;
+  final Future<String?> Function() idTokenProvider;
+  final http.Client _client;
 
   GeminiService({
     required this.proxyUrl,
     required this.sharedSecret,
-  });
+    required this.idTokenProvider,
+    http.Client? client,
+  }) : _client = client ?? http.Client();
 
   Future<Map<String, dynamic>> parseTransactionText(String input) async {
     try {
-      final response = await http
+      final idToken = await idTokenProvider();
+      if (idToken == null || idToken.isEmpty) {
+        throw AiParsingException(AiParsingErrorType.unauthorized);
+      }
+
+      // The secret and the ID token travel in the body only; the URL carries
+      // no query string, so neither can end up in URL logs.
+      final response = await _client
           .post(
-            Uri.parse('$proxyUrl?secret=$sharedSecret'),
+            Uri.parse(proxyUrl),
             headers: {'Content-Type': 'application/json'},
-            body: jsonEncode({'input': input}),
+            body: jsonEncode({
+              'input': input,
+              'secret': sharedSecret,
+              'idToken': idToken,
+            }),
           )
           .timeout(const Duration(seconds: 20));
 
@@ -45,7 +68,7 @@ class GeminiService {
           );
         }
 
-        final followUpResponse = await http
+        final followUpResponse = await _client
             .get(Uri.parse(location))
             .timeout(const Duration(seconds: 20));
 
@@ -70,6 +93,10 @@ class GeminiService {
                       AiParsingErrorType.schemaValidationFailed,
                     );
                   case 'gemini request failed':
+                    throw AiParsingException(
+                      AiParsingErrorType.serviceUnavailable,
+                    );
+                  case 'rate limited':
                     throw AiParsingException(
                       AiParsingErrorType.serviceUnavailable,
                     );
