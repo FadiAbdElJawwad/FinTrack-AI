@@ -33,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "aiNotConfigured": MessageLookupByLibrary.simpleMessage(
       "ميزات الذكاء الاصطناعي غير مكونة.",
+      "لم يتم إعداد ميزات الذكاء الاصطناعي.",
     ),
     "aiSchemaValidationFailed": MessageLookupByLibrary.simpleMessage(
       "تعذر استخراج تفاصيل المعاملة. حاول مرة أخرى.",
