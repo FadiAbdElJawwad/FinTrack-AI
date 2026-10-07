@@ -1,4 +1,5 @@
 enum AiParsingErrorType {
+  notConfigured,
   unauthorized,
   invalidInput,
   serviceUnavailable,

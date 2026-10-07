@@ -31,6 +31,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "aiNetworkError": MessageLookupByLibrary.simpleMessage(
       "خطأ في الشبكة. تحقق من الاتصال.",
     ),
+    "aiNotConfigured": MessageLookupByLibrary.simpleMessage(
+      "ميزات الذكاء الاصطناعي غير مكونة.",
+    ),
     "aiSchemaValidationFailed": MessageLookupByLibrary.simpleMessage(
       "تعذر استخراج تفاصيل المعاملة. حاول مرة أخرى.",
     ),

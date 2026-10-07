@@ -31,6 +31,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "aiNetworkError": MessageLookupByLibrary.simpleMessage(
       "Network error. Check your connection.",
     ),
+    "aiNotConfigured": MessageLookupByLibrary.simpleMessage(
+      "AI features are not configured.",
+    ),
     "aiSchemaValidationFailed": MessageLookupByLibrary.simpleMessage(
       "Couldn\'t extract transaction details. Try again.",
     ),

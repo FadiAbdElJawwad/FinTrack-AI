@@ -21,9 +21,11 @@ http.Response ok(Object body) => http.Response(
 GeminiService serviceWith(
   MockClient client, {
   Future<String?> Function()? idTokenProvider,
+  String proxyUrl = proxyUrl,
+  String sharedSecret = secret,
 }) => GeminiService(
   proxyUrl: proxyUrl,
-  sharedSecret: secret,
+  sharedSecret: sharedSecret,
   idTokenProvider: idTokenProvider ?? () async => token,
   client: client,
 );
@@ -33,6 +35,28 @@ Matcher aiError(AiParsingErrorType type) =>
 
 void main() {
   timeoutTest();
+
+  group('configuration validation', () {
+    test('invalid config throws notConfigured and makes 0 requests', () async {
+      var requests = 0;
+      final client = MockClient((request) async {
+        requests++;
+        return ok({});
+      });
+
+      final service = serviceWith(
+        client,
+        proxyUrl: 'http://invalid-url.com',
+        sharedSecret: '',
+      );
+
+      await expectLater(
+        service.parseTransactionText('x'),
+        throwsA(aiError(AiParsingErrorType.notConfigured)),
+      );
+      expect(requests, 0);
+    });
+  });
 
   group('request contract', () {
     test('posts to the exact proxy URL without a query string', () async {

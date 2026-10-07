@@ -13,6 +13,7 @@ import '../../../currency/presentation/utils/money_format.dart';
 import '../widgets/home_action_card.dart';
 import '../state/dashboard_controller.dart';
 import '../widgets/home_skeleton.dart';
+import '../../../../core/services/gemini_service.dart';
 import '../../../../features/transactions/presentation/utils/error_message.dart';
 import '../../../../features/transactions/presentation/widgets/add_transaction_bottom_sheet.dart';
 import '../../../../features/transactions/presentation/widgets/transaction_list_tile.dart';
@@ -31,6 +32,7 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dashboardState = ref.watch(dashboardControllerProvider);
     final user = ref.watch(currentUserProvider);
+    final isAiAvailable = ref.watch(aiFeatureAvailableProvider);
 
     final userName = (user == null || user.fullName.isEmpty)
         ? 'User'
@@ -124,7 +126,13 @@ class HomeScreen extends HookConsumerWidget {
                     icon: Icons.mic,
                     label: context.loc.voice,
                     onTap: () {
-                      context.pushNamed(AppRoutes.voiceEntryName);
+                      if (isAiAvailable) {
+                        context.pushNamed(AppRoutes.voiceEntryName);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(context.loc.aiNotConfigured)),
+                        );
+                      }
                     },
                   ),
                   context.addHorizontalSpace(12),

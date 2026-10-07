@@ -348,6 +348,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aiNetworkError => 'Network error. Check your connection.';
 
   @override
+  String get aiNotConfigured => 'AI features are not configured.';
+
+  @override
   String get aiUnknown => 'Something went wrong. Please try again.';
 
   @override

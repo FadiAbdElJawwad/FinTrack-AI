@@ -110,6 +110,7 @@
   "aiServiceUnavailable": "AI service is temporarily unavailable.",
   "aiSchemaValidationFailed": "Couldn't extract transaction details. Try again.",
   "aiNetworkError": "Network error. Check your connection.",
+  "aiNotConfigured": "AI features are not configured.",
   "aiUnknown": "Something went wrong. Please try again.",
   "micPermissionDenied": "Microphone permission is required to use Voice Entry.",
   "speechTimeout": "No speech detected. Try again.",

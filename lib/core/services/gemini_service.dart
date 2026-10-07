@@ -9,6 +9,10 @@ import '../constant/app_env.dart';
 import '../error/ai_parsing_exception.dart';
 import '../providers/firebase_providers.dart';
 
+final aiFeatureAvailableProvider = Provider<bool>((ref) {
+  return AppEnv.isAiConfigured;
+});
+
 final geminiServiceProvider = Provider<GeminiService>((ref) {
   final client = http.Client();
   ref.onDispose(client.close);
@@ -35,6 +39,10 @@ class GeminiService {
   }) : _client = client ?? http.Client();
 
   Future<Map<String, dynamic>> parseTransactionText(String input) async {
+    if (!AppEnv.isAiConfigValid(proxyUrl: proxyUrl, secret: sharedSecret)) {
+      throw AiParsingException(AiParsingErrorType.notConfigured);
+    }
+
     try {
       final idToken = await idTokenProvider();
       if (idToken == null || idToken.isEmpty) {

@@ -965,6 +965,16 @@ class S {
     );
   }
 
+  /// `AI features are not configured.`
+  String get aiNotConfigured {
+    return Intl.message(
+      'AI features are not configured.',
+      name: 'aiNotConfigured',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Something went wrong. Please try again.`
   String get aiUnknown {
     return Intl.message(

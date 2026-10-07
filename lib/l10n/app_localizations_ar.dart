@@ -346,6 +346,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aiNetworkError => 'خطأ في الشبكة. تحقق من الاتصال.';
 
   @override
+  String get aiNotConfigured => 'ميزات الذكاء الاصطناعي غير مكونة.';
+
+  @override
   String get aiUnknown => 'حدث خطأ ما. حاول مرة أخرى.';
 
   @override
