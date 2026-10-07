@@ -752,6 +752,12 @@ abstract class AppLocalizations {
   /// **'Network error. Check your connection.'**
   String get aiNetworkError;
 
+  /// No description provided for @aiNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'AI features are not configured.'**
+  String get aiNotConfigured;
+
   /// No description provided for @aiUnknown.
   ///
   /// In en, this message translates to:

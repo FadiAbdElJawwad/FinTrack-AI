@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'core/constant/app_env.dart';
 import 'core/error/currency_exception.dart';
 import 'core/theme/app_theme.dart';
@@ -16,16 +18,20 @@ import 'core/providers/router_provider.dart';
 import 'core/providers/shared_prefs_provider.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  assert(
-    AppEnv.appsScriptProxyUrl.isNotEmpty && AppEnv.appSharedSecret.isNotEmpty,
-    'Missing --dart-define secrets: see README for the required flags.',
-  );
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  } catch (e) {
+    debugPrint('Firebase initialization error: $e');
+  }
 
   final prefs = await SharedPreferences.getInstance();
+
+  if (!AppEnv.isAiConfigured && kDebugMode) {
+    debugPrint('Warning: AI config is missing or invalid. Voice entry will be disabled.');
+  }
 
   runApp(
     ProviderScope(
@@ -62,12 +68,17 @@ class FinTrackApp extends ConsumerWidget {
       supportedLocales: S.delegate.supportedLocales,
       builder: (context, child) {
         final error = ratesBootstrap.error;
-        if (error is NoExchangeRatesAvailableException ||
-            error is ExchangeRateServiceException) {
-          return ExchangeRateGateScreen(error: error!);
+        if (error != null) {
+          return ExchangeRateGateScreen(
+            error: (error is NoExchangeRatesAvailableException ||
+                    error is ExchangeRateServiceException)
+                ? error
+                : ExchangeRateServiceException(error.toString()),
+          );
         }
         return child ?? const SizedBox.shrink();
       },
     );
   }
 }
+
