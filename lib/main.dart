@@ -11,7 +11,7 @@ import 'core/theme/app_theme.dart';
 import 'features/currency/data/services/exchange_rate_service.dart';
 import 'features/currency/presentation/screens/exchange_rate_gate_screen.dart';
 import 'firebase_options.dart';
-import 'generated/l10n.dart';
+import 'l10n/app_localizations.dart';
 import 'core/providers/theme_provider.dart';
 import 'core/providers/locale_provider.dart';
 import 'core/providers/router_provider.dart';
@@ -54,18 +54,18 @@ class FinTrackApp extends ConsumerWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: goRouter,
-      onGenerateTitle: (context) => S.of(context).appTitle,
+      onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       theme: AppTheme.lightTheme(locale.languageCode),
       darkTheme: AppTheme.darkTheme(locale.languageCode),
       themeMode: themeMode,
-      locale: locale,
+      locale: Locale('en'),
       localizationsDelegates: const [
-        S.delegate,
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: S.delegate.supportedLocales,
+      supportedLocales: AppLocalizations.supportedLocales,
       builder: (context, child) {
         final error = ratesBootstrap.error;
         if (error != null) {

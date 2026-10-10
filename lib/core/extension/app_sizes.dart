@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../generated/l10n.dart';
+import '../../l10n/app_localizations.dart';
 
 extension AppSizes on BuildContext {
   double get getWidth => MediaQuery.sizeOf(this).width;
@@ -12,7 +12,7 @@ extension AppSizes on BuildContext {
   double wp(double percentage) => width * (percentage / 100);
   double hp(double percentage) => height * (percentage / 100);
 
-  S get loc => S.of(this);
+  AppLocalizations get loc => AppLocalizations.of(this);
 
   bool get isSmallScreen => MediaQuery.sizeOf(this).height < 690;
 

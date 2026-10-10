@@ -424,4 +424,24 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get exchangeRateServiceError =>
       'We couldn\'t load exchange rates right now. Please try again.';
+
+  @override
+  String get groupUpcoming => 'UPCOMING';
+
+  @override
+  String get groupToday => 'TODAY';
+
+  @override
+  String get groupYesterday => 'YESTERDAY';
+
+  @override
+  String get groupThisMonth => 'THIS MONTH';
+
+  @override
+  String get groupEarlier => 'EARLIER';
+
+  @override
+  String transactionsWindowNote(int months) {
+    return 'History available: last $months months';
+  }
 }

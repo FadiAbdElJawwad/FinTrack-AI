@@ -1,6 +1,8 @@
 import '../models/transaction_model.dart';
 
-Map<String, List<TransactionModel>> groupTransactions(
+enum TransactionGroup { upcoming, today, yesterday, thisMonth, earlier }
+
+Map<TransactionGroup, List<TransactionModel>> groupTransactions(
   List<TransactionModel> txs, {
   DateTime? now,
 }) {
@@ -10,27 +12,23 @@ Map<String, List<TransactionModel>> groupTransactions(
   final startOfMonth = DateTime(now.year, now.month, 1);
   final startOfNextMonth = DateTime(now.year, now.month + 1, 1);
 
-  final Map<String, List<TransactionModel>> grouped = {
-    'UPCOMING': [],
-    'TODAY': [],
-    'YESTERDAY': [],
-    'THIS MONTH': [],
-    'EARLIER': [],
+  final Map<TransactionGroup, List<TransactionModel>> grouped = {
+    for (final group in TransactionGroup.values) group: [],
   };
 
   for (final tx in txs) {
     final txDate = DateTime(tx.date.year, tx.date.month, tx.date.day);
 
     if (!tx.date.isBefore(startOfNextMonth)) {
-      grouped['UPCOMING']!.add(tx);
+      grouped[TransactionGroup.upcoming]!.add(tx);
     } else if (txDate == today) {
-      grouped['TODAY']!.add(tx);
+      grouped[TransactionGroup.today]!.add(tx);
     } else if (txDate == yesterday) {
-      grouped['YESTERDAY']!.add(tx);
+      grouped[TransactionGroup.yesterday]!.add(tx);
     } else if (!tx.date.isBefore(startOfMonth)) {
-      grouped['THIS MONTH']!.add(tx);
+      grouped[TransactionGroup.thisMonth]!.add(tx);
     } else {
-      grouped['EARLIER']!.add(tx);
+      grouped[TransactionGroup.earlier]!.add(tx);
     }
   }
 

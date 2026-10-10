@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
+import '../../domain/transaction_limits.dart';
 
 class TransactionMetadataRow extends StatelessWidget {
   final DateTime selectedDate;
@@ -45,8 +46,10 @@ class TransactionMetadataRow extends StatelessWidget {
                 controller: notesController,
                 style: context.labelMedium.copyWith(color: Theme.of(context).colorScheme.onSurface),
                 maxLines: 1,
+                maxLength: maxNoteLength,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
+                  counterText: '',
                   hintText: context.loc.addNote,
                   hintStyle: context.labelMedium.copyWith(
                     color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),

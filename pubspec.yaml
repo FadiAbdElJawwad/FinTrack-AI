@@ -43,7 +43,6 @@ dev_dependencies:
   freezed: ^4.0.1
   json_serializable: ^6.14.1
   flutter_launcher_icons: ^0.14.4
-  intl_utils: ^2.8.16
 
 flutter:
   generate: true
@@ -51,9 +50,6 @@ flutter:
   assets:
     - assets/images/png/
     - assets/images/svg/
-
-flutter_intl:
-  enabled: true
 
 flutter_native_splash:
   color: "#F8FAFC"

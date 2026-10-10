@@ -1,7 +1,7 @@
 import 'package:fin_track_ai/core/error/currency_exception.dart';
 import 'package:fin_track_ai/core/error/transaction_exception.dart';
 import 'package:fin_track_ai/core/error/wallet_exception.dart';
-import 'package:fin_track_ai/generated/l10n.dart';
+import 'package:fin_track_ai/l10n/app_localizations.dart';
 import 'package:fin_track_ai/features/transactions/presentation/utils/error_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,11 +12,11 @@ Future<BuildContext> pumpContext(WidgetTester tester) async {
   await tester.pumpWidget(
     MaterialApp(
       localizationsDelegates: const [
-        S.delegate,
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: S.delegate.supportedLocales,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: Builder(
         builder: (context) {
           captured = context;
@@ -33,7 +33,7 @@ void main() {
     tester,
   ) async {
     final context = await pumpContext(tester);
-    final loc = S.of(context);
+    final loc = AppLocalizations.of(context);
     final expected = {
       TransactionErrorType.networkError: loc.networkRequestFailed,
       TransactionErrorType.permissionDenied: loc.databaseError,
@@ -55,7 +55,7 @@ void main() {
     tester,
   ) async {
     final context = await pumpContext(tester);
-    final loc = S.of(context);
+    final loc = AppLocalizations.of(context);
     final expected = {
       WalletErrorType.networkError: loc.networkRequestFailed,
       WalletErrorType.permissionDenied: loc.databaseError,
@@ -74,7 +74,7 @@ void main() {
     tester,
   ) async {
     final context = await pumpContext(tester);
-    final loc = S.of(context);
+    final loc = AppLocalizations.of(context);
     expect(
       errorMessage(context, NoExchangeRatesAvailableException()),
       loc.exchangeRateServiceError,
@@ -87,7 +87,7 @@ void main() {
 
   testWidgets('unknown errors never leak their text', (tester) async {
     final context = await pumpContext(tester);
-    final loc = S.of(context);
+    final loc = AppLocalizations.of(context);
     final secret = StateError('secret-details');
     expect(errorMessage(context, secret), loc.unknownError);
     expect(

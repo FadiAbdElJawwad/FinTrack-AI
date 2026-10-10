@@ -5,6 +5,7 @@ import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../../core/widgets/bottom_sheet_drag_handle.dart';
+import '../../domain/transaction_limits.dart';
 
 class DateRangeBottomSheet extends HookWidget {
   final DateTime? initialStartDate;
@@ -106,6 +107,13 @@ class DateRangeBottomSheet extends HookWidget {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                context.loc.transactionsWindowNote(transactionWindowMonths),
+                style: context.labelSmall.copyWith(
+                  color: ColorManager.secondaryColor,
+                ),
               ),
               const SizedBox(height: 24),
               Text(

@@ -8,8 +8,10 @@ import '../../../../core/extension/text_style_extension.dart';
 import '../../../currency/domain/models/app_currency.dart';
 import '../../../currency/presentation/utils/money_format.dart';
 import '../../../dashboard/presentation/state/dashboard_controller.dart';
+import '../state/period_totals_provider.dart';
 import '../state/transaction_filters_provider.dart';
 import '../utils/error_message.dart';
+import '../utils/transaction_group_label.dart';
 import '../../../transactions/domain/models/transaction_model.dart';
 import '../widgets/date_range_bottom_sheet.dart';
 import '../widgets/transaction_list_tile.dart';
@@ -22,6 +24,8 @@ class TransactionsScreen extends HookConsumerWidget {
     final dashboardState = ref.watch(dashboardControllerProvider);
     final selectedFilter = ref.watch(transactionTypeFilterProvider);
     final selectedDateRange = ref.watch(transactionDateRangeFilterProvider);
+    final effectivePeriod = ref.watch(transactionEffectivePeriodProvider);
+    final periodTotals = ref.watch(periodTotalsProvider).valueOrNull;
     final filteredGroups = ref.watch(filteredTransactionsProvider);
 
     return Scaffold(
@@ -84,8 +88,8 @@ class TransactionsScreen extends HookConsumerWidget {
                               ),
                             ),
                             builder: (context) => DateRangeBottomSheet(
-                              initialStartDate: selectedDateRange?.start,
-                              initialEndDate: selectedDateRange?.end,
+                              initialStartDate: effectivePeriod.start,
+                              initialEndDate: effectivePeriod.end,
                               onApply: (start, end) {
                                 ref
                                     .read(
@@ -108,7 +112,12 @@ class TransactionsScreen extends HookConsumerWidget {
                             children: [
                               Text(
                                 selectedDateRange == null
-                                    ? context.loc.dateRange
+                                    ? DateFormat(
+                                        'MMMM',
+                                        Localizations.localeOf(
+                                          context,
+                                        ).toString(),
+                                      ).format(effectivePeriod.start)
                                     : '${DateFormat('dd MMM').format(selectedDateRange.start)} - ${DateFormat('dd MMM').format(selectedDateRange.end)}',
                                 style: context.labelSmall.copyWith(
                                   color: selectedDateRange != null
@@ -138,7 +147,7 @@ class TransactionsScreen extends HookConsumerWidget {
                         Expanded(
                           child: _SummaryColumn(
                             label: context.loc.totalIncome.toUpperCase(),
-                            amountMinor: state.incomeMinor,
+                            amountMinor: periodTotals?.incomeMinor,
                             currency: state.currency,
                             color: Colors.green,
                           ),
@@ -147,7 +156,7 @@ class TransactionsScreen extends HookConsumerWidget {
                         Expanded(
                           child: _SummaryColumn(
                             label: context.loc.totalExpense.toUpperCase(),
-                            amountMinor: state.expenseMinor,
+                            amountMinor: periodTotals?.expenseMinor,
                             currency: state.currency,
                             color: Colors.red,
                           ),
@@ -169,7 +178,7 @@ class TransactionsScreen extends HookConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              group.key,
+                              group.key.label(context.loc),
                               style: context.labelSmall.copyWith(
                                 color: ColorManager.secondaryColor,
                               ),

@@ -134,5 +134,11 @@
   "currencyChangeSuccess": "تم تحديث العملة بنجاح.",
   "currencyChangeFailed": "فشل تحديث العملة:",
   "internetRequiredFirstLaunch": "يتطلب هذا التطبيق اتصالاً بالإنترنت عند التشغيل الأول.",
-  "exchangeRateServiceError": "تعذّر تحميل أسعار الصرف حالياً. يرجى المحاولة مرة أخرى."
+  "exchangeRateServiceError": "تعذّر تحميل أسعار الصرف حالياً. يرجى المحاولة مرة أخرى.",
+  "groupUpcoming": "القادمة",
+  "groupToday": "اليوم",
+  "groupYesterday": "أمس",
+  "groupThisMonth": "هذا الشهر",
+  "groupEarlier": "سابقاً",
+  "transactionsWindowNote": "السجل المتاح: آخر {months} شهراً"
 }
