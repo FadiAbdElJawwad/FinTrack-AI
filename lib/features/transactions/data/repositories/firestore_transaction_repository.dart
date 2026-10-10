@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/error/transaction_exception.dart';
 import '../../domain/models/transaction_model.dart';
 import '../../domain/repositories/transaction_repository.dart';
+import '../../domain/transaction_limits.dart';
 import '../datasources/tx_remote_datasource.dart';
 import '../models/transaction_dto.dart';
 
@@ -60,7 +61,7 @@ class FirestoreTransactionRepository implements TransactionRepository {
   FirestoreTransactionRepository(
     this._dataSource, {
     this.writeTimeout = const Duration(seconds: 3),
-    this.windowMonths = 12,
+    this.windowMonths = transactionWindowMonths,
     this.maxDocuments = 1000,
     this.clock = DateTime.now,
   });
@@ -75,6 +76,7 @@ class FirestoreTransactionRepository implements TransactionRepository {
   final int windowMonths;
 
   /// Hard cap on streamed documents, protecting the Spark read quota.
+  /// In production: expose a "truncated" flag to the UI instead of only logging.
   final int maxDocuments;
 
   /// First day of the month `windowMonths - 1` months before the current

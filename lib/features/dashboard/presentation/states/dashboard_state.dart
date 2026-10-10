@@ -2,13 +2,15 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../currency/domain/models/app_currency.dart';
 import '../../../transactions/domain/models/transaction_model.dart';
+import '../../../transactions/domain/usecases/group_transactions_usecase.dart';
 
 part 'dashboard_state.freezed.dart';
 
 @freezed
 abstract class DashboardState with _$DashboardState {
   const factory DashboardState({
-    @Default({}) Map<String, List<TransactionModel>> groupedTransactions,
+    @Default({})
+    Map<TransactionGroup, List<TransactionModel>> groupedTransactions,
     @Default(AppCurrency.usd) AppCurrency currency,
 
     /// Income in minor units of [currency]; `null` when a foreign-currency

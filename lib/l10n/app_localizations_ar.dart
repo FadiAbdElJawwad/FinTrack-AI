@@ -422,4 +422,24 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get exchangeRateServiceError =>
       'تعذّر تحميل أسعار الصرف حالياً. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get groupUpcoming => 'القادمة';
+
+  @override
+  String get groupToday => 'اليوم';
+
+  @override
+  String get groupYesterday => 'أمس';
+
+  @override
+  String get groupThisMonth => 'هذا الشهر';
+
+  @override
+  String get groupEarlier => 'سابقاً';
+
+  @override
+  String transactionsWindowNote(int months) {
+    return 'السجل المتاح: آخر $months شهراً';
+  }
 }

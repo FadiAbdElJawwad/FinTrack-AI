@@ -15,6 +15,7 @@ import '../state/dashboard_controller.dart';
 import '../widgets/home_skeleton.dart';
 import '../../../../core/services/gemini_service.dart';
 import '../../../../features/transactions/presentation/utils/error_message.dart';
+import '../../../transactions/presentation/utils/transaction_group_label.dart';
 import '../../../../features/transactions/presentation/widgets/add_transaction_bottom_sheet.dart';
 import '../../../../features/transactions/presentation/widgets/transaction_list_tile.dart';
 
@@ -176,7 +177,7 @@ class HomeScreen extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          group.key,
+                          group.key.label(context.loc),
                           style: context.labelSmall.copyWith(
                             color: ColorManager.secondaryColor,
                           ),

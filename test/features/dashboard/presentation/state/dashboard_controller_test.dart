@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fin_track_ai/core/error/currency_exception.dart';
+import 'package:fin_track_ai/core/providers/clock_provider.dart';
 import 'package:fin_track_ai/features/currency/data/repositories/firestore_currency_repository.dart';
 import 'package:fin_track_ai/features/currency/data/services/exchange_rate_service.dart';
 import 'package:fin_track_ai/features/currency/presentation/state/currency_controller.dart';
@@ -71,6 +72,17 @@ TransactionModel tx(
   walletId: 'w',
 );
 
+TransactionModel txOn(String id, DateTime date) => TransactionModel(
+  id: id,
+  amountMinor: 100,
+  currency: AppCurrency.usd,
+  type: TransactionType.expense,
+  category: TransactionCategory.other,
+  title: 't',
+  date: date,
+  walletId: 'w',
+);
+
 const income = TransactionType.income;
 const expense = TransactionType.expense;
 
@@ -86,6 +98,7 @@ ProviderContainer makeContainer({
   required List<TransactionModel> transactions,
   required String base,
   required FakeRateService rateService,
+  DateTime? now,
 }) {
   final container = ProviderContainer(
     overrides: [
@@ -96,6 +109,7 @@ ProviderContainer makeContainer({
         FixedCurrencyRepository(base),
       ),
       exchangeRateServiceProvider.overrideWithValue(rateService),
+      clockProvider.overrideWithValue(() => now ?? DateTime(2024, 5, 20)),
     ],
   );
   addTearDown(container.dispose);
@@ -306,6 +320,72 @@ void main() {
       );
       final state = await readDashboard(container);
       expect(state.groupedTransactions.values.expand((l) => l), hasLength(1));
+    });
+
+    test('shows at most 5 most recent transactions, sorted newest first', () async {
+      final now = DateTime(2024, 5, 20);
+      final transactions = [
+        txOn('tx1', DateTime(2024, 5, 10)),
+        txOn('tx8', DateTime(2024, 5, 18)),
+        txOn('tx3', DateTime(2024, 5, 12)),
+        txOn('tx7', DateTime(2024, 5, 17)),
+        txOn('tx2', DateTime(2024, 5, 11)),
+        txOn('tx5', DateTime(2024, 5, 15)),
+        txOn('tx6', DateTime(2024, 5, 16)),
+        txOn('tx4', DateTime(2024, 5, 13)),
+      ];
+      final container = makeContainer(
+        transactions: transactions,
+        base: 'USD',
+        rateService: FakeRateService(),
+        now: now,
+      );
+      final state = await readDashboard(container);
+      final shownIds = state.groupedTransactions.values
+          .expand((l) => l)
+          .map((t) => t.id)
+          .toList();
+      expect(shownIds, ['tx8', 'tx7', 'tx6', 'tx5', 'tx4']);
+    });
+
+    test('excludes future-dated transactions from groupedTransactions', () async {
+      final now = DateTime(2024, 5, 20);
+      final transactions = [
+        txOn('past', DateTime(2024, 5, 15)),
+        txOn('future', DateTime(2024, 5, 25)),
+      ];
+      final container = makeContainer(
+        transactions: transactions,
+        base: 'USD',
+        rateService: FakeRateService(),
+        now: now,
+      );
+      final state = await readDashboard(container);
+      final shownIds = state.groupedTransactions.values
+          .expand((l) => l)
+          .map((t) => t.id)
+          .toList();
+      expect(shownIds, ['past']);
+    });
+
+    test('totals include transactions beyond the 5 shown', () async {
+      final now = DateTime(2024, 5, 20);
+      final transactions = List.generate(
+        7,
+        (i) => txOn('tx$i', DateTime(2024, 5, 10 + i)),
+      );
+      final container = makeContainer(
+        transactions: transactions,
+        base: 'USD',
+        rateService: FakeRateService(),
+        now: now,
+      );
+      final state = await readDashboard(container);
+      final shownCount = state.groupedTransactions.values
+          .expand((l) => l)
+          .length;
+      expect(shownCount, 5);
+      expect(state.expenseMinor, 700);
     });
   });
 }

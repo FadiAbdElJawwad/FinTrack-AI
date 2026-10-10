@@ -17,8 +17,10 @@ void main() {
     walletId: 'w',
   );
 
-  List<String?> ids(Map<String, List<TransactionModel>> g, String key) =>
-      g[key]!.map((t) => t.id).toList();
+  List<String?> ids(
+    Map<TransactionGroup, List<TransactionModel>> g,
+    TransactionGroup key,
+  ) => g[key]!.map((t) => t.id).toList();
 
   group('groupTransactions', () {
     test('empty input returns empty map', () {
@@ -29,27 +31,27 @@ void main() {
       final g = groupTransactions([
         tx('a', DateTime(2024, 5, 15, 8)),
       ], now: now);
-      expect(g.keys, ['TODAY']);
-      expect(ids(g, 'TODAY'), ['a']);
+      expect(g.keys, [TransactionGroup.today]);
+      expect(ids(g, TransactionGroup.today), ['a']);
     });
 
     test('groups a transaction from yesterday', () {
       final g = groupTransactions([
         tx('a', DateTime(2024, 5, 14, 12)),
       ], now: now);
-      expect(g.keys, ['YESTERDAY']);
+      expect(g.keys, [TransactionGroup.yesterday]);
     });
 
     test('groups an earlier transaction of this month', () {
       final g = groupTransactions([
         tx('a', DateTime(2024, 5, 3, 12)),
       ], now: now);
-      expect(g.keys, ['THIS MONTH']);
+      expect(g.keys, [TransactionGroup.thisMonth]);
     });
 
     test('transaction at the start of the month is THIS MONTH', () {
       final g = groupTransactions([tx('a', DateTime(2024, 5, 1))], now: now);
-      expect(g.keys, ['THIS MONTH']);
+      expect(g.keys, [TransactionGroup.thisMonth]);
     });
 
     test('empty groups are removed', () {
@@ -57,7 +59,7 @@ void main() {
         tx('a', DateTime(2024, 5, 15, 8)),
         tx('b', DateTime(2024, 5, 2)),
       ], now: now);
-      expect(g.keys, ['TODAY', 'THIS MONTH']);
+      expect(g.keys, [TransactionGroup.today, TransactionGroup.thisMonth]);
     });
 
     test('order inside a group is preserved', () {
@@ -66,7 +68,7 @@ void main() {
         tx('a', DateTime(2024, 5, 15, 20)),
         tx('b', DateTime(2024, 5, 15, 1)),
       ], now: now);
-      expect(ids(g, 'TODAY'), ['c', 'a', 'b']);
+      expect(ids(g, TransactionGroup.today), ['c', 'a', 'b']);
     });
 
     test('on the 1st, yesterday belongs to the previous month', () {
@@ -75,57 +77,57 @@ void main() {
         tx('y', DateTime(2024, 5, 31, 15)),
         tx('t', DateTime(2024, 6, 1, 0, 0)),
       ], now: first);
-      expect(ids(g, 'YESTERDAY'), ['y']);
-      expect(ids(g, 'TODAY'), ['t']);
+      expect(ids(g, TransactionGroup.yesterday), ['y']);
+      expect(ids(g, TransactionGroup.today), ['t']);
     });
 
     test('transaction at 23:59 yesterday is YESTERDAY', () {
       final g = groupTransactions([
         tx('a', DateTime(2024, 5, 14, 23, 59)),
       ], now: now);
-      expect(g.keys, ['YESTERDAY']);
+      expect(g.keys, [TransactionGroup.yesterday]);
     });
 
     test('transaction at 00:00 today is TODAY', () {
       final g = groupTransactions([tx('a', DateTime(2024, 5, 15))], now: now);
-      expect(g.keys, ['TODAY']);
+      expect(g.keys, [TransactionGroup.today]);
     });
   });
 
   group('groupTransactions new groups', () {
     test('future transaction in the next month is UPCOMING', () {
       final g = groupTransactions([tx('a', DateTime(2024, 6, 20))], now: now);
-      expect(g.keys, ['UPCOMING']);
+      expect(g.keys, [TransactionGroup.upcoming]);
     });
 
     test('first instant of next month is UPCOMING', () {
       final g = groupTransactions([tx('a', DateTime(2024, 6, 1))], now: now);
-      expect(g.keys, ['UPCOMING']);
+      expect(g.keys, [TransactionGroup.upcoming]);
     });
 
     test('last instant of this month is THIS MONTH', () {
       final g = groupTransactions([
         tx('a', DateTime(2024, 5, 31, 23, 59, 59)),
       ], now: now);
-      expect(g.keys, ['THIS MONTH']);
+      expect(g.keys, [TransactionGroup.thisMonth]);
     });
 
     test('transaction from a previous month is EARLIER', () {
       final g = groupTransactions([
         tx('a', DateTime(2024, 4, 30, 23, 59)),
       ], now: now);
-      expect(g.keys, ['EARLIER']);
+      expect(g.keys, [TransactionGroup.earlier]);
     });
 
     test('transaction from a previous year is EARLIER', () {
       final g = groupTransactions([tx('a', DateTime(2023, 12, 31))], now: now);
-      expect(g.keys, ['EARLIER']);
+      expect(g.keys, [TransactionGroup.earlier]);
     });
 
     test('December now treats January of next year as UPCOMING', () {
       final dec = DateTime(2024, 12, 15, 10);
       final g = groupTransactions([tx('a', DateTime(2025, 1, 1))], now: dec);
-      expect(g.keys, ['UPCOMING']);
+      expect(g.keys, [TransactionGroup.upcoming]);
     });
 
     test('group keys follow the fixed order', () {
@@ -137,11 +139,11 @@ void main() {
         tx('upcoming', DateTime(2024, 7, 1)),
       ], now: now);
       expect(g.keys, [
-        'UPCOMING',
-        'TODAY',
-        'YESTERDAY',
-        'THIS MONTH',
-        'EARLIER',
+        TransactionGroup.upcoming,
+        TransactionGroup.today,
+        TransactionGroup.yesterday,
+        TransactionGroup.thisMonth,
+        TransactionGroup.earlier,
       ]);
     });
 
@@ -163,8 +165,8 @@ void main() {
         tx('e1', DateTime(2024, 1, 5)),
         tx('u1', DateTime(2024, 7, 1)),
       ], now: now);
-      expect(ids(g, 'EARLIER'), ['e2', 'e1']);
-      expect(ids(g, 'UPCOMING'), ['u2', 'u1']);
+      expect(ids(g, TransactionGroup.earlier), ['e2', 'e1']);
+      expect(ids(g, TransactionGroup.upcoming), ['u2', 'u1']);
     });
   });
 
@@ -179,24 +181,19 @@ void main() {
       final g = groupTransactions([
         tx('future', DateTime(2024, 6, 20)),
       ], now: now);
-      expect(g['THIS MONTH'] ?? const [], isEmpty);
+      expect(g[TransactionGroup.thisMonth] ?? const [], isEmpty);
     });
 
     test(
       'yesterday across a DST change is still YESTERDAY',
       () {
-        // 2024-03-10 is a US spring-forward day; in such zones
-        // today.subtract(24h) lands on Mar 9 23:00 instead of Mar 10 00:00.
+        // yesterday is computed with calendar arithmetic (DateTime(y, m, d - 1)), so it is independent of DST and of the machine time zone
         final dst = DateTime(2024, 3, 11, 12);
         final g = groupTransactions([
           tx('a', DateTime(2024, 3, 10, 12)),
         ], now: dst);
-        expect(g.keys, ['YESTERDAY']);
+        expect(g.keys, [TransactionGroup.yesterday]);
       },
-      skip:
-          'Known bug: yesterday = today.subtract(24h) breaks on DST days; '
-          'pure Dart cannot set the local time zone, so this only fails on '
-          'CI machines in DST zones (e.g. America/*) and passes in UTC',
     );
   });
 }

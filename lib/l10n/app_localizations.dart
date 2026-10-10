@@ -67,8 +67,8 @@ abstract class AppLocalizations {
 
   final String localeName;
 
-  static AppLocalizations? of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  static AppLocalizations of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
   static const LocalizationsDelegate<AppLocalizations> delegate =
@@ -901,6 +901,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We couldn\'t load exchange rates right now. Please try again.'**
   String get exchangeRateServiceError;
+
+  /// No description provided for @groupUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'UPCOMING'**
+  String get groupUpcoming;
+
+  /// No description provided for @groupToday.
+  ///
+  /// In en, this message translates to:
+  /// **'TODAY'**
+  String get groupToday;
+
+  /// No description provided for @groupYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'YESTERDAY'**
+  String get groupYesterday;
+
+  /// No description provided for @groupThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'THIS MONTH'**
+  String get groupThisMonth;
+
+  /// No description provided for @groupEarlier.
+  ///
+  /// In en, this message translates to:
+  /// **'EARLIER'**
+  String get groupEarlier;
+
+  /// No description provided for @transactionsWindowNote.
+  ///
+  /// In en, this message translates to:
+  /// **'History available: last {months} months'**
+  String transactionsWindowNote(int months);
 }
 
 class _AppLocalizationsDelegate

@@ -134,5 +134,18 @@
   "currencyChangeSuccess": "Currency updated successfully.",
   "currencyChangeFailed": "Failed to update currency:",
   "internetRequiredFirstLaunch": "This app requires an internet connection on first launch.",
-  "exchangeRateServiceError": "We couldn't load exchange rates right now. Please try again."
+  "exchangeRateServiceError": "We couldn't load exchange rates right now. Please try again.",
+  "groupUpcoming": "UPCOMING",
+  "groupToday": "TODAY",
+  "groupYesterday": "YESTERDAY",
+  "groupThisMonth": "THIS MONTH",
+  "groupEarlier": "EARLIER",
+  "transactionsWindowNote": "History available: last {months} months",
+  "@transactionsWindowNote": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  }
 }

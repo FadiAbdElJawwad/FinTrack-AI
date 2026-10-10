@@ -8,6 +8,7 @@ import '../../../../core/extension/text_style_extension.dart';
 import '../../../../core/widgets/loading_overlay.dart';
 import '../../../../core/widgets/bottom_sheet_drag_handle.dart';
 import '../../domain/models/transaction_model.dart';
+import '../../domain/transaction_limits.dart';
 import '../../../currency/domain/models/app_currency.dart';
 import '../../../currency/domain/usecases/money.dart';
 import '../../../currency/presentation/state/currency_controller.dart';
@@ -47,7 +48,10 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
     );
 
     final notesController = useTextEditingController(
-      text: existingTransaction?.title ?? prefillDraft?.title ?? '',
+      text: (existingTransaction?.title ?? prefillDraft?.title ?? '')
+          .characters
+          .take(maxNoteLength)
+          .toString(),
     );
     final isLoading = useState(false);
 
