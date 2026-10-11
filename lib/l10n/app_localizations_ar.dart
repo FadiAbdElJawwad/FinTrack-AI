@@ -439,6 +439,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get groupEarlier => 'سابقاً';
 
   @override
+  String get bootErrorTitle => 'Initialization Failed';
+
+  @override
+  String get bootErrorMessage =>
+      'Unable to initialize the app. Please check your connection and try again.';
+
+  @override
   String transactionsWindowNote(int months) {
     return 'السجل المتاح: آخر $months شهراً';
   }
