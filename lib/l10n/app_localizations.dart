@@ -932,6 +932,18 @@ abstract class AppLocalizations {
   /// **'EARLIER'**
   String get groupEarlier;
 
+  /// No description provided for @bootErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Initialization Failed'**
+  String get bootErrorTitle;
+
+  /// No description provided for @bootErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to initialize the app. Please check your connection and try again.'**
+  String get bootErrorMessage;
+
   /// No description provided for @transactionsWindowNote.
   ///
   /// In en, this message translates to:

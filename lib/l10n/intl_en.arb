@@ -140,6 +140,8 @@
   "groupYesterday": "YESTERDAY",
   "groupThisMonth": "THIS MONTH",
   "groupEarlier": "EARLIER",
+  "bootErrorTitle": "Initialization Failed",
+  "bootErrorMessage": "Unable to initialize the app. Please check your connection and try again.",
   "transactionsWindowNote": "History available: last {months} months",
   "@transactionsWindowNote": {
     "placeholders": {

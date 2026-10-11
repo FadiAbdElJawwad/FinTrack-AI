@@ -1,42 +1,39 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'core/bootstrap/app_bootstrap.dart';
 import 'core/constant/app_env.dart';
 import 'core/error/currency_exception.dart';
-import 'core/theme/app_theme.dart';
-import 'features/currency/data/services/exchange_rate_service.dart';
-import 'features/currency/presentation/screens/exchange_rate_gate_screen.dart';
-import 'firebase_options.dart';
-import 'l10n/app_localizations.dart';
-import 'core/providers/theme_provider.dart';
 import 'core/providers/locale_provider.dart';
 import 'core/providers/router_provider.dart';
 import 'core/providers/shared_prefs_provider.dart';
+import 'core/providers/theme_provider.dart';
+import 'core/theme/app_theme.dart';
+import 'features/currency/data/services/exchange_rate_service.dart';
+import 'features/currency/presentation/screens/exchange_rate_gate_screen.dart';
+import 'l10n/app_localizations.dart';
 
-void main() async {
+void main() {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  try {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  } catch (e) {
-    debugPrint('Firebase initialization error: $e');
-  }
-
-  final prefs = await SharedPreferences.getInstance();
-
-  if (!AppEnv.isAiConfigured && kDebugMode) {
-    debugPrint('Warning: AI config is missing or invalid. Voice entry will be disabled.');
-  }
-
   runApp(
-    ProviderScope(
-      overrides: [sharedPrefsProvider.overrideWithValue(prefs)],
-      child: const FinTrackApp(),
+    BootstrapApp(
+      bootstrap: runBootstrap,
+      appBuilder: (prefs) {
+        if (!AppEnv.isAiConfigured && kDebugMode) {
+          debugPrint(
+            'Warning: AI config is missing or invalid. Voice entry will be disabled.',
+          );
+        }
+        return ProviderScope(
+          overrides: [sharedPrefsProvider.overrideWithValue(prefs)],
+          child: const FinTrackApp(),
+        );
+      },
     ),
   );
 }
@@ -58,7 +55,7 @@ class FinTrackApp extends ConsumerWidget {
       theme: AppTheme.lightTheme(locale.languageCode),
       darkTheme: AppTheme.darkTheme(locale.languageCode),
       themeMode: themeMode,
-      locale: Locale('en'),
+      locale: const Locale('en'),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -81,4 +78,3 @@ class FinTrackApp extends ConsumerWidget {
     );
   }
 }
-
