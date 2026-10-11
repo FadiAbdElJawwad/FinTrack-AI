@@ -116,10 +116,18 @@ class ExchangeRateService {
   }
 
   Map<String, double>? _readStoredRates() {
-    final raw = _prefs.getString(SharedPrefsKeys.exchangeRatesKey);
-    if (raw == null) return null;
-    final decoded = jsonDecode(raw) as Map<String, dynamic>;
-    return decoded.map((key, value) => MapEntry(key, (value as num).toDouble()));
+    try {
+      final raw = _prefs.getString(SharedPrefsKeys.exchangeRatesKey);
+      if (raw == null) return null;
+      final decoded = jsonDecode(raw) as Map<String, dynamic>;
+      if (decoded.isEmpty) return null;
+      return decoded.map(
+        (key, value) => MapEntry(key, (value as num).toDouble()),
+      );
+    } on Object catch (e) {
+      debugPrint('[ExchangeRateService] corrupted rates cache ignored: $e');
+      return null;
+    }
   }
 
   Future<void> _persist(Map<String, double> rates, String date) async {
