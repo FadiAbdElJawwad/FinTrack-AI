@@ -310,6 +310,7 @@ void main() {
       );
       expect(tester.widget<Switch>(bioSwitch).value, isFalse);
 
+      await tester.ensureVisible(bioSwitch);
       await tester.tap(bioSwitch);
       await tester.pumpAndSettle();
 

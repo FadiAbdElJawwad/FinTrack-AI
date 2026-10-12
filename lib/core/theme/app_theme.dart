@@ -80,6 +80,15 @@ class AppTheme {
     );
   }
 
+  static SwitchThemeData _switchTheme() {
+    return SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith(
+        (states) =>
+            states.contains(WidgetState.selected) ? ColorManager.white : null,
+      ),
+    );
+  }
+
   // ------------------ Dark Theme ------------------
   static ThemeData darkTheme(String languageCode) {
     final textTheme = _buildTextTheme(
@@ -104,6 +113,7 @@ class AppTheme {
         textTheme,
         ColorManager.darkSurface,
       ),
+      switchTheme: _switchTheme(),
       appBarTheme: AppBarTheme(
         backgroundColor: ColorManager.darkBackground,
         elevation: 0,
@@ -204,6 +214,7 @@ class AppTheme {
         textTheme,
         ColorManager.lightSurface,
       ),
+      switchTheme: _switchTheme(),
       appBarTheme: AppBarTheme(
         backgroundColor: ColorManager.lightBackground,
         elevation: 0,
