@@ -451,4 +451,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String transactionsWindowNote(int months) {
     return 'History available: last $months months';
   }
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navAnalytics => 'Analytics';
+
+  @override
+  String get navWallets => 'Wallets';
+
+  @override
+  String get navSettings => 'Settings';
 }

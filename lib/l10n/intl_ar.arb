@@ -140,5 +140,9 @@
   "groupYesterday": "أمس",
   "groupThisMonth": "هذا الشهر",
   "groupEarlier": "سابقاً",
-  "transactionsWindowNote": "السجل المتاح: آخر {months} شهراً"
+  "transactionsWindowNote": "السجل المتاح: آخر {months} شهراً",
+  "navHome": "الرئيسية",
+  "navAnalytics": "التحليلات",
+  "navWallets": "المحافظ",
+  "navSettings": "الإعدادات"
 }
