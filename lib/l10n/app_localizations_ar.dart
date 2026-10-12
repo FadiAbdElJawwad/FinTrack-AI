@@ -449,4 +449,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String transactionsWindowNote(int months) {
     return 'السجل المتاح: آخر $months شهراً';
   }
+
+  @override
+  String get navHome => 'الرئيسية';
+
+  @override
+  String get navAnalytics => 'التحليلات';
+
+  @override
+  String get navWallets => 'المحافظ';
+
+  @override
+  String get navSettings => 'الإعدادات';
 }

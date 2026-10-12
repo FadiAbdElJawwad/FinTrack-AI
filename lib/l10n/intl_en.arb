@@ -149,5 +149,9 @@
         "type": "int"
       }
     }
-  }
+  },
+  "navHome": "Home",
+  "navAnalytics": "Analytics",
+  "navWallets": "Wallets",
+  "navSettings": "Settings"
 }

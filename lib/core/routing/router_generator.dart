@@ -11,10 +11,11 @@ import '../../features/auth/presentation/screens/onboarding_screen.dart';
 import '../../features/auth/presentation/screens/reset_password.dart';
 import '../../features/auth/presentation/screens/sign_up_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
-import '../../features/dashboard/presentation/screens/home_screen.dart';
+
 import '../../features/transactions/presentation/screens/transaction_details.dart';
 import '../../features/transactions/presentation/screens/voice_entry_screen.dart';
 import '../constant/shared_prefs_keys.dart';
+import 'main_shell_route.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
   GoRouterRefreshStream(Stream<dynamic> stream) {
@@ -109,11 +110,7 @@ class RouteGenerator {
         name: AppRoutes.lockScreenName,
         builder: (context, state) => const LockScreen(),
       ),
-      GoRoute(
-        path: AppRoutes.homeScreen,
-        name: AppRoutes.homeScreenName,
-        builder: (context, state) => const HomeScreen(),
-      ),
+      buildMainShellRoute(),
       GoRoute(
         path: AppRoutes.transactionsScreen,
         name: AppRoutes.transactionsScreenName,

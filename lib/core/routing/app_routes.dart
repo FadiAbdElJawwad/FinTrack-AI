@@ -6,6 +6,9 @@ class AppRoutes {
   static const String resetPassword = '/resetPassword';
   static const String lockScreen = '/lockScreen';
   static const String homeScreen = '/homeScreen';
+  static const String analyticsScreen = '/analyticsScreen';
+  static const String walletsScreen = '/walletsScreen';
+  static const String settingsScreen = '/settingsScreen';
   static const String transactionsScreen = '/transactionsScreen';
   static const String transactionDetailsWithId = '/transactionDetails/:id';
   static const String voiceEntry = '/voiceEntry';
@@ -18,6 +21,9 @@ class AppRoutes {
   static const String resetPasswordName = 'resetPassword';
   static const String lockScreenName = 'lockScreen';
   static const String homeScreenName = 'homeScreen';
+  static const String analyticsScreenName = 'analyticsScreen';
+  static const String walletsScreenName = 'walletsScreen';
+  static const String settingsScreenName = 'settingsScreen';
   static const String transactionsScreenName = 'transactionsScreen';
   static const String transactionDetailsName = 'transactionDetails';
   static const String voiceEntryName = 'voiceEntry';
