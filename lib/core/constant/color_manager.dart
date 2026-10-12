@@ -11,6 +11,7 @@ class ColorManager {
   // Dark Theme Colors
   static const Color darkBackground = Color(0xFF0F172A);
   static const Color darkSurface = Color(0xFF1E293B);
+  static const Color darkBorder = Color(0xFF334155);
   static const Color white = Colors.white;
   static const Color grey = Colors.grey;
 

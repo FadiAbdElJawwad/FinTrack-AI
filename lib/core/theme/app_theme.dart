@@ -70,6 +70,29 @@ class AppTheme {
         surface: ColorManager.darkSurface,
         onSurface: ColorManager.white,
         error: ColorManager.errorColor,
+        outlineVariant: ColorManager.darkBorder,
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: ColorManager.darkSurface,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        height: 72,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        indicatorColor: ColorManager.primaryBlue,
+        indicatorShape: const StadiumBorder(),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const IconThemeData(color: ColorManager.white, size: 24);
+          }
+          return const IconThemeData(color: ColorManager.secondaryColor, size: 24);
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700);
+          }
+          return textTheme.labelSmall?.copyWith(color: ColorManager.secondaryColor);
+        }),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: ColorManager.darkBackground,
@@ -158,6 +181,29 @@ class AppTheme {
         surface: ColorManager.lightSurface,
         onSurface: ColorManager.lightText,
         error: ColorManager.errorColor,
+        outlineVariant: ColorManager.lightBorder,
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: ColorManager.lightSurface,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        height: 72,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        indicatorColor: ColorManager.primaryBlue,
+        indicatorShape: const StadiumBorder(),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const IconThemeData(color: ColorManager.white, size: 24);
+          }
+          return const IconThemeData(color: ColorManager.secondaryColor, size: 24);
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700);
+          }
+          return textTheme.labelSmall?.copyWith(color: ColorManager.secondaryColor);
+        }),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: ColorManager.lightBackground,

@@ -6,6 +6,7 @@ import 'package:fin_track_ai/l10n/app_localizations.dart';
 import 'package:fin_track_ai/core/routing/main_shell_route.dart';
 import 'package:fin_track_ai/core/routing/app_routes.dart';
 import 'package:fin_track_ai/core/theme/app_theme.dart';
+import 'package:fin_track_ai/core/constant/color_manager.dart';
 import 'package:fin_track_ai/features/shell/presentation/widgets/main_bottom_nav_bar.dart';
 
 void main() {
@@ -55,17 +56,14 @@ void main() {
     await tester.pumpWidget(buildTestApp());
     await tester.pumpAndSettle();
 
-    // Tap Analytics
     await tester.tap(find.text('Analytics'));
     await tester.pumpAndSettle();
     expect(find.descendant(of: find.byType(AppBar), matching: find.text('Analytics')), findsOneWidget);
 
-    // Tap Wallets
     await tester.tap(find.text('Wallets'));
     await tester.pumpAndSettle();
     expect(find.descendant(of: find.byType(AppBar), matching: find.text('Wallets')), findsOneWidget);
 
-    // Tap Settings
     await tester.tap(find.text('Settings'));
     await tester.pumpAndSettle();
     expect(find.descendant(of: find.byType(AppBar), matching: find.text('Settings')), findsOneWidget);
@@ -98,12 +96,10 @@ void main() {
     await tester.pump();
     expect(find.text('Counter: 1'), findsOneWidget);
 
-    // Go to Wallets
     await tester.tap(find.text('Wallets'));
     await tester.pumpAndSettle();
     expect(find.descendant(of: find.byType(AppBar), matching: find.text('Wallets')), findsOneWidget);
 
-    // Return to Home
     await tester.tap(find.text('Home'));
     await tester.pumpAndSettle();
     expect(find.text('Counter: 1'), findsOneWidget);
@@ -114,21 +110,17 @@ void main() {
     await tester.pumpWidget(buildTestApp());
     await tester.pumpAndSettle();
 
-    // Go to Settings
     await tester.tap(find.text('Settings'));
     await tester.pumpAndSettle();
     expect(find.descendant(of: find.byType(AppBar), matching: find.text('Settings')), findsOneWidget);
 
-    // Trigger system back
     final dynamic widgetsBinding = tester.binding;
     bool didPop = await widgetsBinding.handlePopRoute();
     await tester.pumpAndSettle();
 
-    // Should return true (handled) and show Home
     expect(didPop, true);
     expect(find.text('Home Content'), findsOneWidget);
 
-    // Second back
     didPop = await widgetsBinding.handlePopRoute();
     await tester.pumpAndSettle();
     expect(didPop, false); // Not handled, would exit app
@@ -150,14 +142,12 @@ void main() {
 
     expect(find.byType(MainBottomNavBar), findsOneWidget);
 
-    // Push details
     await tester.tap(find.text('Push Details'));
     await tester.pumpAndSettle();
 
     expect(find.text('Details View'), findsOneWidget);
     expect(find.byType(MainBottomNavBar), findsNothing);
 
-    // Pop back
     final dynamic widgetsBinding = tester.binding;
     await widgetsBinding.handlePopRoute();
     await tester.pumpAndSettle();
@@ -176,27 +166,63 @@ void main() {
     expect(find.text('الإعدادات'), findsOneWidget);
   });
 
-  testWidgets('7. The active tab is exposed via Semantics selected state',
+  testWidgets('7. The active tab is exposed via NavigationBar selectedIndex',
       (WidgetTester tester) async {
     await tester.pumpWidget(buildTestApp());
     await tester.pumpAndSettle();
 
-    Semantics getSemanticsWidget(String label) {
-      return tester.widget<Semantics>(
-        find.byWidgetPredicate(
-          (w) => w is Semantics && w.properties.label == label,
-        ).first,
-      );
-    }
+    expect(tester.widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex, 0);
 
-    expect(getSemanticsWidget('Home').properties.selected, isTrue);
-    expect(getSemanticsWidget('Analytics').properties.selected, isFalse);
-
-    // Tap Analytics
     await tester.tap(find.text('Analytics'));
     await tester.pumpAndSettle();
 
-    expect(getSemanticsWidget('Home').properties.selected, isFalse);
-    expect(getSemanticsWidget('Analytics').properties.selected, isTrue);
+    expect(tester.widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex, 1);
+  });
+
+  testWidgets('8. App builds with light and dark themes and labels are visible',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp.router(
+      routerConfig: GoRouter(
+        initialLocation: AppRoutes.homeScreen,
+        routes: [
+          buildMainShellRoute(
+            homeBuilder: (context, state) => const Scaffold(body: Text('Home Content')),
+          ),
+        ],
+      ),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('en'),
+      theme: AppTheme.lightTheme('en'),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.text('Home'), findsOneWidget);
+
+    await tester.pumpWidget(MaterialApp.router(
+      routerConfig: GoRouter(
+        initialLocation: AppRoutes.homeScreen,
+        routes: [
+          buildMainShellRoute(
+            homeBuilder: (context, state) => const Scaffold(body: Text('Home Content')),
+          ),
+        ],
+      ),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('en'),
+      theme: AppTheme.darkTheme('en'),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.text('Home'), findsOneWidget);
+  });
+
+  test('9. Theme properties are correctly set for light and dark themes', () {
+    final lightTheme = AppTheme.lightTheme('en');
+    expect(lightTheme.navigationBarTheme.indicatorColor, ColorManager.primaryBlue);
+    expect(lightTheme.colorScheme.outlineVariant, ColorManager.lightBorder);
+
+    final darkTheme = AppTheme.darkTheme('en');
+    expect(darkTheme.navigationBarTheme.indicatorColor, ColorManager.primaryBlue);
+    expect(darkTheme.colorScheme.outlineVariant, ColorManager.darkBorder);
   });
 }
