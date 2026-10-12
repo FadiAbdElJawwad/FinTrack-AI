@@ -463,4 +463,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navSettings => 'Settings';
+
+  @override
+  String get settingsPreferences => 'App Preferences';
+
+  @override
+  String get settingsSecurity => 'Security';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsAppearance => 'Appearance';
+
+  @override
+  String get settingsThemeDark => 'Dark Theme';
+
+  @override
+  String get settingsThemeLight => 'Light Theme';
+
+  @override
+  String get settingsCurrency => 'Currency';
+
+  @override
+  String get settingsBiometric => 'Biometric Authentication';
+
+  @override
+  String get logout => 'Log Out';
+
+  @override
+  String get logoutConfirmTitle => 'Log Out?';
+
+  @override
+  String get logoutConfirmMessage =>
+      'Are you sure you want to log out of your account?';
 }

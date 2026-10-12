@@ -55,7 +55,7 @@ class FinTrackApp extends ConsumerWidget {
       theme: AppTheme.lightTheme(locale.languageCode),
       darkTheme: AppTheme.darkTheme(locale.languageCode),
       themeMode: themeMode,
-      locale: const Locale('en'),
+      locale: locale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

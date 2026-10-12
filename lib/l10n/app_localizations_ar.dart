@@ -461,4 +461,38 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get navSettings => 'الإعدادات';
+
+  @override
+  String get settingsPreferences => 'تفضيلات التطبيق';
+
+  @override
+  String get settingsSecurity => 'الأمان';
+
+  @override
+  String get settingsLanguage => 'اللغة';
+
+  @override
+  String get settingsAppearance => 'المظهر';
+
+  @override
+  String get settingsThemeDark => 'الوضع الداكن';
+
+  @override
+  String get settingsThemeLight => 'الوضع الفاتح';
+
+  @override
+  String get settingsCurrency => 'العملة';
+
+  @override
+  String get settingsBiometric => 'المصادقة الحيوية';
+
+  @override
+  String get logout => 'تسجيل الخروج';
+
+  @override
+  String get logoutConfirmTitle => 'تسجيل الخروج؟';
+
+  @override
+  String get logoutConfirmMessage =>
+      'هل أنت متأكد من رغبتك في تسجيل الخروج من حسابك؟';
 }

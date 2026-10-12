@@ -153,5 +153,16 @@
   "navHome": "Home",
   "navAnalytics": "Analytics",
   "navWallets": "Wallets",
-  "navSettings": "Settings"
+  "navSettings": "Settings",
+  "settingsPreferences": "App Preferences",
+  "settingsSecurity": "Security",
+  "settingsLanguage": "Language",
+  "settingsAppearance": "Appearance",
+  "settingsThemeDark": "Dark Theme",
+  "settingsThemeLight": "Light Theme",
+  "settingsCurrency": "Currency",
+  "settingsBiometric": "Biometric Authentication",
+  "logout": "Log Out",
+  "logoutConfirmTitle": "Log Out?",
+  "logoutConfirmMessage": "Are you sure you want to log out of your account?"
 }

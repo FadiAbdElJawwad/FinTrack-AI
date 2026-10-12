@@ -1,6 +1,10 @@
+import 'package:fin_track_ai/core/providers/shared_prefs_provider.dart';
+import 'package:fin_track_ai/features/auth/presentation/state/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fin_track_ai/l10n/app_localizations.dart';
 
 import 'package:fin_track_ai/core/routing/main_shell_route.dart';
@@ -10,6 +14,13 @@ import 'package:fin_track_ai/core/constant/color_manager.dart';
 import 'package:fin_track_ai/features/shell/presentation/widgets/main_bottom_nav_bar.dart';
 
 void main() {
+  late SharedPreferences prefs;
+
+  setUp(() async {
+    SharedPreferences.setMockInitialValues({});
+    prefs = await SharedPreferences.getInstance();
+  });
+
   Widget buildTestApp({
     Locale locale = const Locale('en'),
     Widget Function(BuildContext, GoRouterState)? homeBuilder,
@@ -30,12 +41,18 @@ void main() {
       ],
     );
 
-    return MaterialApp.router(
-      routerConfig: router,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      locale: locale,
-      theme: AppTheme.lightTheme(locale.languageCode),
+    return ProviderScope(
+      overrides: [
+        sharedPrefsProvider.overrideWithValue(prefs),
+        currentUserProvider.overrideWithValue(null),
+      ],
+      child: MaterialApp.router(
+        routerConfig: router,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: locale,
+        theme: AppTheme.lightTheme(locale.languageCode),
+      ),
     );
   }
 
