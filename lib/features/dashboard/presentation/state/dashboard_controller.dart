@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../core/providers/clock_provider.dart';
 import '../../../currency/data/services/exchange_rate_service.dart';
 import '../../../currency/domain/models/app_currency.dart';
-
 import '../../../currency/presentation/state/currency_controller.dart';
 import '../../../transactions/domain/transaction_limits.dart';
 import '../../../transactions/presentation/state/transaction_controller.dart';
@@ -44,4 +43,3 @@ final dashboardControllerProvider =
         );
       });
     });
-

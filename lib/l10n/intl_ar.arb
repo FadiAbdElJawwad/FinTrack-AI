@@ -155,5 +155,17 @@
   "settingsBiometric": "المصادقة الحيوية",
   "logout": "تسجيل الخروج",
   "logoutConfirmTitle": "تسجيل الخروج؟",
-  "logoutConfirmMessage": "هل أنت متأكد من رغبتك في تسجيل الخروج من حسابك؟"
+  "logoutConfirmMessage": "هل أنت متأكد من رغبتك في تسجيل الخروج من حسابك؟",
+  "walletsYourAccounts": "حساباتك",
+  "walletsBalanceWindowNote": "الأرصدة تغطي آخر {months} شهراً",
+  "walletsUnassigned": "معاملات بلا محفظة",
+  "walletsEmpty": "لا توجد محافظ بعد. اضغط + لإضافة محفظة.",
+  "addWalletTitle": "إضافة محفظة",
+  "walletNameLabel": "اسم المحفظة",
+  "walletIconLabel": "الأيقونة",
+  "createWallet": "إنشاء المحفظة",
+  "walletNameExists": "توجد محفظة بهذا الاسم بالفعل.",
+  "walletNameBank": "حساب بنكي",
+  "walletNamePaypal": "PayPal",
+  "walletNameOther": "أخرى"
 }

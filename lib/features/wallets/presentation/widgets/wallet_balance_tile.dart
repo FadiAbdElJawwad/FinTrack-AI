@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+
+import '../../../../core/constant/color_manager.dart';
+import '../../../../core/extension/text_style_extension.dart';
+import '../../../currency/domain/models/app_currency.dart';
+import '../../../currency/presentation/utils/money_format.dart';
+
+class WalletBalanceTile extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final int? balanceMinor;
+  final AppCurrency currency;
+
+  const WalletBalanceTile({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.balanceMinor,
+    required this.currency,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isNegative = balanceMinor != null && balanceMinor! < 0;
+    final amountText = balanceMinor == null
+        ? '—'
+        : formatMoney(balanceMinor!, currency);
+
+    final amountStyle = context.labelMedium.copyWith(
+      color: isNegative ? ColorManager.errorColor : null,
+    );
+
+    return Card(
+      child: ListTile(
+        leading: Card(
+          color: ColorManager.primaryBlue.withValues(alpha: 0.1),
+          shape: const StadiumBorder(),
+          elevation: 0,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Icon(icon, color: ColorManager.primaryBlue),
+          ),
+        ),
+        title: Text(
+          title,
+          style: context.labelMedium,
+        ),
+        trailing: Text(
+          amountText,
+          textDirection: TextDirection.ltr,
+          style: amountStyle,
+        ),
+      ),
+    );
+  }
+}

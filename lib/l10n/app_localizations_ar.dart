@@ -495,4 +495,42 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get logoutConfirmMessage =>
       'هل أنت متأكد من رغبتك في تسجيل الخروج من حسابك؟';
+
+  @override
+  String get walletsYourAccounts => 'حساباتك';
+
+  @override
+  String walletsBalanceWindowNote(int months) {
+    return 'الأرصدة تغطي آخر $months شهراً';
+  }
+
+  @override
+  String get walletsUnassigned => 'معاملات بلا محفظة';
+
+  @override
+  String get walletsEmpty => 'لا توجد محافظ بعد. اضغط + لإضافة محفظة.';
+
+  @override
+  String get addWalletTitle => 'إضافة محفظة';
+
+  @override
+  String get walletNameLabel => 'اسم المحفظة';
+
+  @override
+  String get walletIconLabel => 'الأيقونة';
+
+  @override
+  String get createWallet => 'إنشاء المحفظة';
+
+  @override
+  String get walletNameExists => 'توجد محفظة بهذا الاسم بالفعل.';
+
+  @override
+  String get walletNameBank => 'حساب بنكي';
+
+  @override
+  String get walletNamePaypal => 'PayPal';
+
+  @override
+  String get walletNameOther => 'أخرى';
 }

@@ -33,4 +33,12 @@ class WalletController extends AutoDisposeStreamNotifier<List<WalletModel>> {
 
     yield* ref.watch(walletRepositoryProvider).getWalletsStream();
   }
+
+  Future<void> addWallet(WalletModel wallet) async {
+    try {
+      await ref.read(walletRepositoryProvider).addWallet(wallet);
+    } catch (e, st) {
+      Error.throwWithStackTrace(translateWalletError(e), st);
+    }
+  }
 }

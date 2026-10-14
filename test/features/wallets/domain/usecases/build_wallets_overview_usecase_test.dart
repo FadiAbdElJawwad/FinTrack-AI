@@ -304,5 +304,22 @@ void main() {
       final diff = (overview.totalMinor! - homeBalance).abs();
       expect(diff, lessThanOrEqualTo(1));
     });
+
+    test('14. Ordering tiebreaker: two wallets with equal names are ordered by id deterministically', () {
+      final wallets = [
+        w('w_beta', 'Savings'),
+        w('w_alpha', 'Savings'),
+      ];
+
+      final overview = buildWalletsOverview(
+        wallets: wallets,
+        transactions: [],
+        target: AppCurrency.usd,
+        rateBetween: noRate,
+      );
+
+      expect(overview.wallets[0].wallet.id, 'w_alpha');
+      expect(overview.wallets[1].wallet.id, 'w_beta');
+    });
   });
 }

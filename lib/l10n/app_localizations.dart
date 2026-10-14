@@ -1039,6 +1039,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to log out of your account?'**
   String get logoutConfirmMessage;
+
+  /// No description provided for @walletsYourAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Accounts'**
+  String get walletsYourAccounts;
+
+  /// No description provided for @walletsBalanceWindowNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Balances cover the last {months} months'**
+  String walletsBalanceWindowNote(int months);
+
+  /// No description provided for @walletsUnassigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Unassigned transactions'**
+  String get walletsUnassigned;
+
+  /// No description provided for @walletsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No wallets yet. Tap + to add one.'**
+  String get walletsEmpty;
+
+  /// No description provided for @addWalletTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Wallet'**
+  String get addWalletTitle;
+
+  /// No description provided for @walletNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'WALLET NAME'**
+  String get walletNameLabel;
+
+  /// No description provided for @walletIconLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'ICON'**
+  String get walletIconLabel;
+
+  /// No description provided for @createWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Wallet'**
+  String get createWallet;
+
+  /// No description provided for @walletNameExists.
+  ///
+  /// In en, this message translates to:
+  /// **'A wallet with this name already exists.'**
+  String get walletNameExists;
+
+  /// No description provided for @walletNameBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Account'**
+  String get walletNameBank;
+
+  /// No description provided for @walletNamePaypal.
+  ///
+  /// In en, this message translates to:
+  /// **'PayPal'**
+  String get walletNamePaypal;
+
+  /// No description provided for @walletNameOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get walletNameOther;
 }
 
 class _AppLocalizationsDelegate

@@ -40,7 +40,9 @@ WalletsOverview buildWalletsOverview({
   sortedWallets.sort((a, b) {
     if (a.isDefault && !b.isDefault) return -1;
     if (!a.isDefault && b.isDefault) return 1;
-    return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+    final nameCompare = a.name.toLowerCase().compareTo(b.name.toLowerCase());
+    if (nameCompare != 0) return nameCompare;
+    return (a.id ?? '').compareTo(b.id ?? '');
   });
 
   int? getBalanceMinor(List<TransactionModel> txs) {

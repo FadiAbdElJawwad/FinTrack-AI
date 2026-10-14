@@ -12,8 +12,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FakeWalletRepo implements WalletRepository {
+  WalletModel? lastAdded;
+  bool shouldThrow = false;
+
   @override
-  Future<String> addWallet(WalletModel wallet) async => 'id';
+  Future<String> addWallet(WalletModel wallet) async {
+    if (shouldThrow) throw WalletException(WalletErrorType.networkError);
+    lastAdded = wallet;
+    return 'id_123';
+  }
 
   @override
   Future<void> deleteWallet(String id) async {}
@@ -47,11 +54,12 @@ const user = UserModel(uid: 'u1', email: 'a@b.c', fullName: 'A B');
 ProviderContainer makeContainer(
   FakeMigration migration, {
   UserModel? who = user,
+  FakeWalletRepo? repo,
 }) {
   final container = ProviderContainer(
     overrides: [
       currentUserProvider.overrideWithValue(who),
-      walletRepositoryProvider.overrideWithValue(FakeWalletRepo()),
+      walletRepositoryProvider.overrideWithValue(repo ?? FakeWalletRepo()),
       walletMigrationProvider.overrideWithValue(migration),
     ],
   );
@@ -161,6 +169,31 @@ void main() {
         ),
       );
       expect(migration.calls, 0);
+    });
+  });
+
+  group('WalletController.addWallet', () {
+    test(
+        'addWallet delegates to repository and rethrows translated WalletException on failure',
+        () async {
+      final repo = FakeWalletRepo();
+      final migration = FakeMigration();
+      final container = makeContainer(migration, repo: repo);
+      container.listen(walletControllerProvider, (_, _) {});
+      await container.read(walletControllerProvider.future);
+
+      const newWallet = WalletModel(name: 'Savings', icon: 'savings');
+      await container
+          .read(walletControllerProvider.notifier)
+          .addWallet(newWallet);
+
+      expect(repo.lastAdded, newWallet);
+
+      repo.shouldThrow = true;
+      await expectLater(
+        container.read(walletControllerProvider.notifier).addWallet(newWallet),
+        throwsA(isA<WalletException>()),
+      );
     });
   });
 }

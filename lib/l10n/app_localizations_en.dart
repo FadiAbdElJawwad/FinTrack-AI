@@ -497,4 +497,42 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get logoutConfirmMessage =>
       'Are you sure you want to log out of your account?';
+
+  @override
+  String get walletsYourAccounts => 'Your Accounts';
+
+  @override
+  String walletsBalanceWindowNote(int months) {
+    return 'Balances cover the last $months months';
+  }
+
+  @override
+  String get walletsUnassigned => 'Unassigned transactions';
+
+  @override
+  String get walletsEmpty => 'No wallets yet. Tap + to add one.';
+
+  @override
+  String get addWalletTitle => 'Add Wallet';
+
+  @override
+  String get walletNameLabel => 'WALLET NAME';
+
+  @override
+  String get walletIconLabel => 'ICON';
+
+  @override
+  String get createWallet => 'Create Wallet';
+
+  @override
+  String get walletNameExists => 'A wallet with this name already exists.';
+
+  @override
+  String get walletNameBank => 'Bank Account';
+
+  @override
+  String get walletNamePaypal => 'PayPal';
+
+  @override
+  String get walletNameOther => 'Other';
 }
