@@ -535,4 +535,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get walletNameOther => 'Other';
+
+  @override
+  String get analyticsPeriodWeek => 'Week';
+
+  @override
+  String get analyticsPeriodMonth => 'Month';
+
+  @override
+  String analyticsPeriodYear(int months) {
+    return '$months Months';
+  }
+
+  @override
+  String get analyticsExpensesByCategory => 'Expenses by Category';
+
+  @override
+  String get analyticsEmpty => 'No transactions in this period.';
 }

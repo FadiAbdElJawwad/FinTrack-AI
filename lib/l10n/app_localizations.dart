@@ -1111,6 +1111,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get walletNameOther;
+
+  /// No description provided for @analyticsPeriodWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get analyticsPeriodWeek;
+
+  /// No description provided for @analyticsPeriodMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get analyticsPeriodMonth;
+
+  /// No description provided for @analyticsPeriodYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} Months'**
+  String analyticsPeriodYear(int months);
+
+  /// No description provided for @analyticsExpensesByCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses by Category'**
+  String get analyticsExpensesByCategory;
+
+  /// No description provided for @analyticsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions in this period.'**
+  String get analyticsEmpty;
 }
 
 class _AppLocalizationsDelegate

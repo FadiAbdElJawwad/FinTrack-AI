@@ -183,5 +183,17 @@
   "walletNameExists": "A wallet with this name already exists.",
   "walletNameBank": "Bank Account",
   "walletNamePaypal": "PayPal",
-  "walletNameOther": "Other"
+  "walletNameOther": "Other",
+  "analyticsPeriodWeek": "Week",
+  "analyticsPeriodMonth": "Month",
+  "analyticsPeriodYear": "{months} Months",
+  "@analyticsPeriodYear": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "analyticsExpensesByCategory": "Expenses by Category",
+  "analyticsEmpty": "No transactions in this period."
 }

@@ -167,5 +167,10 @@
   "walletNameExists": "توجد محفظة بهذا الاسم بالفعل.",
   "walletNameBank": "حساب بنكي",
   "walletNamePaypal": "PayPal",
-  "walletNameOther": "أخرى"
+  "walletNameOther": "أخرى",
+  "analyticsPeriodWeek": "أسبوع",
+  "analyticsPeriodMonth": "شهر",
+  "analyticsPeriodYear": "{months} شهراً",
+  "analyticsExpensesByCategory": "المصاريف حسب الفئة",
+  "analyticsEmpty": "لا توجد معاملات في هذه الفترة."
 }

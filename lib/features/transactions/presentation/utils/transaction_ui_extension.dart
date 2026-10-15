@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../currency/presentation/utils/money_format.dart';
 import '../../domain/models/transaction_model.dart';
+import 'transaction_category_extension.dart';
 
 extension TransactionUIExtension on TransactionModel {
   Color get amountColor => type == TransactionType.income
@@ -17,20 +18,5 @@ extension TransactionUIExtension on TransactionModel {
 
   String get formattedDate => DateFormat('MMM dd, hh:mm a').format(date);
 
-  IconData get categoryIcon {
-    switch (category) {
-      case TransactionCategory.food:
-        return Icons.restaurant;
-      case TransactionCategory.transport:
-        return Icons.directions_car;
-      case TransactionCategory.shopping:
-        return Icons.shopping_bag;
-      case TransactionCategory.salary:
-        return Icons.attach_money;
-      case TransactionCategory.entertainment:
-        return Icons.movie;
-      case TransactionCategory.other:
-        return Icons.category;
-    }
-  }
+  IconData get categoryIcon => category.icon;
 }

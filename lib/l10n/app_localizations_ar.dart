@@ -533,4 +533,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get walletNameOther => 'أخرى';
+
+  @override
+  String get analyticsPeriodWeek => 'أسبوع';
+
+  @override
+  String get analyticsPeriodMonth => 'شهر';
+
+  @override
+  String analyticsPeriodYear(int months) {
+    return '$months شهراً';
+  }
+
+  @override
+  String get analyticsExpensesByCategory => 'المصاريف حسب الفئة';
+
+  @override
+  String get analyticsEmpty => 'لا توجد معاملات في هذه الفترة.';
 }
