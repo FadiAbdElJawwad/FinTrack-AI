@@ -22,31 +22,34 @@ class WalletsTotalCard extends StatelessWidget {
         ? '—'
         : formatMoney(totalMinor!, currency);
 
-    return Card(
-      color: ColorManager.primaryBlue,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
+    return SizedBox(
+      width: double.infinity,
+      child: Card(
+        color: ColorManager.primaryBlue,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              context.loc.totalBalance,
+              style: context.bodyMedium.copyWith(
+                color: ColorManager.white.withValues(alpha: 0.8),
+              ),
+            ),
+            context.addVerticalSpace(8),
+            Text(
+              amountText,
+              style: context.displayLarge.copyWith(
+                color: ColorManager.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ).pad(24),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            context.loc.totalBalance,
-            style: context.bodyMedium.copyWith(
-              color: ColorManager.white.withValues(alpha: 0.8),
-            ),
-          ),
-          context.addVerticalSpace(8),
-          Text(
-            amountText,
-            style: context.displayLarge.copyWith(
-              color: ColorManager.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ).pad(24),
     );
   }
 }
