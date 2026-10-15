@@ -33,11 +33,11 @@ const cash = WalletModel(name: 'Cash', icon: 'payments', isDefault: true);
 
 void main() {
   group('WalletMigrationService seeding', () {
-    test('no wallets: upserts exactly cash, bank, paypal, other', () async {
+    test('no wallets: upserts exactly bank, paypal, other, cash', () async {
       final repo = InMemoryWalletRepository();
       await WalletMigrationService(repository: repo).runIfNeeded();
 
-      expect(repo.upserts, ['cash', 'bank', 'paypal', 'other']);
+      expect(repo.upserts, ['bank', 'paypal', 'other', 'cash']);
     });
 
     test('seeded wallets keep the existing names, icons and default', () async {
@@ -60,11 +60,30 @@ void main() {
       expect(repo.store.values.where((w) => w.isDefault), hasLength(1));
     });
 
-    test('only the default Cash wallet: upserts the three secondary', () async {
+    test('default wallet exists with secondary wallets deleted: no writes', () async {
       final repo = InMemoryWalletRepository({'cash': cash});
       await WalletMigrationService(repository: repo).runIfNeeded();
 
-      expect(repo.upserts, ['bank', 'paypal', 'other']);
+      expect(repo.upserts, isEmpty);
+    });
+
+    test('only a non-default wallet exists: completes seeding with cash last', () async {
+      final repo = InMemoryWalletRepository({
+        'x': const WalletModel(name: 'Savings', icon: 'savings'),
+      });
+      await WalletMigrationService(repository: repo).runIfNeeded();
+
+      expect(repo.upserts, ['bank', 'paypal', 'other', 'cash']);
+      expect(repo.upserts.last, 'cash');
+    });
+
+    test('a legacy default wallet with a random id alone: no writes', () async {
+      final repo = InMemoryWalletRepository({
+        'legacy_id': const WalletModel(name: 'Cash', icon: 'payments', isDefault: true),
+      });
+      await WalletMigrationService(repository: repo).runIfNeeded();
+
+      expect(repo.upserts, isEmpty);
     });
 
     test('four wallets: no writes', () async {
@@ -84,7 +103,7 @@ void main() {
       await service.runIfNeeded();
       await service.runIfNeeded();
 
-      expect(repo.store.keys, ['cash', 'bank', 'paypal', 'other']);
+      expect(repo.store.keys, ['bank', 'paypal', 'other', 'cash']);
     });
 
     test('two concurrent first runs converge on the same four docs', () async {
@@ -96,15 +115,6 @@ void main() {
       ]);
 
       expect(repo.store, hasLength(4));
-    });
-
-    test('a single non-default wallet is left alone', () async {
-      final repo = InMemoryWalletRepository({
-        'x': const WalletModel(name: 'Savings', icon: 'savings'),
-      });
-      await WalletMigrationService(repository: repo).runIfNeeded();
-
-      expect(repo.upserts, isEmpty);
     });
 
     test('the service depends on the repository only', () async {

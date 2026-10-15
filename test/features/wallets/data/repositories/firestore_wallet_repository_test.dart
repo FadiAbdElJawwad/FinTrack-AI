@@ -21,9 +21,9 @@ class FakeWalletDataSource implements WalletRemoteDataSource {
       StreamController<List<Map<String, dynamic>>>();
 
   @override
-  Future<String> create(Map<String, dynamic> data) async {
+  ({String id, Future<void> write}) create(Map<String, dynamic> data) {
     if (createError != null) throw createError!;
-    return 'new-id';
+    return (id: 'new-id', write: Future.value());
   }
 
   @override
