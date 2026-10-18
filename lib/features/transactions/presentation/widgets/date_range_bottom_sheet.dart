@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:intl/intl.dart';
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../../core/widgets/bottom_sheet_drag_handle.dart';
 import '../../domain/transaction_limits.dart';
+import '../utils/localized_date_format.dart';
 
 class DateRangeBottomSheet extends HookWidget {
   final DateTime? initialStartDate;
@@ -347,7 +347,7 @@ class _DateField extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  DateFormat('dd MMM yyyy').format(date),
+                  formatLocalizedDate(context, 'dd MMM yyyy', date),
                   style: context.labelMedium.copyWith(
                     color: Colors.white,
                     fontSize: 16,

@@ -47,13 +47,14 @@ class TransactionListTile extends StatelessWidget {
             style: context.labelMedium,
           ),
           subtitle: Text(
-            transaction.formattedDate,
+            transaction.formattedDate(context),
             style: context.labelSmall.copyWith(
               color: ColorManager.secondaryColor,
             ),
           ),
           trailing: Text(
             transaction.formattedAmount,
+            textDirection: TextDirection.ltr,
             style: context.labelMedium.copyWith(
               color: transaction.amountColor,
             ),

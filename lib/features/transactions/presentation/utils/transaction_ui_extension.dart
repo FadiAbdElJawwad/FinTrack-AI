@@ -1,9 +1,9 @@
 import 'package:fin_track_ai/core/constant/color_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../currency/presentation/utils/money_format.dart';
 import '../../domain/models/transaction_model.dart';
+import 'localized_date_format.dart';
 import 'transaction_category_extension.dart';
 
 extension TransactionUIExtension on TransactionModel {
@@ -16,7 +16,8 @@ extension TransactionUIExtension on TransactionModel {
     return type == TransactionType.income ? '+ $money' : '- $money';
   }
 
-  String get formattedDate => DateFormat('MMM dd, hh:mm a').format(date);
+  String formattedDate(BuildContext context) =>
+      formatLocalizedDate(context, 'MMM dd, hh:mm a', date);
 
   IconData get categoryIcon => category.icon;
 }

@@ -1,18 +1,17 @@
-import 'package:fin_track_ai/core/services/share_service.dart';
-
-import '../../../../core/extension/app_sizes.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../core/constant/color_manager.dart';
+import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
+import '../../../../core/services/share_service.dart';
 import '../../../wallets/domain/models/wallet_model.dart';
 import '../../../wallets/presentation/state/wallet_controller.dart';
+import '../../../wallets/presentation/utils/wallet_display_name.dart';
 import '../state/transaction_controller.dart';
 import '../utils/error_message.dart';
+import '../utils/localized_date_format.dart';
 import '../utils/transaction_ui_extension.dart';
 import '../widgets/add_transaction_bottom_sheet.dart';
 
@@ -111,7 +110,7 @@ class TransactionDetails extends HookConsumerWidget {
               orElse: () =>
                   WalletModel(name: context.loc.unknownWallet, icon: ''),
             );
-            return wallet.name;
+            return walletDisplayName(context.loc, wallet);
           },
           orElse: () => context.loc.unknownWallet,
         );
@@ -223,14 +222,18 @@ class TransactionDetails extends HookConsumerWidget {
                       ),
                       Text(
                         transaction.formattedAmount,
+                        textDirection: TextDirection.ltr,
                         style: context.headlineMedium.copyWith(
                           color: transaction.amountColor,
                         ),
                       ),
                       context.addVerticalSpace(8),
                       Text(
-                        DateFormat('EEEE, dd MMMM yyyy, hh:mm a')
-                            .format(transaction.date),
+                        formatLocalizedDate(
+                          context,
+                          'EEEE, dd MMMM yyyy, hh:mm a',
+                          transaction.date,
+                        ),
                         style: context.bodyMedium,
                       ),
                       context.addVerticalSpace(40),
