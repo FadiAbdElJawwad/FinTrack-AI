@@ -10,6 +10,7 @@ class WalletBalanceTile extends StatelessWidget {
   final IconData icon;
   final int? balanceMinor;
   final AppCurrency currency;
+  final VoidCallback? onTap;
 
   const WalletBalanceTile({
     super.key,
@@ -17,6 +18,7 @@ class WalletBalanceTile extends StatelessWidget {
     required this.icon,
     required this.balanceMinor,
     required this.currency,
+    this.onTap,
   });
 
   @override
@@ -32,6 +34,7 @@ class WalletBalanceTile extends StatelessWidget {
 
     return Card(
       child: ListTile(
+        onTap: onTap,
         leading: Card(
           color: ColorManager.primaryBlue.withValues(alpha: 0.1),
           shape: const StadiumBorder(),

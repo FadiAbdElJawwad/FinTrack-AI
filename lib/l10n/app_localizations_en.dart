@@ -516,7 +516,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addWalletTitle => 'Add Wallet';
 
   @override
+  String get editWalletTitle => 'Edit Wallet';
+
+  @override
+  String get saveWallet => 'Save Changes';
+
+  @override
+  String get deleteWallet => 'Delete Wallet';
+
+  @override
+  String get deleteWalletConfirmTitle => 'Delete Wallet?';
+
+  @override
+  String get deleteWalletConfirmMessage =>
+      'This wallet will be permanently deleted.';
+
+  @override
+  String walletHasTransactionsMessage(int months) {
+    return 'This wallet has transactions in the last $months months. Move or delete them first.';
+  }
+
+  @override
   String get walletNameLabel => 'WALLET NAME';
+
+  @override
+  String get walletNameHint => 'e.g., Savings';
 
   @override
   String get walletIconLabel => 'ICON';

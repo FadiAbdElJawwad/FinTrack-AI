@@ -514,7 +514,30 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addWalletTitle => 'إضافة محفظة';
 
   @override
+  String get editWalletTitle => 'تعديل المحفظة';
+
+  @override
+  String get saveWallet => 'حفظ التغييرات';
+
+  @override
+  String get deleteWallet => 'حذف المحفظة';
+
+  @override
+  String get deleteWalletConfirmTitle => 'حذف المحفظة؟';
+
+  @override
+  String get deleteWalletConfirmMessage => 'سيتم حذف هذه المحفظة نهائياً.';
+
+  @override
+  String walletHasTransactionsMessage(int months) {
+    return 'لهذه المحفظة معاملات خلال آخر $months شهراً. انقلها أو احذفها أولاً.';
+  }
+
+  @override
   String get walletNameLabel => 'اسم المحفظة';
+
+  @override
+  String get walletNameHint => 'مثال: المدخرات';
 
   @override
   String get walletIconLabel => 'الأيقونة';

@@ -177,7 +177,21 @@
   "walletsUnassigned": "Unassigned transactions",
   "walletsEmpty": "No wallets yet. Tap + to add one.",
   "addWalletTitle": "Add Wallet",
+  "editWalletTitle": "Edit Wallet",
+  "saveWallet": "Save Changes",
+  "deleteWallet": "Delete Wallet",
+  "deleteWalletConfirmTitle": "Delete Wallet?",
+  "deleteWalletConfirmMessage": "This wallet will be permanently deleted.",
+  "walletHasTransactionsMessage": "This wallet has transactions in the last {months} months. Move or delete them first.",
+  "@walletHasTransactionsMessage": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
   "walletNameLabel": "WALLET NAME",
+  "walletNameHint": "e.g., Savings",
   "walletIconLabel": "ICON",
   "createWallet": "Create Wallet",
   "walletNameExists": "A wallet with this name already exists.",

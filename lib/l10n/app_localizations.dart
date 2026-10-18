@@ -1070,11 +1070,53 @@ abstract class AppLocalizations {
   /// **'Add Wallet'**
   String get addWalletTitle;
 
+  /// No description provided for @editWalletTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Wallet'**
+  String get editWalletTitle;
+
+  /// No description provided for @saveWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveWallet;
+
+  /// No description provided for @deleteWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Wallet'**
+  String get deleteWallet;
+
+  /// No description provided for @deleteWalletConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Wallet?'**
+  String get deleteWalletConfirmTitle;
+
+  /// No description provided for @deleteWalletConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This wallet will be permanently deleted.'**
+  String get deleteWalletConfirmMessage;
+
+  /// No description provided for @walletHasTransactionsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This wallet has transactions in the last {months} months. Move or delete them first.'**
+  String walletHasTransactionsMessage(int months);
+
   /// No description provided for @walletNameLabel.
   ///
   /// In en, this message translates to:
   /// **'WALLET NAME'**
   String get walletNameLabel;
+
+  /// No description provided for @walletNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Savings'**
+  String get walletNameHint;
 
   /// No description provided for @walletIconLabel.
   ///

@@ -41,4 +41,23 @@ class WalletController extends AutoDisposeStreamNotifier<List<WalletModel>> {
       Error.throwWithStackTrace(translateWalletError(e), st);
     }
   }
+
+  Future<void> updateWallet(WalletModel wallet) async {
+    if (wallet.id == null) {
+      throw WalletException(WalletErrorType.invalidData);
+    }
+    try {
+      await ref.read(walletRepositoryProvider).upsertWallet(wallet.id!, wallet);
+    } catch (e, st) {
+      Error.throwWithStackTrace(translateWalletError(e), st);
+    }
+  }
+
+  Future<void> deleteWallet(String id) async {
+    try {
+      await ref.read(walletRepositoryProvider).deleteWallet(id);
+    } catch (e, st) {
+      Error.throwWithStackTrace(translateWalletError(e), st);
+    }
+  }
 }

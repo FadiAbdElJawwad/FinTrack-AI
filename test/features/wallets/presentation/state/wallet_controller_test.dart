@@ -14,6 +14,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class FakeWalletRepo implements WalletRepository {
   WalletModel? lastAdded;
   bool shouldThrow = false;
+  String? lastDeleted;
+  String? lastUpsertedId;
+  WalletModel? lastUpserted;
 
   @override
   Future<String> addWallet(WalletModel wallet) async {
@@ -23,10 +26,17 @@ class FakeWalletRepo implements WalletRepository {
   }
 
   @override
-  Future<void> deleteWallet(String id) async {}
+  Future<void> deleteWallet(String id) async {
+    if (shouldThrow) throw WalletException(WalletErrorType.networkError);
+    lastDeleted = id;
+  }
 
   @override
-  Future<void> upsertWallet(String id, WalletModel wallet) async {}
+  Future<void> upsertWallet(String id, WalletModel wallet) async {
+    if (shouldThrow) throw WalletException(WalletErrorType.networkError);
+    lastUpsertedId = id;
+    lastUpserted = wallet;
+  }
 
   @override
   Stream<List<WalletModel>> getWalletsStream() => Stream.value([
@@ -192,6 +202,67 @@ void main() {
       repo.shouldThrow = true;
       await expectLater(
         container.read(walletControllerProvider.notifier).addWallet(newWallet),
+        throwsA(isA<WalletException>()),
+      );
+    });
+
+    test('updateWallet delegates to repository with wallet id', () async {
+      final repo = FakeWalletRepo();
+      final migration = FakeMigration();
+      final container = makeContainer(migration, repo: repo);
+      container.listen(walletControllerProvider, (_, _) {});
+      await container.read(walletControllerProvider.future);
+
+      const updatedWallet = WalletModel(id: 'w2', name: 'Savings', icon: 'savings');
+      await container.read(walletControllerProvider.notifier).updateWallet(updatedWallet);
+
+      expect(repo.lastUpsertedId, 'w2');
+      expect(repo.lastUpserted, updatedWallet);
+
+      repo.shouldThrow = true;
+      await expectLater(
+        container.read(walletControllerProvider.notifier).updateWallet(updatedWallet),
+        throwsA(isA<WalletException>()),
+      );
+    });
+
+    test('updateWallet with null id throws invalidData and writes nothing', () async {
+      final repo = FakeWalletRepo();
+      final migration = FakeMigration();
+      final container = makeContainer(migration, repo: repo);
+      container.listen(walletControllerProvider, (_, _) {});
+      await container.read(walletControllerProvider.future);
+
+      const invalidWallet = WalletModel(name: 'Savings', icon: 'savings');
+      await expectLater(
+        container.read(walletControllerProvider.notifier).updateWallet(invalidWallet),
+        throwsA(isA<WalletException>().having((e) => e.type, 'type', WalletErrorType.invalidData)),
+      );
+
+      expect(repo.lastUpsertedId, isNull);
+    });
+
+    test('deleteWallet delegates to repository', () async {
+      final repo = FakeWalletRepo();
+      final migration = FakeMigration();
+      final container = makeContainer(migration, repo: repo);
+      container.listen(walletControllerProvider, (_, _) {});
+      await container.read(walletControllerProvider.future);
+
+      await container.read(walletControllerProvider.notifier).deleteWallet('w3');
+      expect(repo.lastDeleted, 'w3');
+    });
+
+    test('deleteWallet rethrows repository exception as WalletException', () async {
+      final repo = FakeWalletRepo();
+      repo.shouldThrow = true;
+      final migration = FakeMigration();
+      final container = makeContainer(migration, repo: repo);
+      container.listen(walletControllerProvider, (_, _) {});
+      await container.read(walletControllerProvider.future);
+
+      await expectLater(
+        container.read(walletControllerProvider.notifier).deleteWallet('w4'),
         throwsA(isA<WalletException>()),
       );
     });

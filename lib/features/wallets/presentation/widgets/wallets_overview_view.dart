@@ -7,6 +7,7 @@ import '../../../transactions/domain/transaction_limits.dart';
 import '../../domain/models/wallets_overview.dart';
 import '../utils/wallet_display_name.dart';
 import '../utils/wallet_icon.dart';
+import 'add_wallet_sheet.dart';
 import 'wallet_balance_tile.dart';
 import 'wallets_total_card.dart';
 
@@ -66,6 +67,7 @@ class WalletsOverviewView extends StatelessWidget {
                   icon: icon,
                   balanceMinor: wb.balanceMinor,
                   currency: overview.currency,
+                  onTap: () => showAddWalletSheet(context, wallet: wb.wallet),
                 ),
               );
             }),
