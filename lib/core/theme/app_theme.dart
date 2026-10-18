@@ -55,6 +55,7 @@ class AppTheme {
   static NavigationBarThemeData _navigationBarTheme(
     TextTheme textTheme,
     Color background,
+    Color inactiveColor,
   ) {
     return NavigationBarThemeData(
       backgroundColor: background,
@@ -69,13 +70,13 @@ class AppTheme {
         if (states.contains(WidgetState.selected)) {
           return const IconThemeData(color: ColorManager.white, size: 24);
         }
-        return const IconThemeData(color: ColorManager.secondaryColor, size: 24);
+        return IconThemeData(color: inactiveColor, size: 24);
       }),
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700);
         }
-        return textTheme.labelSmall?.copyWith(color: ColorManager.secondaryColor);
+        return textTheme.labelSmall?.copyWith(color: inactiveColor);
       }),
     );
   }
@@ -112,6 +113,7 @@ class AppTheme {
       navigationBarTheme: _navigationBarTheme(
         textTheme,
         ColorManager.darkSurface,
+        ColorManager.secondaryColor,
       ),
       switchTheme: _switchTheme(),
       appBarTheme: AppBarTheme(
@@ -213,6 +215,7 @@ class AppTheme {
       navigationBarTheme: _navigationBarTheme(
         textTheme,
         ColorManager.lightSurface,
+        ColorManager.lightSecondary,
       ),
       switchTheme: _switchTheme(),
       appBarTheme: AppBarTheme(

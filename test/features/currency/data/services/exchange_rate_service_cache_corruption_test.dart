@@ -139,7 +139,9 @@ void main() {
           SharedPrefsKeys.exchangeRatesKey: jsonEncode({'JOD': 0.71, 'ILS': 3.6}),
         });
         final prefs = await SharedPreferences.getInstance();
+        var calls = 0;
         final client = MockClient((request) async {
+          calls++;
           fail('HTTP call should not be made when valid cache for today exists');
         });
         final service = ExchangeRateService(client, prefs);
@@ -147,6 +149,7 @@ void main() {
         await service.ensureLoaded();
 
         expect(service.rateBetween('USD', 'JOD'), closeTo(0.71, 0.0001));
+        expect(calls, 0);
       },
     );
 
