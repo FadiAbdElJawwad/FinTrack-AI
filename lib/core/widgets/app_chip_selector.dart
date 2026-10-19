@@ -29,7 +29,7 @@ class AppChipSelector<T> extends StatelessWidget {
           ...items.map((item) {
             final selected = isSelected(item);
             return Padding(
-              padding: const EdgeInsets.only(right: 8),
+              padding: const EdgeInsetsDirectional.only(end: 8),
               child: ChoiceChip(
                 label: Text(labelBuilder(item)),
                 selected: selected,
@@ -38,7 +38,7 @@ class AppChipSelector<T> extends StatelessWidget {
                 backgroundColor:
                     Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05),
                 labelStyle: context.labelSmall.copyWith(
-                  color: selected ? Colors.white : ColorManager.secondaryColor,
+                  color: selected ? ColorManager.white : ColorManager.secondaryColor,
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),

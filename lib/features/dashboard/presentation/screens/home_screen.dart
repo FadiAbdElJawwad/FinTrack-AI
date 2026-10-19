@@ -1,4 +1,4 @@
-import 'package:fin_track_ai/core/routing/app_routes.dart';
+import '../../../../core/routing/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,7 +8,6 @@ import '../../../../core/constant/images_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../auth/presentation/state/auth_controller.dart';
-import '../../../currency/presentation/widgets/currency_selector_dialog.dart';
 import '../../../currency/presentation/utils/money_format.dart';
 import '../widgets/home_action_card.dart';
 import '../state/dashboard_controller.dart';
@@ -57,15 +56,6 @@ class HomeScreen extends HookConsumerWidget {
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (_) => const CurrencySelectorDialog(),
-              );
-            },
-            icon: const Icon(Icons.currency_exchange),
-          ),
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.notifications_none),

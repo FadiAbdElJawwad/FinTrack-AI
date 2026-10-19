@@ -463,4 +463,117 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navSettings => 'Settings';
+
+  @override
+  String get settingsPreferences => 'App Preferences';
+
+  @override
+  String get settingsSecurity => 'Security';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsAppearance => 'Appearance';
+
+  @override
+  String get settingsThemeDark => 'Dark Theme';
+
+  @override
+  String get settingsThemeLight => 'Light Theme';
+
+  @override
+  String get settingsCurrency => 'Currency';
+
+  @override
+  String get settingsBiometric => 'Biometric Authentication';
+
+  @override
+  String get logout => 'Log Out';
+
+  @override
+  String get logoutConfirmTitle => 'Log Out?';
+
+  @override
+  String get logoutConfirmMessage =>
+      'Are you sure you want to log out of your account?';
+
+  @override
+  String get walletsYourAccounts => 'Your Accounts';
+
+  @override
+  String walletsBalanceWindowNote(int months) {
+    return 'Balances cover the last $months months';
+  }
+
+  @override
+  String get walletsUnassigned => 'Unassigned transactions';
+
+  @override
+  String get walletsEmpty => 'No wallets yet. Tap + to add one.';
+
+  @override
+  String get addWalletTitle => 'Add Wallet';
+
+  @override
+  String get editWalletTitle => 'Edit Wallet';
+
+  @override
+  String get saveWallet => 'Save Changes';
+
+  @override
+  String get deleteWallet => 'Delete Wallet';
+
+  @override
+  String get deleteWalletConfirmTitle => 'Delete Wallet?';
+
+  @override
+  String get deleteWalletConfirmMessage =>
+      'This wallet will be permanently deleted.';
+
+  @override
+  String walletHasTransactionsMessage(int months) {
+    return 'This wallet has transactions in the last $months months. Move or delete them first.';
+  }
+
+  @override
+  String get walletNameLabel => 'WALLET NAME';
+
+  @override
+  String get walletNameHint => 'e.g., Savings';
+
+  @override
+  String get walletIconLabel => 'ICON';
+
+  @override
+  String get createWallet => 'Create Wallet';
+
+  @override
+  String get walletNameExists => 'A wallet with this name already exists.';
+
+  @override
+  String get walletNameBank => 'Bank Account';
+
+  @override
+  String get walletNamePaypal => 'PayPal';
+
+  @override
+  String get walletNameOther => 'Other';
+
+  @override
+  String get analyticsPeriodWeek => 'Week';
+
+  @override
+  String get analyticsPeriodMonth => 'Month';
+
+  @override
+  String analyticsPeriodYear(int months) {
+    return '$months Months';
+  }
+
+  @override
+  String get analyticsExpensesByCategory => 'Expenses by Category';
+
+  @override
+  String get analyticsEmpty => 'No transactions in this period.';
 }

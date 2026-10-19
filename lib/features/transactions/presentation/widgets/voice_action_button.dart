@@ -59,7 +59,7 @@ class VoiceActionButton extends StatelessWidget {
               status == VoiceEntryStatus.error
                   ? context.loc.tryAgainButton
                   : context.loc.stopAndProcess,
-              style: context.labelLarge.copyWith(color: Colors.white),
+              style: context.labelLarge.copyWith(color: ColorManager.white),
             ),
     );
   }

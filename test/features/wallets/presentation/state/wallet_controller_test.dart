@@ -12,14 +12,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FakeWalletRepo implements WalletRepository {
-  @override
-  Future<String> addWallet(WalletModel wallet) async => 'id';
+  WalletModel? lastAdded;
+  bool shouldThrow = false;
+  String? lastDeleted;
+  String? lastUpsertedId;
+  WalletModel? lastUpserted;
 
   @override
-  Future<void> deleteWallet(String id) async {}
+  Future<String> addWallet(WalletModel wallet) async {
+    if (shouldThrow) throw WalletException(WalletErrorType.networkError);
+    lastAdded = wallet;
+    return 'id_123';
+  }
 
   @override
-  Future<void> upsertWallet(String id, WalletModel wallet) async {}
+  Future<void> deleteWallet(String id) async {
+    if (shouldThrow) throw WalletException(WalletErrorType.networkError);
+    lastDeleted = id;
+  }
+
+  @override
+  Future<void> upsertWallet(String id, WalletModel wallet) async {
+    if (shouldThrow) throw WalletException(WalletErrorType.networkError);
+    lastUpsertedId = id;
+    lastUpserted = wallet;
+  }
 
   @override
   Stream<List<WalletModel>> getWalletsStream() => Stream.value([
@@ -47,11 +64,12 @@ const user = UserModel(uid: 'u1', email: 'a@b.c', fullName: 'A B');
 ProviderContainer makeContainer(
   FakeMigration migration, {
   UserModel? who = user,
+  FakeWalletRepo? repo,
 }) {
   final container = ProviderContainer(
     overrides: [
       currentUserProvider.overrideWithValue(who),
-      walletRepositoryProvider.overrideWithValue(FakeWalletRepo()),
+      walletRepositoryProvider.overrideWithValue(repo ?? FakeWalletRepo()),
       walletMigrationProvider.overrideWithValue(migration),
     ],
   );
@@ -161,6 +179,92 @@ void main() {
         ),
       );
       expect(migration.calls, 0);
+    });
+  });
+
+  group('WalletController.addWallet', () {
+    test(
+        'addWallet delegates to repository and rethrows translated WalletException on failure',
+        () async {
+      final repo = FakeWalletRepo();
+      final migration = FakeMigration();
+      final container = makeContainer(migration, repo: repo);
+      container.listen(walletControllerProvider, (_, _) {});
+      await container.read(walletControllerProvider.future);
+
+      const newWallet = WalletModel(name: 'Savings', icon: 'savings');
+      await container
+          .read(walletControllerProvider.notifier)
+          .addWallet(newWallet);
+
+      expect(repo.lastAdded, newWallet);
+
+      repo.shouldThrow = true;
+      await expectLater(
+        container.read(walletControllerProvider.notifier).addWallet(newWallet),
+        throwsA(isA<WalletException>()),
+      );
+    });
+
+    test('updateWallet delegates to repository with wallet id', () async {
+      final repo = FakeWalletRepo();
+      final migration = FakeMigration();
+      final container = makeContainer(migration, repo: repo);
+      container.listen(walletControllerProvider, (_, _) {});
+      await container.read(walletControllerProvider.future);
+
+      const updatedWallet = WalletModel(id: 'w2', name: 'Savings', icon: 'savings');
+      await container.read(walletControllerProvider.notifier).updateWallet(updatedWallet);
+
+      expect(repo.lastUpsertedId, 'w2');
+      expect(repo.lastUpserted, updatedWallet);
+
+      repo.shouldThrow = true;
+      await expectLater(
+        container.read(walletControllerProvider.notifier).updateWallet(updatedWallet),
+        throwsA(isA<WalletException>()),
+      );
+    });
+
+    test('updateWallet with null id throws invalidData and writes nothing', () async {
+      final repo = FakeWalletRepo();
+      final migration = FakeMigration();
+      final container = makeContainer(migration, repo: repo);
+      container.listen(walletControllerProvider, (_, _) {});
+      await container.read(walletControllerProvider.future);
+
+      const invalidWallet = WalletModel(name: 'Savings', icon: 'savings');
+      await expectLater(
+        container.read(walletControllerProvider.notifier).updateWallet(invalidWallet),
+        throwsA(isA<WalletException>().having((e) => e.type, 'type', WalletErrorType.invalidData)),
+      );
+
+      expect(repo.lastUpsertedId, isNull);
+    });
+
+    test('deleteWallet delegates to repository', () async {
+      final repo = FakeWalletRepo();
+      final migration = FakeMigration();
+      final container = makeContainer(migration, repo: repo);
+      container.listen(walletControllerProvider, (_, _) {});
+      await container.read(walletControllerProvider.future);
+
+      await container.read(walletControllerProvider.notifier).deleteWallet('w3');
+      expect(repo.lastDeleted, 'w3');
+    });
+
+    test('deleteWallet rethrows repository exception as WalletException', () async {
+      final repo = FakeWalletRepo();
+      repo.shouldThrow = true;
+      final migration = FakeMigration();
+      final container = makeContainer(migration, repo: repo);
+      container.listen(walletControllerProvider, (_, _) {});
+      await container.read(walletControllerProvider.future);
+
+      await expectLater(
+        container.read(walletControllerProvider.notifier).deleteWallet('w4'),
+        throwsA(isA<WalletException>()),
+      );
     });
   });
 }

@@ -1,5 +1,5 @@
-import 'package:fin_track_ai/core/extension/app_sizes.dart';
-import 'package:fin_track_ai/core/extension/text_style_extension.dart';
+import '../../../../core/extension/app_sizes.dart';
+import '../../../../core/extension/text_style_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

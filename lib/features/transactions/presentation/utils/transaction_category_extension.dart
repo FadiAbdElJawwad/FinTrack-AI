@@ -1,22 +1,44 @@
 import 'package:flutter/material.dart';
 import '../../../../core/extension/app_sizes.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/models/transaction_model.dart';
 
 extension TransactionCategoryExtension on TransactionCategory {
-  String getLocalizedName(BuildContext context) {
+  IconData get icon {
     switch (this) {
       case TransactionCategory.food:
-        return context.loc.catFood;
+        return Icons.restaurant;
       case TransactionCategory.transport:
-        return context.loc.catTransport;
+        return Icons.directions_car;
       case TransactionCategory.shopping:
-        return context.loc.catShopping;
+        return Icons.shopping_bag;
       case TransactionCategory.salary:
-        return context.loc.catSalary;
+        return Icons.attach_money;
       case TransactionCategory.entertainment:
-        return context.loc.catEntertainment;
+        return Icons.movie;
       case TransactionCategory.other:
-        return context.loc.catOther;
+        return Icons.category;
     }
+  }
+
+  String localizedNameFor(AppLocalizations loc) {
+    switch (this) {
+      case TransactionCategory.food:
+        return loc.catFood;
+      case TransactionCategory.transport:
+        return loc.catTransport;
+      case TransactionCategory.shopping:
+        return loc.catShopping;
+      case TransactionCategory.salary:
+        return loc.catSalary;
+      case TransactionCategory.entertainment:
+        return loc.catEntertainment;
+      case TransactionCategory.other:
+        return loc.catOther;
+    }
+  }
+
+  String getLocalizedName(BuildContext context) {
+    return localizedNameFor(context.loc);
   }
 }

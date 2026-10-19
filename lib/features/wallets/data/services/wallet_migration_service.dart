@@ -23,12 +23,12 @@ final walletMigrationRunProvider = FutureProvider.family<void, String>((
   return ref.read(walletMigrationProvider).runIfNeeded();
 });
 
-/// Seeds the default wallets on first launch.
+/// Seeds default wallets on first launch when no default wallet exists.
 ///
-/// Idempotent: every default wallet has a deterministic document id, so a
-/// repeated or concurrent run (second device, retry) overwrites the same
-/// documents instead of creating duplicates. Talks only to
-/// [WalletRepository]; no Firestore or Auth types.
+/// Stateless invariant: if any wallet has `isDefault == true`, seeding is
+/// considered complete and deleted wallets are not re-seeded.
+/// Idempotent: every default wallet has a deterministic document id. Talks
+/// only to [WalletRepository]; no Firestore or Auth types.
 class WalletMigrationService {
   WalletMigrationService({required this.repository});
 
@@ -68,14 +68,12 @@ class WalletMigrationService {
   Future<void> _seed() async {
     final wallets = await repository.getWalletsStream().first;
 
-    if (wallets.isEmpty) {
-      await repository.upsertWallet(cashWalletId, _cashWallet);
-      await _upsertSecondaryWallets();
-    } else if (wallets.length == 1 &&
-        wallets.first.name == 'Cash' &&
-        wallets.first.isDefault == true) {
-      await _upsertSecondaryWallets();
+    if (wallets.any((w) => w.isDefault)) {
+      return;
     }
+
+    await _upsertSecondaryWallets();
+    await repository.upsertWallet(cashWalletId, _cashWallet);
   }
 
   Future<void> _upsertSecondaryWallets() async {

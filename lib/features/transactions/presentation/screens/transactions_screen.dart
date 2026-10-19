@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -8,11 +7,12 @@ import '../../../../core/extension/text_style_extension.dart';
 import '../../../currency/domain/models/app_currency.dart';
 import '../../../currency/presentation/utils/money_format.dart';
 import '../../../dashboard/presentation/state/dashboard_controller.dart';
+import '../../../transactions/domain/models/transaction_model.dart';
 import '../state/period_totals_provider.dart';
 import '../state/transaction_filters_provider.dart';
 import '../utils/error_message.dart';
+import '../utils/localized_date_format.dart';
 import '../utils/transaction_group_label.dart';
-import '../../../transactions/domain/models/transaction_model.dart';
 import '../widgets/date_range_bottom_sheet.dart';
 import '../widgets/transaction_list_tile.dart';
 
@@ -112,16 +112,15 @@ class TransactionsScreen extends HookConsumerWidget {
                             children: [
                               Text(
                                 selectedDateRange == null
-                                    ? DateFormat(
+                                    ? formatLocalizedDate(
+                                        context,
                                         'MMMM',
-                                        Localizations.localeOf(
-                                          context,
-                                        ).toString(),
-                                      ).format(effectivePeriod.start)
-                                    : '${DateFormat('dd MMM').format(selectedDateRange.start)} - ${DateFormat('dd MMM').format(selectedDateRange.end)}',
+                                        effectivePeriod.start,
+                                      )
+                                    : '${formatLocalizedDate(context, 'dd MMM', selectedDateRange.start)} - ${formatLocalizedDate(context, 'dd MMM', selectedDateRange.end)}',
                                 style: context.labelSmall.copyWith(
                                   color: selectedDateRange != null
-                                      ? Colors.white
+                                      ? ColorManager.white
                                       : null,
                                 ),
                               ).padEnd(4),
@@ -129,7 +128,7 @@ class TransactionsScreen extends HookConsumerWidget {
                                 Icons.calendar_month,
                                 size: 20,
                                 color: selectedDateRange != null
-                                    ? Colors.white
+                                    ? ColorManager.white
                                     : null,
                               ),
                             ],
@@ -232,7 +231,7 @@ class _FilterCard extends StatelessWidget {
         child: Text(
           label,
           style: context.labelSmall.copyWith(
-            color: isSelected ? Colors.white : null,
+            color: isSelected ? ColorManager.white : null,
           ),
         ).padSymmetric(16).padVerticalSymmetric(8),
       ),

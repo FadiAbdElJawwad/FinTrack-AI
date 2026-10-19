@@ -3,12 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../currency/data/services/exchange_rate_service.dart';
 import '../../../currency/domain/models/app_currency.dart';
 import '../../../currency/presentation/state/currency_controller.dart';
-import '../../../dashboard/presentation/state/dashboard_controller.dart';
 import '../../domain/usecases/calculate_totals_usecase.dart';
+import '../../domain/usecases/convert_totals_usecase.dart';
 import 'transaction_controller.dart';
 import 'transaction_filters_provider.dart';
 
-/// TODO(architecture): move convertTotals out of the dashboard feature.
 final periodTotalsProvider = Provider.autoDispose<
     AsyncValue<({AppCurrency currency, int? incomeMinor, int? expenseMinor})>>((
   ref,

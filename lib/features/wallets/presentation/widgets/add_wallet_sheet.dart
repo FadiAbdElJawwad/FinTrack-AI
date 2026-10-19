@@ -1,0 +1,273 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../../../core/constant/color_manager.dart';
+import '../../../../core/extension/app_sizes.dart';
+import '../../../../core/extension/text_style_extension.dart';
+import '../../../../core/widgets/bottom_sheet_drag_handle.dart';
+import '../../../../core/widgets/loading_overlay.dart';
+import '../../../transactions/presentation/utils/error_message.dart';
+import '../../../transactions/presentation/state/transaction_controller.dart';
+import '../../../transactions/domain/transaction_limits.dart';
+import '../../domain/usecases/wallet_has_transactions.dart';
+import '../../domain/models/wallet_model.dart';
+import '../state/wallet_controller.dart';
+import '../utils/wallet_display_name.dart';
+import '../utils/wallet_icon.dart';
+import 'wallet_icon_selector.dart';
+
+Future<void> showAddWalletSheet(BuildContext context, {WalletModel? wallet}) {
+  return showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (context) => AddWalletSheet(wallet: wallet),
+  );
+}
+
+class AddWalletSheet extends HookConsumerWidget {
+  final WalletModel? wallet;
+  const AddWalletSheet({super.key, this.wallet});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isEditMode = wallet != null;
+    final initialDisplayName =
+        isEditMode ? walletDisplayName(context.loc, wallet!) : '';
+    final nameController = useTextEditingController(text: initialDisplayName);
+    useValueListenable(nameController);
+    final selectedIcon = useState<String>(wallet?.icon ?? walletIconChoices.first);
+    final isLoading = useState(false);
+
+    final wallets = ref.watch(walletControllerProvider).valueOrNull ?? [];
+    final transactions = ref.watch(transactionControllerProvider).valueOrNull ?? [];
+    final trimmedName = nameController.text.trim();
+
+    final isDuplicate = trimmedName.isNotEmpty &&
+        wallets.any((w) {
+          if (isEditMode && w.id == wallet!.id) return false;
+          final storedName = w.name.trim().toLowerCase();
+          final localizedName =
+              walletDisplayName(context.loc, w).trim().toLowerCase();
+          final target = trimmedName.toLowerCase();
+          return storedName == target || localizedName == target;
+        });
+
+    final hasChanged = !isEditMode ||
+        trimmedName != initialDisplayName ||
+        selectedIcon.value != wallet!.icon;
+
+    final isFormValid = trimmedName.isNotEmpty &&
+        trimmedName.length <= 50 &&
+        !isDuplicate &&
+        !isLoading.value &&
+        hasChanged;
+
+    Future<void> handleSave() async {
+      if (!isFormValid) return;
+      isLoading.value = true;
+      try {
+        if (isEditMode) {
+          final nameToStore =
+              trimmedName == initialDisplayName ? wallet!.name : trimmedName;
+          await ref.read(walletControllerProvider.notifier).updateWallet(
+                wallet!.copyWith(name: nameToStore, icon: selectedIcon.value),
+              );
+        } else {
+          await ref.read(walletControllerProvider.notifier).addWallet(
+                WalletModel(
+                  name: trimmedName,
+                  icon: selectedIcon.value,
+                  isDefault: false,
+                ),
+              );
+        }
+        if (context.mounted) Navigator.pop(context);
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(errorMessage(context, e))),
+          );
+        }
+      } finally {
+        if (context.mounted) isLoading.value = false;
+      }
+    }
+
+    Future<void> handleDelete() async {
+      if (walletHasTransactions(transactions, wallet!.id!)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(context.loc.walletHasTransactionsMessage(transactionWindowMonths)),
+          ),
+        );
+        return;
+      }
+      final confirm = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(context.loc.deleteWalletConfirmTitle),
+          content: Text(context.loc.deleteWalletConfirmMessage),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(context.loc.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              style: TextButton.styleFrom(foregroundColor: ColorManager.errorColor),
+              child: Text(context.loc.delete),
+            ),
+          ],
+        ),
+      );
+      if (confirm == true) {
+        isLoading.value = true;
+        try {
+          await ref.read(walletControllerProvider.notifier).deleteWallet(wallet!.id!);
+          if (context.mounted) Navigator.pop(context);
+        } catch (e) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(errorMessage(context, e))),
+            );
+          }
+        } finally {
+          if (context.mounted) isLoading.value = false;
+        }
+      }
+    }
+
+    final outlineColor = Theme.of(context).colorScheme.outlineVariant;
+    final border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: outlineColor),
+    );
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+      ),
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const BottomSheetDragHandle(),
+                context.addVerticalSpace(20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      isEditMode
+                          ? context.loc.editWalletTitle
+                          : context.loc.addWalletTitle,
+                      style: context.labelLarge.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+                context.addVerticalSpace(20),
+                Text(
+                  context.loc.walletNameLabel,
+                  style: context.labelSmall.copyWith(
+                    color: ColorManager.secondaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                context.addVerticalSpace(8),
+                TextField(
+                  controller: nameController,
+                  maxLength: 50,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    hintText: context.loc.walletNameHint,
+                    hintStyle: context.labelMedium.copyWith(color: ColorManager.secondaryColor),
+                    filled: true,
+                    fillColor: Theme.of(context).scaffoldBackgroundColor,
+                    counterText: '',
+                    border: border,
+                    enabledBorder: border,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: ColorManager.primaryBlue, width: 1.5),
+                    ),
+                    errorText: isDuplicate ? context.loc.walletNameExists : null,
+                  ),
+                ),
+                context.addVerticalSpace(16),
+                Text(
+                  context.loc.walletIconLabel,
+                  style: context.labelSmall.copyWith(
+                    color: ColorManager.secondaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                context.addVerticalSpace(12),
+                WalletIconSelector(
+                  selectedIcon: selectedIcon.value,
+                  onSelect: (icon) => selectedIcon.value = icon,
+                ),
+                context.addVerticalSpace(32),
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(
+                    onPressed: isFormValid ? handleSave : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorManager.primaryBlue,
+                      disabledBackgroundColor: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withValues(alpha: 0.05),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: isLoading.value
+                        ? const CircularProgressIndicator(color: ColorManager.white)
+                        : Text(
+                            isEditMode
+                                ? context.loc.saveWallet
+                                : context.loc.createWallet,
+                            style: context.labelLarge.copyWith(
+                              color: isFormValid
+                                  ? ColorManager.white
+                                  : ColorManager.secondaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                  ),
+                ),
+                if (isEditMode && !wallet!.isDefault) ...[
+                  context.addVerticalSpace(16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: isLoading.value ? null : handleDelete,
+                      style: TextButton.styleFrom(
+                        foregroundColor: ColorManager.errorColor,
+                      ),
+                      child: Text(context.loc.deleteWallet),
+                    ),
+                  ),
+                ],
+                context.addVerticalSpace(16),
+              ],
+            ).padSymmetric(20).padTop(16),
+          ),
+          if (isLoading.value) const LoadingOverlay(),
+        ],
+      ),
+    );
+  }
+}

@@ -1,9 +1,10 @@
-import 'package:fin_track_ai/core/constant/color_manager.dart';
+import '../../../../core/constant/color_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../currency/presentation/utils/money_format.dart';
 import '../../domain/models/transaction_model.dart';
+import 'localized_date_format.dart';
+import 'transaction_category_extension.dart';
 
 extension TransactionUIExtension on TransactionModel {
   Color get amountColor => type == TransactionType.income
@@ -15,22 +16,8 @@ extension TransactionUIExtension on TransactionModel {
     return type == TransactionType.income ? '+ $money' : '- $money';
   }
 
-  String get formattedDate => DateFormat('MMM dd, hh:mm a').format(date);
+  String formattedDate(BuildContext context) =>
+      formatLocalizedDate(context, 'MMM dd, hh:mm a', date);
 
-  IconData get categoryIcon {
-    switch (category) {
-      case TransactionCategory.food:
-        return Icons.restaurant;
-      case TransactionCategory.transport:
-        return Icons.directions_car;
-      case TransactionCategory.shopping:
-        return Icons.shopping_bag;
-      case TransactionCategory.salary:
-        return Icons.attach_money;
-      case TransactionCategory.entertainment:
-        return Icons.movie;
-      case TransactionCategory.other:
-        return Icons.category;
-    }
-  }
+  IconData get categoryIcon => category.icon;
 }

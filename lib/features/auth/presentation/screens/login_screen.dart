@@ -131,7 +131,7 @@ class LoginScreen extends HookConsumerWidget {
                                   },
                             icon: const Icon(
                               Icons.fingerprint,
-                              color: Colors.white,
+                              color: ColorManager.white,
                             ),
                             style: IconButton.styleFrom(
                               backgroundColor: ColorManager.primaryBlue,

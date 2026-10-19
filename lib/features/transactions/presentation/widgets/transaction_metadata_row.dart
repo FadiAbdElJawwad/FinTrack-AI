@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../domain/transaction_limits.dart';
+import '../utils/localized_date_format.dart';
 
 class TransactionMetadataRow extends StatelessWidget {
   final DateTime selectedDate;
@@ -24,7 +24,7 @@ class TransactionMetadataRow extends StatelessWidget {
         Expanded(
           child: _InputSelector(
             label: context.loc.date,
-            value: DateFormat('dd MMM, yyyy').format(selectedDate),
+            value: formatLocalizedDate(context, 'dd MMM, yyyy', selectedDate),
             icon: Icons.calendar_today_outlined,
             onTap: onDateTap,
           ),

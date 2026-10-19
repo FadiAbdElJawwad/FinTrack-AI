@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/error/wallet_exception.dart';
+import '../../../../core/utils/acknowledged_write.dart';
 import '../../domain/models/wallet_model.dart';
 import '../../domain/repositories/wallet_repository.dart';
 import '../datasources/wallet_remote_datasource.dart';
@@ -49,14 +50,29 @@ WalletErrorType _typeForCode(String code) {
 /// Owns domain rules (delete guards) and exception translation; Firestore
 /// specifics live in the data source.
 class FirestoreWalletRepository implements WalletRepository {
-  FirestoreWalletRepository(this._dataSource);
+  FirestoreWalletRepository(
+    this._dataSource, {
+    this.writeTimeout = const Duration(seconds: 3),
+  });
 
   final WalletRemoteDataSource _dataSource;
+  final Duration writeTimeout;
+
+  Future<void> _awaitWrite(Future<void> Function() write) {
+    return awaitWriteAck(
+      write,
+      timeout: writeTimeout,
+      translateError: translateWalletError,
+      logTag: 'WalletRepository',
+    );
+  }
 
   @override
   Future<String> addWallet(WalletModel wallet) async {
     try {
-      return await _dataSource.create(wallet.toJson());
+      final created = _dataSource.create(wallet.toJson());
+      await _awaitWrite(() => created.write);
+      return created.id;
     } catch (e, st) {
       Error.throwWithStackTrace(translateWalletError(e), st);
     }
@@ -65,7 +81,7 @@ class FirestoreWalletRepository implements WalletRepository {
   @override
   Future<void> upsertWallet(String id, WalletModel wallet) async {
     try {
-      await _dataSource.upsert(id, wallet.toJson());
+      await _awaitWrite(() => _dataSource.upsert(id, wallet.toJson()));
     } catch (e, st) {
       Error.throwWithStackTrace(translateWalletError(e), st);
     }
@@ -94,7 +110,7 @@ class FirestoreWalletRepository implements WalletRepository {
           message: 'Cannot delete the default wallet.',
         );
       }
-      await _dataSource.delete(id);
+      await _awaitWrite(() => _dataSource.delete(id));
     } catch (e, st) {
       Error.throwWithStackTrace(translateWalletError(e), st);
     }

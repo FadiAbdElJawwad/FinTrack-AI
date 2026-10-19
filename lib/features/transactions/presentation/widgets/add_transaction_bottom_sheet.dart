@@ -15,6 +15,7 @@ import '../../../currency/presentation/state/currency_controller.dart';
 import '../../../wallets/presentation/state/wallet_controller.dart';
 import '../state/transaction_controller.dart';
 import '../utils/transaction_category_extension.dart';
+import '../utils/transaction_display_title.dart';
 import '../utils/error_message.dart';
 import 'amount_input_area.dart';
 import 'category_selector.dart';
@@ -47,9 +48,12 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
       existingTransaction?.date ?? prefillDraft?.date ?? DateTime.now(),
     );
 
+    final tx = existingTransaction;
+    final initialNotesText = tx != null
+        ? (isAutoTitle(tx) ? '' : tx.title)
+        : (prefillDraft?.title ?? '');
     final notesController = useTextEditingController(
-      text: (existingTransaction?.title ?? prefillDraft?.title ?? '')
-          .characters
+      text: initialNotesText.characters
           .take(maxNoteLength)
           .toString(),
     );
@@ -245,14 +249,14 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
                       elevation: 0,
                     ),
                     child: isLoading.value
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? const CircularProgressIndicator(color: ColorManager.white)
                         : Text(
                             existingTransaction == null
                                 ? context.loc.saveTransaction
                                 : context.loc.editTransaction,
                             style: context.labelLarge.copyWith(
                               color: isFormValid
-                                  ? Colors.white
+                                  ? ColorManager.white
                                   : ColorManager.secondaryColor,
                               fontWeight: FontWeight.bold,
                             ),

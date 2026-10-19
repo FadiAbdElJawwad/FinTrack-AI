@@ -9,6 +9,7 @@ import 'package:fin_track_ai/features/currency/domain/models/app_currency.dart';
 import 'package:fin_track_ai/features/currency/domain/repositories/currency_repository.dart';
 import 'package:fin_track_ai/features/dashboard/presentation/state/dashboard_controller.dart';
 import 'package:fin_track_ai/features/dashboard/presentation/states/dashboard_state.dart';
+import 'package:fin_track_ai/features/transactions/domain/usecases/convert_totals_usecase.dart';
 import 'package:fin_track_ai/features/transactions/data/repositories/firestore_transaction_repository.dart';
 import 'package:fin_track_ai/features/transactions/domain/models/transaction_model.dart';
 import 'package:fin_track_ai/features/transactions/domain/repositories/transaction_repository.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/app_sizes.dart';
 
 class HomeSkeleton extends StatelessWidget {
@@ -27,7 +28,7 @@ class HomeSkeleton extends StatelessWidget {
               height: 200,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: ColorManager.white,
                 borderRadius: BorderRadius.circular(24),
               ),
             ),
@@ -41,7 +42,7 @@ class HomeSkeleton extends StatelessWidget {
                     margin: EdgeInsets.only(right: index == 2 ? 0 : 12),
                     height: 100,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: ColorManager.white,
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
@@ -52,8 +53,8 @@ class HomeSkeleton extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(height: 20, width: 150, color: Colors.white),
-                Container(height: 16, width: 60, color: Colors.white),
+                Container(height: 20, width: 150, color: ColorManager.white),
+                Container(height: 16, width: 60, color: ColorManager.white),
               ],
             ),
             context.addVerticalSpace(16),
@@ -72,7 +73,7 @@ class HomeSkeleton extends StatelessWidget {
                       width: 48,
                       height: 48,
                       decoration: const BoxDecoration(
-                        color: Colors.white,
+                        color: ColorManager.white,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -80,7 +81,7 @@ class HomeSkeleton extends StatelessWidget {
                       height: 14,
                       width: 120,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: ColorManager.white,
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
@@ -89,7 +90,7 @@ class HomeSkeleton extends StatelessWidget {
                       height: 10,
                       width: 80,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: ColorManager.white,
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
@@ -97,7 +98,7 @@ class HomeSkeleton extends StatelessWidget {
                       height: 16,
                       width: 60,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: ColorManager.white,
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),

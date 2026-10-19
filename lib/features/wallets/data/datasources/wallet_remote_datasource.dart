@@ -36,11 +36,12 @@ class WalletRemoteDataSource {
   CollectionReference<Map<String, dynamic>> get _walletsDb =>
       _firestore.collection('users').doc(_userId).collection('wallets');
 
-  /// Creates a document with a Firestore-assigned id and returns it.
-  Future<String> create(Map<String, dynamic> data) async {
+  /// Creates a document reference, starts setting its data, and returns
+  /// the generated id alongside the write Future.
+  ({String id, Future<void> write}) create(Map<String, dynamic> data) {
     final docRef = _walletsDb.doc();
-    await docRef.set({...data, 'id': docRef.id});
-    return docRef.id;
+    final write = docRef.set({...data, 'id': docRef.id});
+    return (id: docRef.id, write: write);
   }
 
   /// Creates or overwrites the document [id], embedding the id in the

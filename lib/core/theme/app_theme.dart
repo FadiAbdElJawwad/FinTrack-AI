@@ -52,6 +52,44 @@ class AppTheme {
     );
   }
 
+  static NavigationBarThemeData _navigationBarTheme(
+    TextTheme textTheme,
+    Color background,
+    Color inactiveColor,
+  ) {
+    return NavigationBarThemeData(
+      backgroundColor: background,
+      elevation: 0,
+      surfaceTintColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      height: 72,
+      labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+      indicatorColor: ColorManager.primaryBlue,
+      indicatorShape: const StadiumBorder(),
+      iconTheme: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const IconThemeData(color: ColorManager.white, size: 24);
+        }
+        return IconThemeData(color: inactiveColor, size: 24);
+      }),
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700);
+        }
+        return textTheme.labelSmall?.copyWith(color: inactiveColor);
+      }),
+    );
+  }
+
+  static SwitchThemeData _switchTheme() {
+    return SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith(
+        (states) =>
+            states.contains(WidgetState.selected) ? ColorManager.white : null,
+      ),
+    );
+  }
+
   // ------------------ Dark Theme ------------------
   static ThemeData darkTheme(String languageCode) {
     final textTheme = _buildTextTheme(
@@ -72,28 +110,12 @@ class AppTheme {
         error: ColorManager.errorColor,
         outlineVariant: ColorManager.darkBorder,
       ),
-      navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: ColorManager.darkSurface,
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        height: 72,
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        indicatorColor: ColorManager.primaryBlue,
-        indicatorShape: const StadiumBorder(),
-        iconTheme: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) {
-            return const IconThemeData(color: ColorManager.white, size: 24);
-          }
-          return const IconThemeData(color: ColorManager.secondaryColor, size: 24);
-        }),
-        labelTextStyle: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) {
-            return textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700);
-          }
-          return textTheme.labelSmall?.copyWith(color: ColorManager.secondaryColor);
-        }),
+      navigationBarTheme: _navigationBarTheme(
+        textTheme,
+        ColorManager.darkSurface,
+        ColorManager.secondaryColor,
       ),
+      switchTheme: _switchTheme(),
       appBarTheme: AppBarTheme(
         backgroundColor: ColorManager.darkBackground,
         elevation: 0,
@@ -105,6 +127,13 @@ class AppTheme {
         style: FilledButton.styleFrom(
           backgroundColor: ColorManager.primaryBlue,
           foregroundColor: ColorManager.white,
+          shape: const StadiumBorder(),
+          minimumSize: const Size(double.infinity, 54),
+          textStyle: textTheme.labelLarge,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
           shape: const StadiumBorder(),
           minimumSize: const Size(double.infinity, 54),
           textStyle: textTheme.labelLarge,
@@ -183,28 +212,12 @@ class AppTheme {
         error: ColorManager.errorColor,
         outlineVariant: ColorManager.lightBorder,
       ),
-      navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: ColorManager.lightSurface,
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        height: 72,
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        indicatorColor: ColorManager.primaryBlue,
-        indicatorShape: const StadiumBorder(),
-        iconTheme: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) {
-            return const IconThemeData(color: ColorManager.white, size: 24);
-          }
-          return const IconThemeData(color: ColorManager.secondaryColor, size: 24);
-        }),
-        labelTextStyle: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) {
-            return textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700);
-          }
-          return textTheme.labelSmall?.copyWith(color: ColorManager.secondaryColor);
-        }),
+      navigationBarTheme: _navigationBarTheme(
+        textTheme,
+        ColorManager.lightSurface,
+        ColorManager.lightSecondary,
       ),
+      switchTheme: _switchTheme(),
       appBarTheme: AppBarTheme(
         backgroundColor: ColorManager.lightBackground,
         elevation: 0,
@@ -216,6 +229,13 @@ class AppTheme {
         style: FilledButton.styleFrom(
           backgroundColor: ColorManager.primaryBlue,
           foregroundColor: ColorManager.white,
+          shape: const StadiumBorder(),
+          minimumSize: const Size(double.infinity, 54),
+          textStyle: textTheme.labelLarge,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
           shape: const StadiumBorder(),
           minimumSize: const Size(double.infinity, 54),
           textStyle: textTheme.labelLarge,

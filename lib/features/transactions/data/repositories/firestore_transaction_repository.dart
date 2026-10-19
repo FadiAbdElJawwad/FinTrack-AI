@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/error/transaction_exception.dart';
+import '../../../../core/utils/acknowledged_write.dart';
 import '../../domain/models/transaction_model.dart';
 import '../../domain/repositories/transaction_repository.dart';
 import '../../domain/transaction_limits.dart';
@@ -98,20 +99,13 @@ class FirestoreTransactionRepository implements TransactionRepository {
   /// errors; a timeout means the write is queued locally and will sync.
   final Duration writeTimeout;
 
-  Future<void> _awaitWrite(Future<void> Function() write) async {
-    try {
-      await write().timeout(
-        writeTimeout,
-        onTimeout: () {
-          debugPrint(
-            '[TransactionRepository] write not acknowledged within '
-            '${writeTimeout.inSeconds}s; queued locally',
-          );
-        },
-      );
-    } catch (e, st) {
-      Error.throwWithStackTrace(translateTransactionError(e), st);
-    }
+  Future<void> _awaitWrite(Future<void> Function() write) {
+    return awaitWriteAck(
+      write,
+      timeout: writeTimeout,
+      translateError: translateTransactionError,
+      logTag: 'TransactionRepository',
+    );
   }
 
   @override

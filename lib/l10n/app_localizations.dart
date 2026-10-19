@@ -973,6 +973,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings'**
   String get navSettings;
+
+  /// No description provided for @settingsPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'App Preferences'**
+  String get settingsPreferences;
+
+  /// No description provided for @settingsSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get settingsSecurity;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// No description provided for @settingsAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsAppearance;
+
+  /// No description provided for @settingsThemeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Theme'**
+  String get settingsThemeDark;
+
+  /// No description provided for @settingsThemeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Theme'**
+  String get settingsThemeLight;
+
+  /// No description provided for @settingsCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get settingsCurrency;
+
+  /// No description provided for @settingsBiometric.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric Authentication'**
+  String get settingsBiometric;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get logout;
+
+  /// No description provided for @logoutConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out?'**
+  String get logoutConfirmTitle;
+
+  /// No description provided for @logoutConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out of your account?'**
+  String get logoutConfirmMessage;
+
+  /// No description provided for @walletsYourAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Accounts'**
+  String get walletsYourAccounts;
+
+  /// No description provided for @walletsBalanceWindowNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Balances cover the last {months} months'**
+  String walletsBalanceWindowNote(int months);
+
+  /// No description provided for @walletsUnassigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Unassigned transactions'**
+  String get walletsUnassigned;
+
+  /// No description provided for @walletsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No wallets yet. Tap + to add one.'**
+  String get walletsEmpty;
+
+  /// No description provided for @addWalletTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Wallet'**
+  String get addWalletTitle;
+
+  /// No description provided for @editWalletTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Wallet'**
+  String get editWalletTitle;
+
+  /// No description provided for @saveWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveWallet;
+
+  /// No description provided for @deleteWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Wallet'**
+  String get deleteWallet;
+
+  /// No description provided for @deleteWalletConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Wallet?'**
+  String get deleteWalletConfirmTitle;
+
+  /// No description provided for @deleteWalletConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This wallet will be permanently deleted.'**
+  String get deleteWalletConfirmMessage;
+
+  /// No description provided for @walletHasTransactionsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This wallet has transactions in the last {months} months. Move or delete them first.'**
+  String walletHasTransactionsMessage(int months);
+
+  /// No description provided for @walletNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'WALLET NAME'**
+  String get walletNameLabel;
+
+  /// No description provided for @walletNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Savings'**
+  String get walletNameHint;
+
+  /// No description provided for @walletIconLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'ICON'**
+  String get walletIconLabel;
+
+  /// No description provided for @createWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Wallet'**
+  String get createWallet;
+
+  /// No description provided for @walletNameExists.
+  ///
+  /// In en, this message translates to:
+  /// **'A wallet with this name already exists.'**
+  String get walletNameExists;
+
+  /// No description provided for @walletNameBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Account'**
+  String get walletNameBank;
+
+  /// No description provided for @walletNamePaypal.
+  ///
+  /// In en, this message translates to:
+  /// **'PayPal'**
+  String get walletNamePaypal;
+
+  /// No description provided for @walletNameOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get walletNameOther;
+
+  /// No description provided for @analyticsPeriodWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get analyticsPeriodWeek;
+
+  /// No description provided for @analyticsPeriodMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get analyticsPeriodMonth;
+
+  /// No description provided for @analyticsPeriodYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} Months'**
+  String analyticsPeriodYear(int months);
+
+  /// No description provided for @analyticsExpensesByCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses by Category'**
+  String get analyticsExpensesByCategory;
+
+  /// No description provided for @analyticsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions in this period.'**
+  String get analyticsEmpty;
 }
 
 class _AppLocalizationsDelegate

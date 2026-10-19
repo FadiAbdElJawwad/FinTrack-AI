@@ -153,5 +153,61 @@
   "navHome": "Home",
   "navAnalytics": "Analytics",
   "navWallets": "Wallets",
-  "navSettings": "Settings"
+  "navSettings": "Settings",
+  "settingsPreferences": "App Preferences",
+  "settingsSecurity": "Security",
+  "settingsLanguage": "Language",
+  "settingsAppearance": "Appearance",
+  "settingsThemeDark": "Dark Theme",
+  "settingsThemeLight": "Light Theme",
+  "settingsCurrency": "Currency",
+  "settingsBiometric": "Biometric Authentication",
+  "logout": "Log Out",
+  "logoutConfirmTitle": "Log Out?",
+  "logoutConfirmMessage": "Are you sure you want to log out of your account?",
+  "walletsYourAccounts": "Your Accounts",
+  "walletsBalanceWindowNote": "Balances cover the last {months} months",
+  "@walletsBalanceWindowNote": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "walletsUnassigned": "Unassigned transactions",
+  "walletsEmpty": "No wallets yet. Tap + to add one.",
+  "addWalletTitle": "Add Wallet",
+  "editWalletTitle": "Edit Wallet",
+  "saveWallet": "Save Changes",
+  "deleteWallet": "Delete Wallet",
+  "deleteWalletConfirmTitle": "Delete Wallet?",
+  "deleteWalletConfirmMessage": "This wallet will be permanently deleted.",
+  "walletHasTransactionsMessage": "This wallet has transactions in the last {months} months. Move or delete them first.",
+  "@walletHasTransactionsMessage": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "walletNameLabel": "WALLET NAME",
+  "walletNameHint": "e.g., Savings",
+  "walletIconLabel": "ICON",
+  "createWallet": "Create Wallet",
+  "walletNameExists": "A wallet with this name already exists.",
+  "walletNameBank": "Bank Account",
+  "walletNamePaypal": "PayPal",
+  "walletNameOther": "Other",
+  "analyticsPeriodWeek": "Week",
+  "analyticsPeriodMonth": "Month",
+  "analyticsPeriodYear": "{months} Months",
+  "@analyticsPeriodYear": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "analyticsExpensesByCategory": "Expenses by Category",
+  "analyticsEmpty": "No transactions in this period."
 }

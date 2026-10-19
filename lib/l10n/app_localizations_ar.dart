@@ -461,4 +461,116 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get navSettings => 'الإعدادات';
+
+  @override
+  String get settingsPreferences => 'تفضيلات التطبيق';
+
+  @override
+  String get settingsSecurity => 'الأمان';
+
+  @override
+  String get settingsLanguage => 'اللغة';
+
+  @override
+  String get settingsAppearance => 'المظهر';
+
+  @override
+  String get settingsThemeDark => 'الوضع الداكن';
+
+  @override
+  String get settingsThemeLight => 'الوضع الفاتح';
+
+  @override
+  String get settingsCurrency => 'العملة';
+
+  @override
+  String get settingsBiometric => 'المصادقة الحيوية';
+
+  @override
+  String get logout => 'تسجيل الخروج';
+
+  @override
+  String get logoutConfirmTitle => 'تسجيل الخروج؟';
+
+  @override
+  String get logoutConfirmMessage =>
+      'هل أنت متأكد من رغبتك في تسجيل الخروج من حسابك؟';
+
+  @override
+  String get walletsYourAccounts => 'حساباتك';
+
+  @override
+  String walletsBalanceWindowNote(int months) {
+    return 'الأرصدة تغطي آخر $months شهراً';
+  }
+
+  @override
+  String get walletsUnassigned => 'معاملات بلا محفظة';
+
+  @override
+  String get walletsEmpty => 'لا توجد محافظ بعد. اضغط + لإضافة محفظة.';
+
+  @override
+  String get addWalletTitle => 'إضافة محفظة';
+
+  @override
+  String get editWalletTitle => 'تعديل المحفظة';
+
+  @override
+  String get saveWallet => 'حفظ التغييرات';
+
+  @override
+  String get deleteWallet => 'حذف المحفظة';
+
+  @override
+  String get deleteWalletConfirmTitle => 'حذف المحفظة؟';
+
+  @override
+  String get deleteWalletConfirmMessage => 'سيتم حذف هذه المحفظة نهائياً.';
+
+  @override
+  String walletHasTransactionsMessage(int months) {
+    return 'لهذه المحفظة معاملات خلال آخر $months شهراً. انقلها أو احذفها أولاً.';
+  }
+
+  @override
+  String get walletNameLabel => 'اسم المحفظة';
+
+  @override
+  String get walletNameHint => 'مثال: المدخرات';
+
+  @override
+  String get walletIconLabel => 'الأيقونة';
+
+  @override
+  String get createWallet => 'إنشاء المحفظة';
+
+  @override
+  String get walletNameExists => 'توجد محفظة بهذا الاسم بالفعل.';
+
+  @override
+  String get walletNameBank => 'حساب بنكي';
+
+  @override
+  String get walletNamePaypal => 'PayPal';
+
+  @override
+  String get walletNameOther => 'أخرى';
+
+  @override
+  String get analyticsPeriodWeek => 'أسبوع';
+
+  @override
+  String get analyticsPeriodMonth => 'شهر';
+
+  @override
+  String analyticsPeriodYear(int months) {
+    return '$months شهراً';
+  }
+
+  @override
+  String get analyticsExpensesByCategory => 'المصاريف حسب الفئة';
+
+  @override
+  String get analyticsEmpty => 'لا توجد معاملات في هذه الفترة.';
 }
