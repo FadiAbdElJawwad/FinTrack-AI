@@ -7,6 +7,7 @@ import '../../../transactions/presentation/utils/error_message.dart';
 import '../state/wallets_overview_provider.dart';
 import '../widgets/add_wallet_sheet.dart';
 import '../widgets/wallets_overview_view.dart';
+import '../widgets/wallets_skeleton.dart';
 
 class WalletsScreen extends ConsumerWidget {
   const WalletsScreen({super.key});
@@ -27,7 +28,7 @@ class WalletsScreen extends ConsumerWidget {
         child: const Icon(Icons.add),
       ),
       body: overviewAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const WalletsSkeleton(),
         error: (error, _) => Center(
           child: Text(errorMessage(context, error)),
         ),

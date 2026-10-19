@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/extension/app_sizes.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/models/transaction_model.dart';
 
 extension TransactionCategoryExtension on TransactionCategory {
@@ -20,20 +21,24 @@ extension TransactionCategoryExtension on TransactionCategory {
     }
   }
 
-  String getLocalizedName(BuildContext context) {
+  String localizedNameFor(AppLocalizations loc) {
     switch (this) {
       case TransactionCategory.food:
-        return context.loc.catFood;
+        return loc.catFood;
       case TransactionCategory.transport:
-        return context.loc.catTransport;
+        return loc.catTransport;
       case TransactionCategory.shopping:
-        return context.loc.catShopping;
+        return loc.catShopping;
       case TransactionCategory.salary:
-        return context.loc.catSalary;
+        return loc.catSalary;
       case TransactionCategory.entertainment:
-        return context.loc.catEntertainment;
+        return loc.catEntertainment;
       case TransactionCategory.other:
-        return context.loc.catOther;
+        return loc.catOther;
     }
+  }
+
+  String getLocalizedName(BuildContext context) {
+    return localizedNameFor(context.loc);
   }
 }

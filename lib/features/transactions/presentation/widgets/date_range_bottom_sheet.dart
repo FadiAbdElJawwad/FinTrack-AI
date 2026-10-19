@@ -277,12 +277,12 @@ class _PresetCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? ColorManager.primaryBlue
-              : Colors.white.withValues(alpha: 0.05),
+              : ColorManager.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
                 ? ColorManager.primaryBlue
-                : Colors.white.withValues(alpha: 0.1),
+                : ColorManager.white.withValues(alpha: 0.1),
             width: 1.5,
           ),
         ),
@@ -290,13 +290,13 @@ class _PresetCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (isSelected) ...[
-              const Icon(Icons.check, color: Colors.white, size: 18),
+              const Icon(Icons.check, color: ColorManager.white, size: 18),
               const SizedBox(width: 8),
             ],
             Text(
               label,
               style: context.labelMedium.copyWith(
-                color: isSelected ? Colors.white : ColorManager.secondaryColor,
+                color: isSelected ? ColorManager.white : ColorManager.secondaryColor,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
               ),
             ),
@@ -338,10 +338,10 @@ class _DateField extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.1),
+                color: ColorManager.white.withValues(alpha: 0.1),
                 width: 1.5,
               ),
-              color: Colors.white.withValues(alpha: 0.02),
+              color: ColorManager.white.withValues(alpha: 0.02),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -349,7 +349,7 @@ class _DateField extends StatelessWidget {
                 Text(
                   formatLocalizedDate(context, 'dd MMM yyyy', date),
                   style: context.labelMedium.copyWith(
-                    color: Colors.white,
+                    color: ColorManager.white,
                     fontSize: 16,
                   ),
                 ),

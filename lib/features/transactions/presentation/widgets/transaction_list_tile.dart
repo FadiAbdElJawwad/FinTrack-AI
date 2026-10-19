@@ -5,6 +5,7 @@ import '../../../../core/constant/color_manager.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../../core/routing/app_routes.dart';
 import '../../domain/models/transaction_model.dart';
+import '../utils/transaction_display_title.dart';
 import '../utils/transaction_ui_extension.dart';
 
 class TransactionListTile extends StatelessWidget {
@@ -43,7 +44,7 @@ class TransactionListTile extends StatelessWidget {
             ),
           ),
           title: Text(
-            transaction.title,
+            transactionDisplayTitle(context, transaction),
             style: context.labelMedium,
           ),
           subtitle: Text(

@@ -1,4 +1,4 @@
-import 'package:fin_track_ai/core/constant/color_manager.dart';
+import '../../../../core/constant/color_manager.dart';
 import 'package:flutter/material.dart';
 
 import '../../../currency/presentation/utils/money_format.dart';

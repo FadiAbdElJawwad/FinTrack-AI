@@ -52,7 +52,7 @@ class VoiceMicButton extends StatelessWidget {
                       : status == VoiceEntryStatus.error
                           ? Icons.mic_off
                           : Icons.mic_none,
-                  color: Colors.white,
+                  color: ColorManager.white,
                   size: 48,
                 ),
               ),

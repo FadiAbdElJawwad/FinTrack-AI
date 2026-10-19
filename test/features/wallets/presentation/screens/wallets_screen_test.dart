@@ -5,6 +5,7 @@ import 'package:fin_track_ai/features/wallets/domain/models/wallet_model.dart';
 import 'package:fin_track_ai/features/wallets/domain/models/wallets_overview.dart';
 import 'package:fin_track_ai/features/wallets/presentation/screens/wallets_screen.dart';
 import 'package:fin_track_ai/features/wallets/presentation/state/wallets_overview_provider.dart';
+import 'package:fin_track_ai/features/wallets/presentation/widgets/wallets_skeleton.dart';
 import 'package:fin_track_ai/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -146,12 +147,28 @@ void main() {
       expect(find.text('No wallets yet. Tap + to add one.'), findsOneWidget);
     });
 
-    testWidgets('10. loading state shows CircularProgressIndicator',
+    testWidgets('10. loading state shows WalletsSkeleton and no CircularProgressIndicator',
         (tester) async {
       await tester
           .pumpWidget(createTestApp(overviewState: const AsyncLoading()));
+      await tester.pump();
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byType(WalletsSkeleton), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+    });
+
+    testWidgets('10b. WalletsSkeleton renders in Arabic without overflow exceptions',
+        (tester) async {
+      await tester.pumpWidget(
+        createTestApp(
+          overviewState: const AsyncLoading(),
+          locale: const Locale('ar'),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.byType(WalletsSkeleton), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
 
     testWidgets('11. error state shows error message', (tester) async {

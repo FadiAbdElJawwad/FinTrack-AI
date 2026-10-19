@@ -27,51 +27,135 @@ class TestWalletController extends WalletController {
   Stream<List<WalletModel>> build() => Stream.value(wallets);
 }
 
+Widget buildTestableWidget({
+  required TransactionModel transaction,
+  required List<WalletModel> wallets,
+  required Locale locale,
+  Key? key,
+}) {
+  return ProviderScope(
+    key: key,
+    overrides: [
+      transactionControllerProvider.overrideWith(
+        () => TestTransactionController([transaction]),
+      ),
+      walletControllerProvider.overrideWith(
+        () => TestWalletController(wallets),
+      ),
+    ],
+    child: MaterialApp(
+      locale: locale,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: TransactionDetails(transactionId: transaction.id!),
+    ),
+  );
+}
+
 void main() {
   setUpAll(() async {
     await initializeDateFormatting('ar', null);
     await initializeDateFormatting('en', null);
   });
 
-  group('TransactionDetails wallet localization test', () {
+  group('TransactionDetails localization tests', () {
+    final sampleTx = TransactionModel(
+      id: 'tx1',
+      amountMinor: 1000,
+      currency: AppCurrency.usd,
+      type: TransactionType.expense,
+      category: TransactionCategory.food,
+      title: 'Dinner',
+      date: DateTime(2026, 10, 14, 15, 30),
+      walletId: 'cash',
+    );
+
+    const seededWallets = [
+      WalletModel(id: 'cash', name: 'Cash', icon: 'payments'),
+    ];
+
+    testWidgets('Arabic: category shows localized name طعام twice, no food/FOOD', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildTestableWidget(
+          transaction: sampleTx,
+          wallets: seededWallets,
+          locale: const Locale('ar'),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(Duration.zero);
+
+      expect(find.text('طعام'), findsNWidgets(2));
+      expect(find.text('food'), findsNothing);
+      expect(find.text('FOOD'), findsNothing);
+    });
+
+    testWidgets('Arabic: type row shows مصاريف for expense transaction', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildTestableWidget(
+          transaction: sampleTx,
+          wallets: seededWallets,
+          locale: const Locale('ar'),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(Duration.zero);
+
+      expect(find.text('مصاريف'), findsOneWidget);
+    });
+
+    testWidgets('Arabic: type row shows دخل for income transaction', (
+      tester,
+    ) async {
+      final incomeTx = sampleTx.copyWith(type: TransactionType.income);
+      await tester.pumpWidget(
+        buildTestableWidget(
+          transaction: incomeTx,
+          wallets: seededWallets,
+          locale: const Locale('ar'),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(Duration.zero);
+
+      expect(find.text('دخل'), findsOneWidget);
+    });
+
+    testWidgets('English: headline shows Food, category row FOOD and type row EXPENSE', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildTestableWidget(
+          transaction: sampleTx,
+          wallets: seededWallets,
+          locale: const Locale('en'),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(Duration.zero);
+
+      expect(find.text('Food'), findsOneWidget);
+      expect(find.text('FOOD'), findsOneWidget);
+      expect(find.text('EXPENSE'), findsOneWidget);
+    });
+
     testWidgets(
       '13. TransactionDetails: seeded wallet shows localized name in Arabic',
       (tester) async {
-        final sampleTx = TransactionModel(
-          id: 'tx1',
-          amountMinor: 1000,
-          currency: AppCurrency.usd,
-          type: TransactionType.expense,
-          category: TransactionCategory.food,
-          title: 'Dinner',
-          date: DateTime(2026, 10, 14, 15, 30),
-          walletId: 'cash',
-        );
-        const seededWallets = [
-          WalletModel(id: 'cash', name: 'Cash', icon: 'payments'),
-        ];
-
         await tester.pumpWidget(
-          ProviderScope(
-            overrides: [
-              transactionControllerProvider.overrideWith(
-                () => TestTransactionController([sampleTx]),
-              ),
-              walletControllerProvider.overrideWith(
-                () => TestWalletController(seededWallets),
-              ),
-            ],
-            child: const MaterialApp(
-              locale: Locale('ar'),
-              localizationsDelegates: [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: AppLocalizations.supportedLocales,
-              home: TransactionDetails(transactionId: 'tx1'),
-            ),
+          buildTestableWidget(
+            transaction: sampleTx,
+            wallets: seededWallets,
+            locale: const Locale('ar'),
           ),
         );
         await tester.pump();

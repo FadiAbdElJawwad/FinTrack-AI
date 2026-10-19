@@ -120,7 +120,7 @@ class TransactionsScreen extends HookConsumerWidget {
                                     : '${formatLocalizedDate(context, 'dd MMM', selectedDateRange.start)} - ${formatLocalizedDate(context, 'dd MMM', selectedDateRange.end)}',
                                 style: context.labelSmall.copyWith(
                                   color: selectedDateRange != null
-                                      ? Colors.white
+                                      ? ColorManager.white
                                       : null,
                                 ),
                               ).padEnd(4),
@@ -128,7 +128,7 @@ class TransactionsScreen extends HookConsumerWidget {
                                 Icons.calendar_month,
                                 size: 20,
                                 color: selectedDateRange != null
-                                    ? Colors.white
+                                    ? ColorManager.white
                                     : null,
                               ),
                             ],
@@ -231,7 +231,7 @@ class _FilterCard extends StatelessWidget {
         child: Text(
           label,
           style: context.labelSmall.copyWith(
-            color: isSelected ? Colors.white : null,
+            color: isSelected ? ColorManager.white : null,
           ),
         ).padSymmetric(16).padVerticalSymmetric(8),
       ),

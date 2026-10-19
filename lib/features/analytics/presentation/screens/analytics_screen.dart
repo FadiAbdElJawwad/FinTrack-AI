@@ -6,6 +6,7 @@ import '../../../transactions/presentation/utils/error_message.dart';
 import '../state/analytics_providers.dart';
 import '../widgets/analytics_content.dart';
 import '../widgets/analytics_period_selector.dart';
+import '../widgets/analytics_skeleton.dart';
 
 class AnalyticsScreen extends ConsumerWidget {
   const AnalyticsScreen({super.key});
@@ -30,7 +31,7 @@ class AnalyticsScreen extends ConsumerWidget {
           context.addVerticalSpace(16),
           Expanded(
             child: summaryAsync.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const AnalyticsSkeleton(),
               error: (error, _) => Center(
                 child: Text(errorMessage(context, error)),
               ),

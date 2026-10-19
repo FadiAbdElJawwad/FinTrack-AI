@@ -5,6 +5,7 @@ import 'package:fin_track_ai/features/analytics/domain/models/analytics_summary.
 import 'package:fin_track_ai/features/analytics/presentation/screens/analytics_screen.dart';
 import 'package:fin_track_ai/features/analytics/presentation/state/analytics_providers.dart';
 import 'package:fin_track_ai/features/analytics/presentation/widgets/analytics_amount_card.dart';
+import 'package:fin_track_ai/features/analytics/presentation/widgets/analytics_skeleton.dart';
 import 'package:fin_track_ai/features/analytics/presentation/widgets/category_expense_tile.dart';
 import 'package:fin_track_ai/features/currency/domain/models/app_currency.dart';
 import 'package:fin_track_ai/features/transactions/domain/models/transaction_model.dart';
@@ -274,16 +275,33 @@ void main() {
     });
 
     testWidgets(
-        '10. loading shows CircularProgressIndicator and chips remain visible',
+        '10. loading shows AnalyticsSkeleton and chips remain visible, and no CircularProgressIndicator',
         (tester) async {
       await tester.pumpWidget(
         createAnalyticsApp(summaryState: const AsyncLoading()),
       );
+      await tester.pump();
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byType(AnalyticsSkeleton), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsNothing);
       expect(find.text('Week'), findsOneWidget);
       expect(find.text('Month'), findsOneWidget);
       expect(find.text('12 Months'), findsOneWidget);
+    });
+
+    testWidgets(
+        '10b. AnalyticsSkeleton renders in Arabic without overflow exceptions',
+        (tester) async {
+      await tester.pumpWidget(
+        createAnalyticsApp(
+          summaryState: const AsyncLoading(),
+          locale: const Locale('ar'),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.byType(AnalyticsSkeleton), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
 
     testWidgets(

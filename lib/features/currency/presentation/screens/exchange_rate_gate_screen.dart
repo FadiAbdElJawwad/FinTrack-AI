@@ -57,7 +57,7 @@ class ExchangeRateGateScreen extends ConsumerWidget {
                 ),
                 child: Text(
                   context.loc.tryAgainButton,
-                  style: context.labelLarge.copyWith(color: Colors.white),
+                  style: context.labelLarge.copyWith(color: ColorManager.white),
                 ),
               ),
             ],

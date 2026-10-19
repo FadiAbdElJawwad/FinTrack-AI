@@ -101,5 +101,31 @@ void main() {
         expect(result, equals('Oct 14, 03:30 PM'));
       },
     );
+
+    testWidgets(
+      '6. Arabic date output contains Arabic comma (U+060C) and no ASCII comma',
+      (tester) async {
+        late String result;
+        await tester.pumpWidget(
+          MaterialApp(
+            locale: const Locale('ar'),
+            localizationsDelegates: GlobalMaterialLocalizations.delegates,
+            supportedLocales: const [Locale('en'), Locale('ar')],
+            home: Builder(
+              builder: (context) {
+                result = formatLocalizedDate(
+                  context,
+                  'MMM dd, hh:mm a',
+                  DateTime(2026, 10, 14, 15, 30),
+                );
+                return const SizedBox();
+              },
+            ),
+          ),
+        );
+        expect(result.contains('،'), isTrue);
+        expect(result.contains(','), isFalse);
+      },
+    );
   });
 }

@@ -24,6 +24,11 @@ String formatLocalizedDate(
   String pattern,
   DateTime date,
 ) {
-  final locale = Localizations.maybeLocaleOf(context)?.toString();
-  return toWesternDigits(DateFormat(pattern, locale).format(date));
+  final localeObj = Localizations.maybeLocaleOf(context);
+  final locale = localeObj?.toString();
+  var result = toWesternDigits(DateFormat(pattern, locale).format(date));
+  if (localeObj?.languageCode == 'ar') {
+    result = result.replaceAll(',', '،');
+  }
+  return result;
 }

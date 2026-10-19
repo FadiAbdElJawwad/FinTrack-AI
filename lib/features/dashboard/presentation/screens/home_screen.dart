@@ -1,4 +1,4 @@
-import 'package:fin_track_ai/core/routing/app_routes.dart';
+import '../../../../core/routing/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

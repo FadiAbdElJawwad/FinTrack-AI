@@ -9,9 +9,12 @@ import '../../../../core/services/share_service.dart';
 import '../../../wallets/domain/models/wallet_model.dart';
 import '../../../wallets/presentation/state/wallet_controller.dart';
 import '../../../wallets/presentation/utils/wallet_display_name.dart';
+import '../../domain/models/transaction_model.dart';
 import '../state/transaction_controller.dart';
 import '../utils/error_message.dart';
 import '../utils/localized_date_format.dart';
+import '../utils/transaction_category_extension.dart';
+import '../utils/transaction_display_title.dart';
 import '../utils/transaction_ui_extension.dart';
 import '../widgets/add_transaction_bottom_sheet.dart';
 
@@ -132,7 +135,9 @@ class TransactionDetails extends HookConsumerWidget {
                       ),
                     )
                   : IconButton(
-                      onPressed: () => shareTransactionImage(transaction.title),
+                      onPressed: () => shareTransactionImage(
+                        transactionDisplayTitle(context, transaction),
+                      ),
                       icon: const Icon(Icons.share),
                     ),
             ],
@@ -217,7 +222,7 @@ class TransactionDetails extends HookConsumerWidget {
                       ),
                       context.addVerticalSpace(24),
                       Text(
-                        transaction.category.name,
+                        transaction.category.getLocalizedName(context),
                         style: context.headlineMedium,
                       ),
                       Text(
@@ -248,7 +253,9 @@ class TransactionDetails extends HookConsumerWidget {
                             context.addVerticalSpace(16),
                             _DetailRow(
                               label: context.loc.category,
-                              value: transaction.category.name.toUpperCase(),
+                              value: transaction.category
+                                  .getLocalizedName(context)
+                                  .toUpperCase(),
                             ),
                             const Divider(color: ColorManager.secondaryColor),
                             context.addVerticalSpace(16),
@@ -260,7 +267,10 @@ class TransactionDetails extends HookConsumerWidget {
                             context.addVerticalSpace(16),
                             _DetailRow(
                               label: context.loc.type,
-                              value: transaction.type.name.toUpperCase(),
+                              value: (transaction.type == TransactionType.income
+                                      ? context.loc.income
+                                      : context.loc.expense)
+                                  .toUpperCase(),
                             ),
                           ],
                         ).pad(24),
