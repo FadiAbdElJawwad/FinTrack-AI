@@ -16,11 +16,7 @@ void main() {
         ),
       );
 
-      final containerFinder = find.byType(Container);
-      expect(containerFinder, findsOneWidget);
-      final container = tester.widget<Container>(containerFinder);
-      expect(container.constraints?.minWidth, equals(150));
-      expect(container.constraints?.minHeight, equals(40));
+      expect(tester.getSize(find.byType(SkeletonBlock)), equals(const Size(150, 40)));
     });
 
     testWidgets(
@@ -53,5 +49,13 @@ void main() {
         expect(find.byType(SkeletonShimmer), findsOneWidget);
       },
     );
+
+    test('skeletonColors returns different base and highlight colors for light and dark themes', () {
+      final lightColors = skeletonColors(Brightness.light);
+      final darkColors = skeletonColors(Brightness.dark);
+
+      expect(lightColors.baseColor, isNot(equals(darkColors.baseColor)));
+      expect(lightColors.highlightColor, isNot(equals(darkColors.highlightColor)));
+    });
   });
 }

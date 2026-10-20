@@ -55,6 +55,7 @@ void main() {
           ),
         ],
         unassignedMinor: 0,
+        hasUnassigned: false,
         totalMinor: 20000, // $200.00
       );
 
@@ -93,6 +94,7 @@ void main() {
           ),
         ],
         unassignedMinor: 0,
+        hasUnassigned: false,
         totalMinor: null,
       );
 
@@ -109,7 +111,7 @@ void main() {
       expect(textWidget.style?.color, ColorManager.errorColor);
     });
 
-    testWidgets('8. unassigned tile appears only when unassignedMinor != 0',
+    testWidgets('8. unassigned tile appears when hasUnassigned is true',
         (tester) async {
       final overviewWithUnassigned = WalletsOverview(
         currency: AppCurrency.usd,
@@ -120,6 +122,7 @@ void main() {
           ),
         ],
         unassignedMinor: 500,
+        hasUnassigned: true,
         totalMinor: 1500,
       );
 
@@ -132,11 +135,35 @@ void main() {
       expect(find.text('\$5.00'), findsOneWidget);
     });
 
-    testWidgets('9. empty overview shows walletsEmpty text', (tester) async {
+    testWidgets('8b. unassigned tile appears when hasUnassigned is true and unassignedMinor is 0',
+        (tester) async {
+      final overviewWithUnassignedZero = WalletsOverview(
+        currency: AppCurrency.usd,
+        wallets: [],
+        unassignedMinor: 0,
+        hasUnassigned: true,
+        totalMinor: 0,
+      );
+
+      await tester.pumpWidget(
+        createTestApp(overviewState: AsyncData(overviewWithUnassignedZero)),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Unassigned transactions'), findsOneWidget);
+      final unassignedTile = find.widgetWithText(ListTile, 'Unassigned transactions');
+      expect(
+        find.descendant(of: unassignedTile, matching: find.text('\$0.00')),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('9. empty overview shows walletsEmpty text when hasUnassigned is false', (tester) async {
       final overviewEmpty = WalletsOverview(
         currency: AppCurrency.usd,
         wallets: [],
         unassignedMinor: 0,
+        hasUnassigned: false,
         totalMinor: 0,
       );
 
@@ -199,6 +226,7 @@ void main() {
           ),
         ],
         unassignedMinor: 0,
+        hasUnassigned: false,
         totalMinor: 1000,
       );
 
@@ -225,6 +253,7 @@ void main() {
           ),
         ],
         unassignedMinor: 0,
+        hasUnassigned: false,
         totalMinor: 99999900,
       );
 

@@ -42,6 +42,7 @@ class WalletsTotalCard extends StatelessWidget {
             context.addVerticalSpace(8),
             Text(
               amountText,
+              textDirection: TextDirection.ltr,
               style: context.displayLarge.copyWith(
                 color: ColorManager.white,
                 fontWeight: FontWeight.bold,

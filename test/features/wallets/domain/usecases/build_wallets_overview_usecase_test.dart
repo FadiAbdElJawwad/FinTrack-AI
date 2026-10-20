@@ -321,5 +321,39 @@ void main() {
       expect(overview.wallets[0].wallet.id, 'w_alpha');
       expect(overview.wallets[1].wallet.id, 'w_beta');
     });
+
+    test('15. Orphans netting to 0: hasUnassigned is true and unassignedMinor is 0', () {
+      final wallets = [w('w1', 'Cash')];
+      final transactions = [
+        tx('orphan', TransactionType.income, 1000, AppCurrency.usd),
+        tx('orphan', TransactionType.expense, 1000, AppCurrency.usd),
+      ];
+
+      final overview = buildWalletsOverview(
+        wallets: wallets,
+        transactions: transactions,
+        target: AppCurrency.usd,
+        rateBetween: noRate,
+      );
+
+      expect(overview.hasUnassigned, isTrue);
+      expect(overview.unassignedMinor, equals(0));
+    });
+
+    test('16. No orphans: hasUnassigned is false', () {
+      final wallets = [w('w1', 'Cash')];
+      final transactions = [
+        tx('w1', TransactionType.income, 1000, AppCurrency.usd),
+      ];
+
+      final overview = buildWalletsOverview(
+        wallets: wallets,
+        transactions: transactions,
+        target: AppCurrency.usd,
+        rateBetween: noRate,
+      );
+
+      expect(overview.hasUnassigned, isFalse);
+    });
   });
 }
