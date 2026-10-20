@@ -66,6 +66,7 @@ void main() {
         currency: AppCurrency.usd,
         wallets: [WalletBalance(wallet: wallet, balanceMinor: 1000)],
         unassignedMinor: 0,
+        hasUnassigned: false,
       );
 
       await tester.pumpWidget(createTestApp(
@@ -87,6 +88,7 @@ void main() {
         currency: AppCurrency.usd,
         wallets: [],
         unassignedMinor: 500,
+        hasUnassigned: true,
       );
 
       await tester.pumpWidget(createTestApp(overview: overview));
@@ -114,6 +116,7 @@ void main() {
           WalletBalance(wallet: wallet2, balanceMinor: 2000),
         ],
         unassignedMinor: 0,
+        hasUnassigned: false,
       );
 
       await tester.pumpWidget(createTestApp(

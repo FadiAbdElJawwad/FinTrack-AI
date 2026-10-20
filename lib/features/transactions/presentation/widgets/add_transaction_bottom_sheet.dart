@@ -14,7 +14,6 @@ import '../../../currency/domain/usecases/money.dart';
 import '../../../currency/presentation/state/currency_controller.dart';
 import '../../../wallets/presentation/state/wallet_controller.dart';
 import '../state/transaction_controller.dart';
-import '../utils/transaction_category_extension.dart';
 import '../utils/transaction_display_title.dart';
 import '../utils/error_message.dart';
 import 'amount_input_area.dart';
@@ -120,7 +119,6 @@ class AddTransactionBottomSheet extends HookConsumerWidget {
           category: selectedCategory.value!,
           notesText: notesController.text,
           date: selectedDate.value,
-          context: context,
           walletId: selectedWalletId.value!,
         );
 
@@ -282,7 +280,6 @@ TransactionModel _buildTransactionFromForm({
   required TransactionCategory category,
   required String notesText,
   required DateTime date,
-  required BuildContext context,
   required String walletId,
 }) {
   return TransactionModel(
@@ -291,7 +288,7 @@ TransactionModel _buildTransactionFromForm({
     currency: currency,
     type: type,
     category: category,
-    title: notesText.isEmpty ? category.getLocalizedName(context) : notesText,
+    title: notesText,
     date: date,
     walletId: walletId,
   );

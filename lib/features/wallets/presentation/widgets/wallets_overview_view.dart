@@ -21,7 +21,7 @@ class WalletsOverviewView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isEmpty = overview.wallets.isEmpty && overview.unassignedMinor == 0;
+    final isEmpty = overview.wallets.isEmpty && !overview.hasUnassigned;
 
     return SingleChildScrollView(
       child: Column(
@@ -71,7 +71,7 @@ class WalletsOverviewView extends StatelessWidget {
                 ),
               );
             }),
-            if (overview.unassignedMinor != 0)
+            if (overview.hasUnassigned)
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: WalletBalanceTile(

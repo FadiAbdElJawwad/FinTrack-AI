@@ -1,5 +1,6 @@
 import 'package:fin_track_ai/features/currency/domain/models/app_currency.dart';
 import 'package:fin_track_ai/features/transactions/domain/models/transaction_model.dart';
+import 'package:fin_track_ai/features/transactions/presentation/state/transaction_controller.dart';
 import 'package:fin_track_ai/features/transactions/presentation/utils/transaction_display_title.dart';
 import 'package:fin_track_ai/features/transactions/presentation/widgets/add_transaction_bottom_sheet.dart';
 import 'package:fin_track_ai/features/transactions/presentation/widgets/transaction_list_tile.dart';
@@ -258,5 +259,67 @@ void main() {
         expect(customTextField.controller?.text, equals('Lunch with Sara'));
       },
     );
+
+    testWidgets(
+      '7. Saving a transaction with empty notes stores empty string as title',
+      (tester) async {
+        TransactionModel? savedTx;
+        final mockTxController = _TestAddTransactionController((tx) {
+          savedTx = tx;
+        });
+
+        final walletOverride = walletControllerProvider.overrideWith(
+          () => TestWalletController([
+            const WalletModel(
+              id: 'w1',
+              name: 'Cash',
+              icon: 'payments',
+              isDefault: true,
+            ),
+          ]),
+        );
+        final txControllerOverride = transactionControllerProvider.overrideWith(
+          () => mockTxController,
+        );
+
+        await tester.pumpWidget(
+          createTestApp(
+            overrides: [walletOverride, txControllerOverride],
+            child: const AddTransactionBottomSheet(),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Enter amount 10.00
+        await tester.enterText(find.byType(TextField).first, '10.00');
+        await tester.pumpAndSettle();
+
+        // Select category Food
+        await tester.tap(find.text('Food'));
+        await tester.pumpAndSettle();
+
+        // Tap Save button
+        final saveButtonFinder = find.widgetWithText(ElevatedButton, 'Save Transaction');
+        expect(saveButtonFinder, findsOneWidget);
+        await tester.tap(saveButtonFinder);
+        await tester.pumpAndSettle();
+
+        expect(savedTx, isNotNull);
+        expect(savedTx!.title, equals(''));
+      },
+    );
   });
+}
+
+class _TestAddTransactionController extends TransactionController {
+  final void Function(TransactionModel) onAdd;
+  _TestAddTransactionController(this.onAdd);
+
+  @override
+  Stream<List<TransactionModel>> build() => Stream.value([]);
+
+  @override
+  Future<void> addTransaction(TransactionModel transaction) async {
+    onAdd(transaction);
+  }
 }

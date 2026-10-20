@@ -125,5 +125,49 @@ void main() {
       );
       expect(walletDisplayName(locAr, userWallet), 'Investments');
     });
+
+    testWidgets(
+        'legacy default with random id shows Arabic name, non-default Cash with random id is not localized, renamed default is unchanged',
+        (tester) async {
+      late AppLocalizations locAr;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('ar'),
+          home: Builder(
+            builder: (context) {
+              locAr = AppLocalizations.of(context);
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      const legacyDefaultRandomId = WalletModel(
+        id: 'random_xyz_999',
+        name: 'Cash',
+        icon: 'payments',
+        isDefault: true,
+      );
+      expect(walletDisplayName(locAr, legacyDefaultRandomId), 'نقدي');
+
+      const nonDefaultCashRandomId = WalletModel(
+        id: 'random_abc_123',
+        name: 'Cash',
+        icon: 'payments',
+        isDefault: false,
+      );
+      expect(walletDisplayName(locAr, nonDefaultCashRandomId), 'Cash');
+
+      const renamedDefaultRandomId = WalletModel(
+        id: 'random_xyz_999',
+        name: 'My Custom Cash',
+        icon: 'payments',
+        isDefault: true,
+      );
+      expect(walletDisplayName(locAr, renamedDefaultRandomId), 'My Custom Cash');
+    });
   });
 }

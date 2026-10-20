@@ -95,6 +95,7 @@ WalletsOverview buildWalletsOverview({
     currency: target,
     wallets: walletBalances,
     unassignedMinor: unassignedMinor,
+    hasUnassigned: unassignedTransactions.isNotEmpty,
     totalMinor: totalHasNull ? null : totalMinor,
   );
 }

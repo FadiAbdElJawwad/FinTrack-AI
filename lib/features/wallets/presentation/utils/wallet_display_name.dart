@@ -12,5 +12,8 @@ String walletDisplayName(AppLocalizations loc, WalletModel wallet) {
     case 'other':
       if (wallet.name == 'Other') return loc.walletNameOther;
   }
+  if (wallet.isDefault && wallet.name == 'Cash') {
+    return loc.defaultWalletName;
+  }
   return wallet.name;
 }
