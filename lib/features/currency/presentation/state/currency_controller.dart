@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../auth/presentation/state/auth_controller.dart';
 import '../../data/repositories/firestore_currency_repository.dart';
 
 final currencyControllerProvider =
@@ -12,6 +13,10 @@ final currencyControllerProvider =
 class CurrencyController extends AutoDisposeStreamNotifier<String> {
   @override
   Stream<String> build() {
+    final user = ref.watch(currentUserProvider);
+    if (user == null) {
+      return Stream.value('USD');
+    }
     return ref.watch(currencyRepositoryProvider).watchBaseCurrency();
   }
 

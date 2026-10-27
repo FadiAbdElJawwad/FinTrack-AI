@@ -17,6 +17,8 @@ import 'package:fin_track_ai/features/transactions/domain/usecases/calculate_tot
 import 'package:fin_track_ai/features/transactions/presentation/state/transaction_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:fin_track_ai/features/auth/presentation/state/auth_controller.dart';
+import 'package:fin_track_ai/features/auth/domain/models/user_model.dart';
 
 class FixedTxRepository extends Fake implements TransactionRepository {
   FixedTxRepository(this.transactions);
@@ -111,6 +113,7 @@ ProviderContainer makeContainer({
       ),
       exchangeRateServiceProvider.overrideWithValue(rateService),
       clockProvider.overrideWithValue(() => now ?? DateTime(2024, 5, 20)),
+      currentUserProvider.overrideWithValue(UserModel(uid: 'u', email: '', fullName: '')),
     ],
   );
   addTearDown(container.dispose);

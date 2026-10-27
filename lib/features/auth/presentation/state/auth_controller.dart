@@ -5,6 +5,7 @@ import '../../../../core/providers/firebase_providers.dart';
 import '../../../../core/providers/shared_prefs_provider.dart';
 import '../../../../core/services/biometric_service.dart';
 import '../../../../core/error/auth_exception.dart';
+import '../../../../core/routing/app_lock_notifier.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/models/user_model.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -47,6 +48,7 @@ class AuthController extends AsyncNotifier<void> {
     );
 
     if (!result.hasError) {
+      ref.read(appLockNotifierProvider).unlock();
       await _handlePostAuth(
         isBiometricOptIn: isBiometricOptIn,
       );
@@ -67,6 +69,8 @@ class AuthController extends AsyncNotifier<void> {
       if (_repository.currentUser == null) {
         throw AppAuthException(AuthErrorType.sessionExpired);
       }
+      
+      ref.read(appLockNotifierProvider).unlock();
     });
   }
 
@@ -82,6 +86,7 @@ class AuthController extends AsyncNotifier<void> {
     );
 
     if (!result.hasError) {
+      ref.read(appLockNotifierProvider).unlock();
       await _handlePostAuth(
         isBiometricOptIn: isBiometricOptIn,
       );
@@ -95,6 +100,7 @@ class AuthController extends AsyncNotifier<void> {
     final result = await AsyncValue.guard(() => _repository.signInWithGoogle());
 
     if (!result.hasError) {
+      ref.read(appLockNotifierProvider).unlock();
       await _handlePostAuth(
         isBiometricOptIn: false,
         isGoogleAuthTriggered: isGoogleAuthTriggered,
@@ -110,6 +116,7 @@ class AuthController extends AsyncNotifier<void> {
     await _repository.signOut();
     final prefs = ref.read(sharedPrefsProvider);
     await prefs.setBool(SharedPrefsKeys.isBiometricEnabledKey, false);
+    ref.read(appLockNotifierProvider).unlock();
   }
 
   Future<void> _handlePostAuth({

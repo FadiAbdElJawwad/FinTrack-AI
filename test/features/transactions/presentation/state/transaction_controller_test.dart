@@ -8,6 +8,8 @@ import 'package:fin_track_ai/features/transactions/presentation/state/transactio
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fin_track_ai/features/currency/domain/models/app_currency.dart';
+import 'package:fin_track_ai/features/auth/presentation/state/auth_controller.dart';
+import 'package:fin_track_ai/features/auth/domain/models/user_model.dart';
 
 class ThrowingRepo implements TransactionRepository {
   ThrowingRepo(this.error);
@@ -55,7 +57,10 @@ void main() {
     error = TransactionException(TransactionErrorType.permissionDenied);
     repo = ThrowingRepo(error);
     container = ProviderContainer(
-      overrides: [transactionRepositoryProvider.overrideWithValue(repo)],
+      overrides: [
+        transactionRepositoryProvider.overrideWithValue(repo),
+        currentUserProvider.overrideWithValue(UserModel(uid: 'u', email: '', fullName: '')),
+      ],
     );
     addTearDown(container.dispose);
     addTearDown(() => unawaited(repo.controller.close()));
@@ -63,6 +68,25 @@ void main() {
   });
 
   group('TransactionController', () {
+    test('13. yields empty state without calling repository when currentUserProvider is null', () async {
+      var callCount = 0;
+      final verifyRepo = ThrowingRepo(error);
+      verifyRepo.controller.onListen = () => callCount++;
+      final c = ProviderContainer(
+        overrides: [
+          transactionRepositoryProvider.overrideWithValue(verifyRepo),
+          currentUserProvider.overrideWithValue(null),
+        ],
+      );
+      addTearDown(c.dispose);
+      addTearDown(() => unawaited(verifyRepo.controller.close()));
+      c.listen(transactionControllerProvider, (_, _) {});
+      
+      final state = await c.read(transactionControllerProvider.future);
+      expect(state, isEmpty);
+      expect(callCount, 0); // Repository stream was not accessed
+    });
+
     test('addTransaction propagates the typed exception unchanged', () {
       expect(
         container
@@ -101,7 +125,10 @@ void main() {
     test('a synchronous build failure surfaces as AsyncError', () {
       final failing = ThrowingRepo(error)..buildError = error;
       final c = ProviderContainer(
-        overrides: [transactionRepositoryProvider.overrideWithValue(failing)],
+        overrides: [
+          transactionRepositoryProvider.overrideWithValue(failing),
+          currentUserProvider.overrideWithValue(UserModel(uid: 'u', email: '', fullName: '')),
+        ],
       );
       addTearDown(c.dispose);
       addTearDown(() => unawaited(failing.controller.close()));

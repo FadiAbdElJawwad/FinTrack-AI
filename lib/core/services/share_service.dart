@@ -26,8 +26,18 @@ class ShareService {
     final file = File(imagePath);
     await file.writeAsBytes(pngBytes);
 
-    await SharePlus.instance.share(
-      ShareParams(files: [XFile(imagePath)], text: text),
-    );
+    try {
+      await SharePlus.instance.share(
+        ShareParams(files: [XFile(imagePath)], text: text),
+      );
+    } finally {
+      try {
+        if (await file.exists()) {
+          await file.delete();
+        }
+      } catch (_) {
+        // Swallow deletion errors
+      }
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../auth/presentation/state/auth_controller.dart';
 import '../../data/repositories/firestore_transaction_repository.dart';
 import '../../domain/models/transaction_model.dart';
 
@@ -13,6 +14,10 @@ class TransactionController
     extends AutoDisposeStreamNotifier<List<TransactionModel>> {
   @override
   Stream<List<TransactionModel>> build() {
+    final user = ref.watch(currentUserProvider);
+    if (user == null) {
+      return Stream.value([]);
+    }
     return ref.watch(transactionRepositoryProvider).getTransactionsStream();
   }
 

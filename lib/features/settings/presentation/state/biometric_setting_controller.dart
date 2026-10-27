@@ -10,8 +10,13 @@ final biometricSettingProvider =
     );
 
 class BiometricSettingController extends AutoDisposeNotifier<bool> {
+  bool _disposed = false;
+
   @override
   bool build() {
+    ref.onDispose(() {
+      _disposed = true;
+    });
     final prefs = ref.watch(sharedPrefsProvider);
     return prefs.getBool(SharedPrefsKeys.isBiometricEnabledKey) ?? false;
   }
@@ -21,7 +26,7 @@ class BiometricSettingController extends AutoDisposeNotifier<bool> {
 
     if (!enabled) {
       await prefs.setBool(SharedPrefsKeys.isBiometricEnabledKey, false);
-      state = false;
+      if (!_disposed) state = false;
       return false;
     }
 
@@ -31,13 +36,13 @@ class BiometricSettingController extends AutoDisposeNotifier<bool> {
           .authenticate();
       if (authenticated) {
         await prefs.setBool(SharedPrefsKeys.isBiometricEnabledKey, true);
-        state = true;
+        if (!_disposed) state = true;
         return true;
       }
     } catch (_) {}
 
     await prefs.setBool(SharedPrefsKeys.isBiometricEnabledKey, false);
-    state = false;
+    if (!_disposed) state = false;
     return false;
   }
 }

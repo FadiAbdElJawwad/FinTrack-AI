@@ -139,7 +139,13 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<void> signOut() {
+  Future<void> signOut() async {
+    try {
+      await GoogleSignIn.instance.signOut();
+    } catch (_) {
+      // Ignore Google sign-out failures
+    }
+    // Debt: Firebase clearPersistence/terminate should ideally be called, but omitted per instructions.
     return _auth.signOut();
   }
 

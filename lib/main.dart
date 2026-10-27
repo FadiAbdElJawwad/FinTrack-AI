@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'core/bootstrap/app_bootstrap.dart';
 import 'core/constant/app_env.dart';
+import 'core/constant/shared_prefs_keys.dart';
 import 'core/error/currency_exception.dart';
 import 'core/providers/locale_provider.dart';
 import 'core/providers/router_provider.dart';
 import 'core/providers/shared_prefs_provider.dart';
 import 'core/providers/theme_provider.dart';
 import 'core/theme/app_theme.dart';
+import 'core/routing/app_lock_notifier.dart';
+import 'core/routing/app_lock_lifecycle_observer.dart';
 import 'features/currency/data/services/exchange_rate_service.dart';
 import 'features/currency/presentation/screens/exchange_rate_gate_screen.dart';
 import 'l10n/app_localizations.dart';
@@ -29,9 +33,24 @@ void main() {
             'Warning: AI config is missing or invalid. Voice entry will be disabled.',
           );
         }
+        
+        final isBiometricEnabled = prefs.getBool(SharedPrefsKeys.isBiometricEnabledKey) ?? false;
+        final isUserSignedIn = FirebaseAuth.instance.currentUser != null;
+        final appLockNotifier = AppLockNotifier(
+          initialLocked: isBiometricEnabled && isUserSignedIn,
+        );
+        
         return ProviderScope(
-          overrides: [sharedPrefsProvider.overrideWithValue(prefs)],
-          child: const FinTrackApp(),
+          overrides: [
+            sharedPrefsProvider.overrideWithValue(prefs),
+            appLockNotifierProvider.overrideWithValue(appLockNotifier),
+          ],
+          child: AppLockLifecycleObserver(
+            appLockNotifier: appLockNotifier,
+            firebaseAuth: FirebaseAuth.instance,
+            prefs: prefs,
+            child: const FinTrackApp(),
+          ),
         );
       },
     ),

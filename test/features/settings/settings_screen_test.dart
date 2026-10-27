@@ -17,6 +17,7 @@ import 'package:fin_track_ai/features/dashboard/presentation/states/dashboard_st
 import 'package:fin_track_ai/features/settings/presentation/screens/settings_screen.dart';
 import 'package:fin_track_ai/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fin_track_ai/core/routing/app_lock_notifier.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -95,6 +96,7 @@ Widget createTestWidget({
       currencyRepositoryProvider.overrideWithValue(
         FakeCurrencyRepository(currency),
       ),
+      appLockNotifierProvider.overrideWithValue(AppLockNotifier(initialLocked: false)),
     ],
     child: Consumer(
       builder: (context, ref, _) {
@@ -394,6 +396,7 @@ void main() {
           currencyRepositoryProvider.overrideWithValue(
             FakeCurrencyRepository('USD'),
           ),
+          appLockNotifierProvider.overrideWithValue(AppLockNotifier(initialLocked: false)),
           dashboardControllerProvider.overrideWithValue(
             const AsyncValue.data(dashboardState),
           ),
