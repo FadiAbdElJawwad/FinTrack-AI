@@ -6,6 +6,8 @@ import 'package:fin_track_ai/features/currency/domain/repositories/currency_repo
 import 'package:fin_track_ai/features/currency/presentation/state/currency_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:fin_track_ai/features/auth/presentation/state/auth_controller.dart';
+import 'package:fin_track_ai/features/auth/domain/models/user_model.dart';
 
 class RecordingCurrencyRepository implements CurrencyRepository {
   RecordingCurrencyRepository(this.base);
@@ -34,11 +36,29 @@ void main() {
       overrides: [
         currencyRepositoryProvider.overrideWithValue(repo),
         exchangeRateServiceProvider.overrideWithValue(UntouchableRateService()),
+        currentUserProvider.overrideWithValue(UserModel(uid: 'u', email: '', fullName: '')),
       ],
     );
     addTearDown(container.dispose);
     container.listen(currencyControllerProvider, (_, _) {});
     await container.read(currencyControllerProvider.future);
+  });
+
+  test('13. yields default state without calling repository when currentUserProvider is null', () async {
+    final verifyRepo = RecordingCurrencyRepository('EUR');
+    
+    final c = ProviderContainer(
+      overrides: [
+        currencyRepositoryProvider.overrideWithValue(verifyRepo),
+        exchangeRateServiceProvider.overrideWithValue(UntouchableRateService()),
+        currentUserProvider.overrideWithValue(null),
+      ],
+    );
+    addTearDown(c.dispose);
+    c.listen(currencyControllerProvider, (_, _) {});
+    
+    final state = await c.read(currencyControllerProvider.future);
+    expect(state, 'USD'); // Default value from controller, not from verifyRepo's 'EUR'
   });
 
   test('changeCurrency writes only the base currency, once', () async {

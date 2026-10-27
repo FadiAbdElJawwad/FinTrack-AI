@@ -15,6 +15,8 @@ import 'package:fin_track_ai/features/transactions/presentation/state/transactio
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:fin_track_ai/features/auth/presentation/state/auth_controller.dart';
+import 'package:fin_track_ai/features/auth/domain/models/user_model.dart';
 
 class FixedTxRepository extends Fake implements TransactionRepository {
   FixedTxRepository(this.transactions);
@@ -90,6 +92,7 @@ ProviderContainer makeTestContainer({
       clockProvider.overrideWithValue(
         () => clockNow ?? DateTime(2024, 5, 15, 10),
       ),
+      currentUserProvider.overrideWithValue(UserModel(uid: 'u', email: '', fullName: '')),
     ],
   );
   addTearDown(container.dispose);

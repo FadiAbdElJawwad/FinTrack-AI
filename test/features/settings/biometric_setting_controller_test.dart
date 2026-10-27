@@ -5,15 +5,20 @@ import 'package:fin_track_ai/features/settings/presentation/state/biometric_sett
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
 class FakeBiometricService extends Fake implements BiometricService {
   bool shouldAuthenticate = true;
   bool shouldThrow = false;
   int authenticateCalls = 0;
+  Completer<bool>? authenticateCompleter;
 
   @override
   Future<bool> authenticate() async {
     authenticateCalls++;
+    if (authenticateCompleter != null) {
+      return authenticateCompleter!.future;
+    }
     if (shouldThrow) {
       throw Exception('Biometric failure');
     }
@@ -78,5 +83,22 @@ void main() {
     expect(container.read(biometricSettingProvider), isFalse);
     expect(fakeBiometric.authenticateCalls, equals(0));
     expect(prefs.getBool(SharedPrefsKeys.isBiometricEnabledKey), isFalse);
+  });
+
+  test('14. disposed before await completes does not throw or write state', () async {
+    final completer = Completer<bool>();
+    fakeBiometric.authenticateCompleter = completer;
+
+    final controller = container.read(biometricSettingProvider.notifier);
+    final future = controller.setEnabled(true);
+
+    container.dispose();
+
+    completer.complete(true);
+    final result = await future;
+    
+    expect(result, isTrue);
+    expect(controller.state, isFalse, reason: 'State should not be updated on disposed controller');
+    expect(prefs.getBool(SharedPrefsKeys.isBiometricEnabledKey), isTrue); // prefs is a side effect that occurs before state set
   });
 }

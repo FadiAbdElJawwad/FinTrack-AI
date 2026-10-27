@@ -15,6 +15,7 @@ import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../features/transactions/presentation/screens/transaction_details.dart';
 import '../../features/transactions/presentation/screens/voice_entry_screen.dart';
 import '../constant/shared_prefs_keys.dart';
+import 'app_lock_notifier.dart';
 import 'main_shell_route.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
@@ -38,12 +39,14 @@ class RouteGenerator {
   static GoRouter build({
     required FirebaseAuth firebaseAuth,
     required SharedPreferences prefs,
+    required AppLockNotifier lock,
   }) {
     return GoRouter(
     initialLocation: AppRoutes.splash,
-    refreshListenable: GoRouterRefreshStream(
-      firebaseAuth.authStateChanges(),
-    ),
+    refreshListenable: Listenable.merge([
+      GoRouterRefreshStream(firebaseAuth.authStateChanges()),
+      lock,
+    ]),
     redirect: (context, state) async {
       final user = firebaseAuth.currentUser;
 
@@ -73,8 +76,16 @@ class RouteGenerator {
         return isAuthScreen ? null : AppRoutes.login;
       }
 
+      if (isBiometricEnabled && lock.isLocked && state.matchedLocation != AppRoutes.lockScreen) {
+        return AppRoutes.lockScreen;
+      }
+      
+      if (state.matchedLocation == AppRoutes.lockScreen && !lock.isLocked) {
+        return AppRoutes.homeScreen;
+      }
+
       if (isAuthScreen) {
-        return isBiometricEnabled ? AppRoutes.lockScreen : AppRoutes.homeScreen;
+        return AppRoutes.homeScreen;
       }
 
       return null;

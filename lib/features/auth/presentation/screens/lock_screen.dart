@@ -8,6 +8,7 @@ import '../../../../core/extension/app_sizes.dart';
 import '../../../../core/extension/text_style_extension.dart';
 import '../../../../core/extension/snackbar_extension.dart';
 import '../../../../core/services/biometric_service.dart';
+import '../../../../core/routing/app_lock_notifier.dart';
 import '../state/auth_controller.dart';
 
 class LockScreen extends HookConsumerWidget {
@@ -21,7 +22,7 @@ class LockScreen extends HookConsumerWidget {
       final success = await biometricService.authenticate();
       if (success && context.mounted) {
         if (ref.read(currentUserProvider) != null) {
-          context.goNamed('homeScreen');
+          ref.read(appLockNotifierProvider).unlock();
         } else {
           // Session expired
           context.showErrorSnackBar(context.loc.sessionExpired);
